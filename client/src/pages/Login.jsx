@@ -107,6 +107,39 @@ export default function Login() {
           </button>
         </form>
 
+        {/* Quick Demo Pre-fills */}
+        <div style={{ marginTop: '1.25rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border)' }}>
+          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'center', marginBottom: '0.6rem' }}>
+            Quick fill demo accounts:
+          </p>
+          <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              style={{ fontSize: '0.78rem', padding: '0.25rem 0.6rem' }}
+              onClick={() => { setEmail('ronak@example.com'); setPassword('password123'); }}
+            >
+              Ronak
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              style={{ fontSize: '0.78rem', padding: '0.25rem 0.6rem' }}
+              onClick={() => { setEmail('rahul@example.com'); setPassword('password123'); }}
+            >
+              Rahul
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              style={{ fontSize: '0.78rem', padding: '0.25rem 0.6rem' }}
+              onClick={() => { setEmail('amit@example.com'); setPassword('password123'); }}
+            >
+              Amit
+            </button>
+          </div>
+        </div>
+
         <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.9rem' }} className="text-muted">
           Don't have an account?{' '}
           <Link to="/register" style={{ color: 'var(--primary)', fontWeight: 600, textDecoration: 'none' }}>

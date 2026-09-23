@@ -33,6 +33,9 @@ if (process.env.NODE_ENV !== 'production') {
 // API Routes
 app.use('/api', apiRoutes);
 
+// Ignore favicon requests on the API server
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 // Root route for simple verification
 app.get('/', (req, res) => {
   res.json({

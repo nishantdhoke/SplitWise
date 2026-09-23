@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import StatusCheck from './pages/StatusCheck';
+import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
@@ -21,7 +22,7 @@ function HomeRoute() {
       </div>
     );
   }
-  return isAuthenticated ? <Navigate to="/dashboard" replace /> : <StatusCheck />;
+  return isAuthenticated ? <Navigate to="/dashboard" replace /> : <Landing />;
 }
 
 export default function App() {

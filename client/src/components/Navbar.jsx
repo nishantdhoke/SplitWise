@@ -72,7 +72,15 @@ export default function Navbar() {
                   to="/"
                   className={`navbar-link ${location.pathname === '/' ? 'active' : ''}`}
                 >
-                  <Server size={15} style={{ marginRight: '5px', verticalAlign: 'text-bottom' }} />
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/status"
+                  className={`navbar-link ${location.pathname === '/status' ? 'active' : ''}`}
+                >
+                  <Server size={14} style={{ marginRight: '4px', verticalAlign: 'text-bottom' }} />
                   Status
                 </Link>
               </li>
