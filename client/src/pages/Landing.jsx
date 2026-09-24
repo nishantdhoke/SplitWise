@@ -356,7 +356,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Live System Operational Status */}
+      {/* Live System Operational Status
       <section className="infra-card">
         <div className="flex-between" style={{ flexWrap: 'wrap', gap: '0.75rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
@@ -426,7 +426,7 @@ export default function Landing() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Bottom Call to Action Banner */}
       <section className="cta-banner">

@@ -84,4 +84,9 @@ CREATE TABLE IF NOT EXISTS `settlements` (
   FOREIGN KEY (`group_id`) REFERENCES `groups`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`payer_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`receiver_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_c;
+
+SHOW TABLES FROM fairshare_db;
+
+
+
