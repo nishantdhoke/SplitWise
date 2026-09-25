@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { createExpense } from '../services/api';
-import { X, Receipt, AlertCircle, CheckCircle2, IndianRupee, Percent } from 'lucide-react';
+import { X, Receipt, AlertCircle, CheckCircle2, IndianRupee, Percent, Scale, Check, Calendar } from 'lucide-react';
 
 export default function AddExpenseModal({ groupId, members = [], isOpen, onClose, onExpenseAdded }) {
   const { user } = useAuth();
@@ -13,17 +13,15 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
   const [splitMethod, setSplitMethod] = useState('EQUAL');
 
   // Participants selection
-  // For EQUAL: Set of userIds
   const [selectedUserIds, setSelectedUserIds] = useState([]);
-  // For CUSTOM: { [userId]: amount }
   const [customAmounts, setCustomAmounts] = useState({});
-  // For PERCENTAGE: { [userId]: percentage }
   const [customPercentages, setCustomPercentages] = useState({});
 
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  // Initialize participants to all members when modal opens or members change
+  // Initialize participants to all members when modal opens
   useEffect(() => {
     if (members.length > 0) {
       const allIds = members.map((m) => m.id);
@@ -31,6 +29,7 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
       if (!paidBy || !allIds.includes(Number(paidBy))) {
         setPaidBy(user?.id || allIds[0]);
       }
+      setIsSuccess(false);
     }
   }, [members, isOpen, user?.id]);
 
@@ -38,7 +37,7 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
 
   const numericAmount = parseFloat(amount) || 0;
 
-  // Helpers for live split validation
+  // Toggle participant
   const toggleParticipant = (userId) => {
     if (selectedUserIds.includes(userId)) {
       if (selectedUserIds.length === 1) {
@@ -57,14 +56,14 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
     setError('');
   };
 
-  // Calculations for Custom Amount
+  // Custom Split math
   const customSum = selectedUserIds.reduce((sum, id) => {
     const val = parseFloat(customAmounts[id]) || 0;
     return sum + val;
   }, 0);
   const customDiff = parseFloat((numericAmount - customSum).toFixed(2));
 
-  // Calculations for Percentage
+  // Percentage Split math
   const percentageSum = selectedUserIds.reduce((sum, id) => {
     const val = parseFloat(customPercentages[id]) || 0;
     return sum + val;
@@ -100,358 +99,414 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
         return;
       }
       payloadParticipants = selectedUserIds.map((id) => ({
-        userId: id,
+        user_id: id,
         amount: parseFloat(customAmounts[id]) || 0,
       }));
     } else if (splitMethod === 'PERCENTAGE') {
       if (Math.abs(percentageDiff) > 0.01) {
-        setError(`Percentages must sum to exactly 100% (Current sum: ${percentageSum}%)`);
+        setError(`Percentages must sum to exactly 100% (Difference: ${Math.abs(percentageDiff)}%)`);
         return;
       }
       payloadParticipants = selectedUserIds.map((id) => ({
-        userId: id,
+        user_id: id,
         percentage: parseFloat(customPercentages[id]) || 0,
       }));
     }
 
+    const payload = {
+      title: title.trim(),
+      amount: numericAmount,
+      paid_by: Number(paidBy),
+      split_method: splitMethod,
+      expense_date: expenseDate,
+      participants: payloadParticipants,
+    };
+
     try {
       setIsSubmitting(true);
-      await createExpense(groupId, {
-        title: title.trim(),
-        amount: numericAmount,
-        paid_by: Number(paidBy),
-        split_method: splitMethod,
-        expense_date: expenseDate,
-        participants: payloadParticipants,
-      });
-
-      // Reset form
-      setTitle('');
-      setAmount('');
-      setCustomAmounts({});
-      setCustomPercentages({});
-      onExpenseAdded();
-      onClose();
+      await createExpense(groupId, payload);
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+        onExpenseAdded();
+        onClose();
+        // Reset form
+        setTitle('');
+        setAmount('');
+        setCustomAmounts({});
+        setCustomPercentages({});
+      }, 1100);
     } catch (err) {
-      setError(err.message || 'Failed to record expense');
-    } finally {
+      setError(err.message || 'Failed to create expense.');
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.55)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 100,
-        padding: '1rem',
-      }}
-    >
-      <div
-        className="card"
-        style={{
-          width: '100%',
-          maxWidth: '560px',
-          maxHeight: '90vh',
-          overflowY: 'auto',
-          boxShadow: 'var(--shadow-lg)',
-        }}
-      >
+    <div className="modal-backdrop">
+      <div className="modal-content glass-card" style={{ maxWidth: '580px', maxHeight: '90vh', overflowY: 'auto' }}>
+        {/* Header */}
         <div className="flex-between" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '1rem', marginBottom: '1.25rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div
               style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '8px',
-                backgroundColor: 'var(--primary-light)',
-                color: 'var(--primary)',
+                width: '40px',
+                height: '40px',
+                borderRadius: '12px',
+                backgroundColor: 'var(--primary-subtle)',
+                color: 'var(--primary-hover)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                boxShadow: '0 0 15px rgba(124, 92, 252, 0.3)',
               }}
             >
-              <Receipt size={20} />
+              <Receipt size={22} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 600 }}>Add Expense</h3>
-              <p className="text-muted" style={{ fontSize: '0.8rem' }}>Split a shared bill with your group</p>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Add New Expense</h3>
+              <p className="text-muted" style={{ fontSize: '0.82rem' }}>Split costs with group members</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="btn btn-secondary"
-            style={{ padding: '0.3rem', borderRadius: '50%', border: 'none' }}
+            className="btn btn-secondary btn-icon"
+            style={{ width: '32px', height: '32px' }}
+            disabled={isSubmitting || isSuccess}
           >
-            <X size={18} />
+            <X size={16} />
           </button>
         </div>
 
-        {error && (
-          <div className="alert alert-danger" style={{ marginBottom: '1.25rem' }}>
-            <AlertCircle size={16} style={{ flexShrink: 0 }} />
-            <span>{error}</span>
+        {isSuccess ? (
+          <div style={{ textAlign: 'center', padding: '3rem 1.5rem', animation: 'fadeIn 300ms ease' }}>
+            <div
+              style={{
+                width: '68px',
+                height: '68px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)',
+                color: '#FFFFFF',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 1.5rem',
+                boxShadow: '0 0 35px rgba(124, 92, 252, 0.6)',
+              }}
+            >
+              <CheckCircle2 size={38} />
+            </div>
+            <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#F5F7FF' }}>Expense Added!</h3>
+            <p className="text-muted mt-1" style={{ fontSize: '0.92rem' }}>
+              Group debts and net balances recalculated instantly.
+            </p>
           </div>
-        )}
+        ) : (
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            {error && (
+              <div className="alert alert-danger">
+                <AlertCircle size={16} style={{ flexShrink: 0 }} />
+                <span>{error}</span>
+              </div>
+            )}
 
-        <form onSubmit={handleSubmit}>
-          {/* Title & Amount Grid */}
-          <div className="grid-2">
+            {/* Title & Amount Row */}
+            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1.2fr', gap: '1rem' }}>
+              <div className="form-group">
+                <label className="form-label" htmlFor="expense-title">Expense Description</label>
+                <input
+                  id="expense-title"
+                  type="text"
+                  className="form-input"
+                  placeholder="e.g. Seafood Dinner, Resort Stay"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                  autoFocus
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label" htmlFor="expense-amount">Amount (₹)</label>
+                <input
+                  id="expense-amount"
+                  type="number"
+                  step="0.01"
+                  min="0.01"
+                  className="form-input"
+                  style={{ fontSize: '1.15rem', fontWeight: 700, letterSpacing: '-0.5px' }}
+                  placeholder="0.00"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Paid By & Date Row */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div className="form-group">
+                <label className="form-label" htmlFor="paid-by">Paid By</label>
+                <select
+                  id="paid-by"
+                  className="form-input"
+                  value={paidBy}
+                  onChange={(e) => setPaidBy(e.target.value)}
+                  required
+                >
+                  {members.map((m) => (
+                    <option key={m.id} value={m.id}>
+                      {m.name} {m.id === user?.id ? '(You)' : ''}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label" htmlFor="expense-date">Date</label>
+                <input
+                  id="expense-date"
+                  type="date"
+                  className="form-input"
+                  value={expenseDate}
+                  onChange={(e) => setExpenseDate(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Split Method Tabs */}
             <div className="form-group">
-              <label className="form-label" htmlFor="expense-title">Description / Title</label>
-              <input
-                id="expense-title"
-                type="text"
-                className="form-input"
-                placeholder="e.g. Pizza, Cab, Groceries"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
-                autoFocus
-              />
+              <label className="form-label">Split Method</label>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: '0.5rem',
+                  background: 'var(--surface-elevated)',
+                  padding: '0.35rem',
+                  borderRadius: 'var(--radius-md)',
+                  border: '1px solid var(--border)',
+                }}
+              >
+                <button
+                  type="button"
+                  className="btn btn-sm"
+                  onClick={() => setSplitMethod('EQUAL')}
+                  style={{
+                    background: splitMethod === 'EQUAL' ? 'var(--primary)' : 'transparent',
+                    color: splitMethod === 'EQUAL' ? '#FFFFFF' : 'var(--text-secondary)',
+                    boxShadow: splitMethod === 'EQUAL' ? '0 0 15px rgba(124, 92, 252, 0.4)' : 'none',
+                    fontWeight: 700,
+                  }}
+                >
+                  <Scale size={14} />
+                  <span>Equal</span>
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-sm"
+                  onClick={() => setSplitMethod('CUSTOM')}
+                  style={{
+                    background: splitMethod === 'CUSTOM' ? 'var(--primary)' : 'transparent',
+                    color: splitMethod === 'CUSTOM' ? '#FFFFFF' : 'var(--text-secondary)',
+                    boxShadow: splitMethod === 'CUSTOM' ? '0 0 15px rgba(124, 92, 252, 0.4)' : 'none',
+                    fontWeight: 700,
+                  }}
+                >
+                  <IndianRupee size={14} />
+                  <span>Exact</span>
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-sm"
+                  onClick={() => setSplitMethod('PERCENTAGE')}
+                  style={{
+                    background: splitMethod === 'PERCENTAGE' ? 'var(--primary)' : 'transparent',
+                    color: splitMethod === 'PERCENTAGE' ? '#FFFFFF' : 'var(--text-secondary)',
+                    boxShadow: splitMethod === 'PERCENTAGE' ? '0 0 15px rgba(124, 92, 252, 0.4)' : 'none',
+                    fontWeight: 700,
+                  }}
+                >
+                  <Percent size={14} />
+                  <span>Percent</span>
+                </button>
+              </div>
             </div>
 
+            {/* Split Distribution Overview Card */}
+            {numericAmount > 0 && splitMethod === 'EQUAL' && selectedUserIds.length > 0 && (
+              <div
+                style={{
+                  background: 'var(--primary-subtle)',
+                  border: '1px solid rgba(124, 92, 252, 0.25)',
+                  padding: '0.85rem 1.15rem',
+                  borderRadius: 'var(--radius-md)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <span style={{ fontSize: '0.88rem', color: 'var(--primary-hover)', fontWeight: 600 }}>
+                  Each person owes:
+                </span>
+                <strong style={{ fontSize: '1.2rem', color: '#FFFFFF', fontWeight: 800 }}>
+                  ₹{(numericAmount / selectedUserIds.length).toFixed(2)}
+                </strong>
+              </div>
+            )}
+
+            {/* Participants Interactive Cards */}
             <div className="form-group">
-              <label className="form-label" htmlFor="expense-amount">Amount (₹)</label>
-              <input
-                id="expense-amount"
-                type="number"
-                step="0.01"
-                min="1"
-                className="form-input"
-                placeholder="0.00"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                required
-              />
-            </div>
-          </div>
+              <div className="flex-between" style={{ marginBottom: '0.4rem' }}>
+                <label className="form-label" style={{ marginBottom: 0 }}>
+                  Participants ({selectedUserIds.length} of {members.length})
+                </label>
+                <button
+                  type="button"
+                  onClick={selectAll}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: 'var(--secondary)',
+                    fontSize: '0.78rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  Select All
+                </button>
+              </div>
 
-          {/* Paid By & Date Grid */}
-          <div className="grid-2 mt-2">
-            <div className="form-group">
-              <label className="form-label" htmlFor="expense-payer">Paid By</label>
-              <select
-                id="expense-payer"
-                className="form-input"
-                value={paidBy}
-                onChange={(e) => setPaidBy(e.target.value)}
-              >
-                {members.map((m) => (
-                  <option key={m.id} value={m.id}>
-                    {m.name} {m.id === user?.id ? '(You)' : ''}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label className="form-label" htmlFor="expense-date">Expense Date</label>
-              <input
-                id="expense-date"
-                type="date"
-                className="form-input"
-                value={expenseDate}
-                onChange={(e) => setExpenseDate(e.target.value)}
-                required
-              />
-            </div>
-          </div>
-
-          {/* Split Method Selector */}
-          <div style={{ marginTop: '1.25rem' }}>
-            <label className="form-label">Split Method</label>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem', marginTop: '0.35rem' }}>
-              <button
-                type="button"
-                className={`btn ${splitMethod === 'EQUAL' ? 'btn-primary' : 'btn-secondary'}`}
-                style={{ padding: '0.45rem', fontSize: '0.85rem' }}
-                onClick={() => setSplitMethod('EQUAL')}
-              >
-                = Equal
-              </button>
-              <button
-                type="button"
-                className={`btn ${splitMethod === 'CUSTOM' ? 'btn-primary' : 'btn-secondary'}`}
-                style={{ padding: '0.45rem', fontSize: '0.85rem' }}
-                onClick={() => setSplitMethod('CUSTOM')}
-              >
-                ₹ Exact Amount
-              </button>
-              <button
-                type="button"
-                className={`btn ${splitMethod === 'PERCENTAGE' ? 'btn-primary' : 'btn-secondary'}`}
-                style={{ padding: '0.45rem', fontSize: '0.85rem' }}
-                onClick={() => setSplitMethod('PERCENTAGE')}
-              >
-                % Percentage
-              </button>
-            </div>
-          </div>
-
-          {/* Participants Split Area */}
-          <div style={{ marginTop: '1.25rem', border: '1px solid var(--border)', borderRadius: '8px', padding: '1rem', background: '#f8fafc' }}>
-            <div className="flex-between" style={{ marginBottom: '0.75rem' }}>
-              <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>
-                Participants ({selectedUserIds.length})
-              </span>
-              <button
-                type="button"
-                onClick={selectAll}
-                style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600 }}
-              >
-                Select All
-              </button>
-            </div>
-
-            {/* EQUAL SPLIT VIEW */}
-            {splitMethod === 'EQUAL' && (
-              <div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                  {members.map((m) => {
-                    const isSelected = selectedUserIds.includes(m.id);
-                    return (
-                      <label
-                        key={m.id}
-                        className="flex-between"
-                        style={{
-                          padding: '0.5rem 0.75rem',
-                          background: isSelected ? '#ffffff' : 'transparent',
-                          border: isSelected ? '1px solid #c7d2fe' : '1px solid transparent',
-                          borderRadius: '6px',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <input
-                            type="checkbox"
-                            checked={isSelected}
-                            onChange={() => toggleParticipant(m.id)}
-                          />
-                          <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>
-                            {m.name} {m.id === user?.id ? '(You)' : ''}
-                          </span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '200px', overflowY: 'auto', paddingRight: '4px' }}>
+                {members.map((m) => {
+                  const isSelected = selectedUserIds.includes(m.id);
+                  return (
+                    <div
+                      key={m.id}
+                      onClick={() => toggleParticipant(m.id)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '0.65rem 0.85rem',
+                        borderRadius: 'var(--radius-sm)',
+                        background: isSelected ? 'var(--surface-elevated)' : 'rgba(23, 27, 43, 0.4)',
+                        border: isSelected ? '1px solid rgba(124, 92, 252, 0.4)' : '1px solid var(--border)',
+                        cursor: 'pointer',
+                        transition: 'all 150ms ease',
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                        <div
+                          style={{
+                            width: '20px',
+                            height: '20px',
+                            borderRadius: '4px',
+                            border: isSelected ? '1px solid var(--primary)' : '1px solid var(--text-muted)',
+                            background: isSelected ? 'var(--primary)' : 'transparent',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#FFFFFF',
+                          }}
+                        >
+                          {isSelected && <Check size={14} />}
                         </div>
-                        {isSelected && numericAmount > 0 && (
-                          <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--primary)' }}>
-                            ₹{(numericAmount / selectedUserIds.length).toFixed(2)}
-                          </span>
-                        )}
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* CUSTOM AMOUNT VIEW */}
-            {splitMethod === 'CUSTOM' && (
-              <div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  {members.map((m) => (
-                    <div key={m.id} className="flex-between" style={{ background: '#ffffff', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid var(--border)' }}>
-                      <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>
-                        {m.name} {m.id === user?.id ? '(You)' : ''}
-                      </span>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', width: '120px' }}>
-                        <span className="text-muted" style={{ fontSize: '0.85rem' }}>₹</span>
-                        <input
-                          type="number"
-                          step="0.01"
-                          min="0"
-                          className="form-input"
-                          style={{ padding: '0.35rem 0.5rem', textAlign: 'right' }}
-                          placeholder="0.00"
-                          value={customAmounts[m.id] || ''}
-                          onChange={(e) => {
-                            setCustomAmounts({ ...customAmounts, [m.id]: e.target.value });
-                            if (!selectedUserIds.includes(m.id)) {
-                              setSelectedUserIds([...selectedUserIds, m.id]);
-                            }
-                          }}
-                        />
+                        <span style={{ fontSize: '0.9rem', fontWeight: isSelected ? 600 : 400, color: isSelected ? 'var(--text-main)' : 'var(--text-muted)' }}>
+                          {m.name} {m.id === user?.id ? '(You)' : ''}
+                        </span>
                       </div>
-                    </div>
-                  ))}
-                </div>
 
-                {numericAmount > 0 && (
-                  <div className="flex-between mt-2" style={{ fontSize: '0.85rem', fontWeight: 600 }}>
-                    <span>Sum: ₹{customSum.toFixed(2)} / ₹{numericAmount.toFixed(2)}</span>
-                    <span style={{ color: customDiff === 0 ? 'var(--success)' : 'var(--danger)' }}>
-                      {customDiff === 0 ? '✓ Exact Match' : `Remaining: ₹${customDiff}`}
-                    </span>
-                  </div>
-                )}
+                      {/* Custom inputs inside participant rows */}
+                      {isSelected && splitMethod === 'CUSTOM' && (
+                        <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                          <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>₹</span>
+                          <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            placeholder="0"
+                            style={{
+                              width: '90px',
+                              padding: '0.3rem 0.5rem',
+                              borderRadius: '6px',
+                              border: '1px solid var(--border)',
+                              background: '#080A12',
+                              color: 'var(--text-main)',
+                              fontSize: '0.85rem',
+                              textAlign: 'right',
+                            }}
+                            value={customAmounts[m.id] || ''}
+                            onChange={(e) => setCustomAmounts({ ...customAmounts, [m.id]: e.target.value })}
+                          />
+                        </div>
+                      )}
+
+                      {isSelected && splitMethod === 'PERCENTAGE' && (
+                        <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                          <input
+                            type="number"
+                            step="0.1"
+                            min="0"
+                            max="100"
+                            placeholder="0"
+                            style={{
+                              width: '70px',
+                              padding: '0.3rem 0.5rem',
+                              borderRadius: '6px',
+                              border: '1px solid var(--border)',
+                              background: '#080A12',
+                              color: 'var(--text-main)',
+                              fontSize: '0.85rem',
+                              textAlign: 'right',
+                            }}
+                            value={customPercentages[m.id] || ''}
+                            onChange={(e) => setCustomPercentages({ ...customPercentages, [m.id]: e.target.value })}
+                          />
+                          <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>%</span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Validation differences for Custom & Percentage */}
+            {splitMethod === 'CUSTOM' && numericAmount > 0 && (
+              <div style={{ fontSize: '0.82rem', textAlign: 'right', color: Math.abs(customDiff) < 0.01 ? 'var(--success)' : 'var(--danger)' }}>
+                Total assigned: ₹{customSum.toFixed(2)} / ₹{numericAmount.toFixed(2)} ({Math.abs(customDiff) < 0.01 ? '✓ Matches' : `Remaining: ₹${customDiff}`})
               </div>
             )}
 
-            {/* PERCENTAGE SPLIT VIEW */}
             {splitMethod === 'PERCENTAGE' && (
-              <div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  {members.map((m) => (
-                    <div key={m.id} className="flex-between" style={{ background: '#ffffff', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid var(--border)' }}>
-                      <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>
-                        {m.name} {m.id === user?.id ? '(You)' : ''}
-                      </span>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', width: '110px' }}>
-                        <input
-                          type="number"
-                          step="1"
-                          min="0"
-                          max="100"
-                          className="form-input"
-                          style={{ padding: '0.35rem 0.5rem', textAlign: 'right' }}
-                          placeholder="0"
-                          value={customPercentages[m.id] || ''}
-                          onChange={(e) => {
-                            setCustomPercentages({ ...customPercentages, [m.id]: e.target.value });
-                            if (!selectedUserIds.includes(m.id)) {
-                              setSelectedUserIds([...selectedUserIds, m.id]);
-                            }
-                          }}
-                        />
-                        <span className="text-muted" style={{ fontSize: '0.85rem' }}>%</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex-between mt-2" style={{ fontSize: '0.85rem', fontWeight: 600 }}>
-                  <span>Total: {percentageSum.toFixed(1)}% / 100%</span>
-                  <span style={{ color: percentageDiff === 0 ? 'var(--success)' : 'var(--danger)' }}>
-                    {percentageDiff === 0 ? '✓ Exact Match' : `Remaining: ${percentageDiff}%`}
-                  </span>
-                </div>
+              <div style={{ fontSize: '0.82rem', textAlign: 'right', color: Math.abs(percentageDiff) < 0.01 ? 'var(--success)' : 'var(--danger)' }}>
+                Total: {percentageSum.toFixed(1)}% / 100% ({Math.abs(percentageDiff) < 0.01 ? '✓ Matches' : `Remaining: ${percentageDiff}%`})
               </div>
             )}
-          </div>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
-            <button type="button" className="btn btn-secondary" onClick={onClose} disabled={isSubmitting}>
-              Cancel
-            </button>
-            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <>
-                  <span className="spinner" style={{ width: '0.9rem', height: '0.9rem', borderWidth: '2px' }}></span>
-                  Recording...
-                </>
-              ) : (
-                'Save Expense'
-              )}
-            </button>
-          </div>
-        </form>
+            {/* Modal Actions */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
+              <button type="button" className="btn btn-secondary" onClick={onClose} disabled={isSubmitting}>
+                Cancel
+              </button>
+              <button type="submit" className="btn btn-primary" disabled={isSubmitting} style={{ minWidth: '160px' }}>
+                {isSubmitting ? (
+                  <>
+                    <span className="spinner" style={{ width: '1rem', height: '1rem', borderWidth: '2px' }}></span>
+                    <span>Creating...</span>
+                  </>
+                ) : (
+                  <>
+                    <Receipt size={16} />
+                    <span>Create Expense</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );

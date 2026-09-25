@@ -30,62 +30,41 @@ export default function AddMemberModal({ isOpen, onClose, onAddMember, groupName
   };
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.55)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 100,
-        padding: '1rem',
-      }}
-    >
-      <div
-        className="card"
-        style={{
-          width: '100%',
-          maxWidth: '460px',
-          boxShadow: 'var(--shadow-lg)',
-          position: 'relative',
-        }}
-      >
-        <div className="flex-between" style={{ marginBottom: '1.25rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+    <div className="modal-backdrop">
+      <div className="modal-content glass-card" style={{ maxWidth: '460px' }}>
+        <div className="flex-between" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '1rem', marginBottom: '1.25rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div
               style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '8px',
-                backgroundColor: 'var(--primary-light)',
-                color: 'var(--primary)',
+                width: '38px',
+                height: '38px',
+                borderRadius: '10px',
+                backgroundColor: 'var(--primary-subtle)',
+                color: 'var(--primary-hover)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                boxShadow: '0 0 12px rgba(124, 92, 252, 0.3)',
               }}
             >
               <UserPlus size={20} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 600 }}>Add Member</h3>
-              <p className="text-muted" style={{ fontSize: '0.8rem' }}>To {groupName}</p>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800 }}>Invite Member</h3>
+              <p className="text-muted" style={{ fontSize: '0.8rem' }}>Add friend to {groupName}</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="btn btn-secondary"
-            style={{ padding: '0.3rem', borderRadius: '50%', border: 'none' }}
+            className="btn btn-secondary btn-icon"
+            style={{ width: '32px', height: '32px' }}
           >
-            <X size={18} />
+            <X size={16} />
           </button>
         </div>
 
         {error && (
-          <div className="alert alert-danger" style={{ marginBottom: '1rem' }}>
+          <div className="alert alert-danger" style={{ marginBottom: '1.25rem' }}>
             <AlertCircle size={16} style={{ flexShrink: 0 }} />
             <span>{error}</span>
           </div>
@@ -106,7 +85,7 @@ export default function AddMemberModal({ isOpen, onClose, onAddMember, groupName
               required
               autoFocus
             />
-            <p className="text-muted" style={{ fontSize: '0.8rem', marginTop: '0.25rem' }}>
+            <p className="text-muted" style={{ fontSize: '0.8rem', marginTop: '0.35rem' }}>
               Note: The user must already have an account on FairShare.
             </p>
           </div>
@@ -119,7 +98,7 @@ export default function AddMemberModal({ isOpen, onClose, onAddMember, groupName
               {isSubmitting ? (
                 <>
                   <span className="spinner" style={{ width: '0.9rem', height: '0.9rem', borderWidth: '2px' }}></span>
-                  Adding...
+                  <span>Adding...</span>
                 </>
               ) : (
                 'Add Member'

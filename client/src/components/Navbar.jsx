@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Split, User, LogIn, LogOut, UserPlus, Server, Users, LayoutDashboard } from 'lucide-react';
+import { Split, User, LogIn, LogOut, UserPlus, Server, Users, LayoutDashboard, Sparkles } from 'lucide-react';
+import SignatureEye from './SignatureEye';
 
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -16,10 +17,15 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-inner">
+        {/* Brand Logo with Glow & Mini Signature Eye */}
         <Link to={isAuthenticated ? '/dashboard' : '/'} className="navbar-brand">
-          <Split size={24} />
-          Fair<span>Share</span>
+          <div className="navbar-brand-icon">
+            <Split size={20} />
+          </div>
+          <span>Fair<span style={{ color: 'var(--primary)' }}>Share</span></span>
         </Link>
+
+        {/* Navigation Items */}
         <ul className="navbar-links">
           {isAuthenticated ? (
             <>
@@ -27,9 +33,8 @@ export default function Navbar() {
                 <Link
                   to="/dashboard"
                   className={`navbar-link ${location.pathname === '/dashboard' ? 'active' : ''}`}
-                  style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
                 >
-                  <LayoutDashboard size={15} />
+                  <LayoutDashboard size={16} />
                   <span>Dashboard</span>
                 </Link>
               </li>
@@ -37,9 +42,8 @@ export default function Navbar() {
                 <Link
                   to="/groups"
                   className={`navbar-link ${location.pathname.startsWith('/groups') ? 'active' : ''}`}
-                  style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
                 >
-                  <Users size={15} />
+                  <Users size={16} />
                   <span>Groups</span>
                 </Link>
               </li>
@@ -47,18 +51,32 @@ export default function Navbar() {
                 <Link
                   to="/profile"
                   className={`navbar-link ${location.pathname === '/profile' ? 'active' : ''}`}
-                  style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
                 >
-                  <User size={15} />
+                  <div
+                    style={{
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#FFFFFF',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                    }}
+                  >
+                    {user?.name?.charAt(0).toUpperCase()}
+                  </div>
                   <span>{user?.name?.split(' ')[0]}</span>
                 </Link>
               </li>
               <li>
                 <button
                   onClick={handleLogout}
-                  className="btn btn-secondary"
-                  style={{ padding: '0.35rem 0.75rem', fontSize: '0.85rem' }}
+                  className="btn btn-secondary btn-sm"
                   title="Log out"
+                  style={{ gap: '0.4rem', color: 'var(--text-muted)' }}
                 >
                   <LogOut size={14} />
                   <span>Logout</span>
@@ -80,8 +98,8 @@ export default function Navbar() {
                   to="/status"
                   className={`navbar-link ${location.pathname === '/status' ? 'active' : ''}`}
                 >
-                  <Server size={14} style={{ marginRight: '4px', verticalAlign: 'text-bottom' }} />
-                  Status
+                  <Server size={14} style={{ color: 'var(--secondary)' }} />
+                  <span>Status</span>
                 </Link>
               </li>
               <li>
@@ -89,18 +107,17 @@ export default function Navbar() {
                   to="/login"
                   className={`navbar-link ${location.pathname === '/login' ? 'active' : ''}`}
                 >
-                  <LogIn size={15} style={{ marginRight: '5px', verticalAlign: 'text-bottom' }} />
-                  Login
+                  <LogIn size={15} />
+                  <span>Login</span>
                 </Link>
               </li>
               <li>
                 <Link
                   to="/register"
-                  className="btn btn-primary"
-                  style={{ padding: '0.35rem 0.85rem', fontSize: '0.85rem' }}
+                  className="btn btn-primary btn-sm"
                 >
                   <UserPlus size={14} />
-                  Register
+                  <span>Register</span>
                 </Link>
               </li>
             </>

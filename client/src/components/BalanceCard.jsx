@@ -16,26 +16,37 @@ export default function BalanceCard({ balance, isCurrentUser }) {
     <div
       className="card"
       style={{
-        padding: '1.25rem',
-        borderLeft: isPositive
-          ? '4px solid var(--success)'
+        padding: '1.25rem 1.4rem',
+        background: 'var(--surface)',
+        border: isPositive
+          ? '1px solid rgba(53, 224, 161, 0.35)'
           : isNegative
-          ? '4px solid var(--danger)'
-          : '4px solid var(--text-muted)',
+          ? '1px solid rgba(255, 100, 124, 0.35)'
+          : '1px solid var(--border)',
+        boxShadow: isPositive
+          ? '0 4px 15px rgba(53, 224, 161, 0.08)'
+          : isNegative
+          ? '0 4px 15px rgba(255, 100, 124, 0.08)'
+          : 'none',
       }}
     >
       <div className="flex-between">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
           <div
             style={{
-              width: '40px',
-              height: '40px',
+              width: '42px',
+              height: '42px',
               borderRadius: '50%',
               backgroundColor: isPositive
-                ? 'var(--success-light)'
+                ? 'var(--success-dark)'
                 : isNegative
-                ? 'var(--danger-light)'
-                : '#f1f5f9',
+                ? 'var(--danger-dark)'
+                : 'var(--surface-elevated)',
+              border: isPositive
+                ? '1.5px solid var(--success)'
+                : isNegative
+                ? '1.5px solid var(--danger)'
+                : '1px solid var(--border)',
               color: isPositive
                 ? 'var(--success)'
                 : isNegative
@@ -44,32 +55,32 @@ export default function BalanceCard({ balance, isCurrentUser }) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontWeight: 700,
+              fontWeight: 800,
               fontSize: '1rem',
             }}
           >
             {balance.name.charAt(0).toUpperCase()}
           </div>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>{balance.name}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+              <span style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-main)' }}>{balance.name}</span>
               {isCurrentUser && (
-                <span className="badge badge-primary" style={{ fontSize: '0.65rem', padding: '0.1rem 0.4rem' }}>
+                <span className="badge badge-primary" style={{ fontSize: '0.65rem', padding: '0.1rem 0.45rem' }}>
                   You
                 </span>
               )}
             </div>
-            <p className="text-muted" style={{ fontSize: '0.8rem' }}>{balance.email}</p>
+            <p className="text-muted" style={{ fontSize: '0.78rem' }}>{balance.email}</p>
           </div>
         </div>
 
         <div style={{ textAlign: 'right' }}>
           {isPositive && (
             <div>
-              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--success)', textTransform: 'uppercase' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--success)', textTransform: 'uppercase' }}>
                 Gets back
               </span>
-              <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--success)' }}>
+              <div className="finance-number" style={{ fontSize: '1.25rem', color: 'var(--success)' }}>
                 +{absAmount}
               </div>
             </div>
@@ -77,10 +88,10 @@ export default function BalanceCard({ balance, isCurrentUser }) {
 
           {isNegative && (
             <div>
-              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--danger)', textTransform: 'uppercase' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--danger)', textTransform: 'uppercase' }}>
                 Owes
               </span>
-              <div style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--danger)' }}>
+              <div className="finance-number" style={{ fontSize: '1.25rem', color: 'var(--danger)' }}>
                 -{absAmount}
               </div>
             </div>
@@ -98,14 +109,14 @@ export default function BalanceCard({ balance, isCurrentUser }) {
       <div
         className="flex-between text-muted"
         style={{
-          marginTop: '1rem',
+          marginTop: '1.15rem',
           paddingTop: '0.75rem',
           borderTop: '1px solid var(--border)',
           fontSize: '0.8rem',
         }}
       >
-        <span>Paid: ₹{Number(balance.totalPaid).toFixed(2)}</span>
-        <span>Share Owed: ₹{Number(balance.totalOwed).toFixed(2)}</span>
+        <span>Paid: <strong>₹{Number(balance.totalPaid).toFixed(2)}</strong></span>
+        <span>Share: <strong>₹{Number(balance.totalOwed).toFixed(2)}</strong></span>
       </div>
     </div>
   );

@@ -25,29 +25,29 @@ export default function StatusCheck() {
   }, []);
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       {/* Hero Welcome */}
-      <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '1.875rem', fontWeight: 700, color: 'var(--text-main)' }}>
-          FairShare — Expense Splitting Application
+      <div>
+        <h1 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-main)' }}>
+          System Operational Diagnostics
         </h1>
-        <p className="text-muted mt-1" style={{ fontSize: '1.05rem' }}>
-          Phase 1 Foundation: React + Vite Frontend, Express Backend, and MySQL Connection.
+        <p className="text-muted mt-1" style={{ fontSize: '1rem' }}>
+          Real-time health verification for React frontend, Express API, and MySQL connection pool.
         </p>
       </div>
 
       {/* Connection Verification Grid */}
       <div className="grid-2">
         {/* Frontend Status */}
-        <div className="card">
+        <div className="glass-card">
           <div className="flex-between">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <div style={{ background: '#e0e7ff', padding: '0.5rem', borderRadius: '8px', color: '#4338ca' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+              <div style={{ background: 'var(--primary-subtle)', padding: '0.65rem', borderRadius: '12px', color: 'var(--primary-hover)' }}>
                 <Monitor size={22} />
               </div>
               <div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 600 }}>Frontend (Client)</h3>
-                <p className="text-muted" style={{ fontSize: '0.85rem' }}>React 19 + Vite Dev Server</p>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>Frontend (Client)</h3>
+                <p className="text-muted" style={{ fontSize: '0.82rem' }}>React 19 + Vite Dev Server</p>
               </div>
             </div>
             <span className="badge badge-success">
@@ -55,22 +55,22 @@ export default function StatusCheck() {
               Online
             </span>
           </div>
-          <div className="mt-2 text-muted" style={{ fontSize: '0.9rem' }}>
+          <div className="mt-3 text-muted" style={{ fontSize: '0.88rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
             <p><strong>Port:</strong> 5173</p>
             <p><strong>Proxy:</strong> <code>/api</code> requests routed to backend port 5000</p>
           </div>
         </div>
 
         {/* Backend & DB Status */}
-        <div className="card">
+        <div className="glass-card">
           <div className="flex-between">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <div style={{ background: '#ecfdf5', padding: '0.5rem', borderRadius: '8px', color: '#047857' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+              <div style={{ background: 'var(--secondary-subtle)', padding: '0.65rem', borderRadius: '12px', color: 'var(--secondary)' }}>
                 <Server size={22} />
               </div>
               <div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 600 }}>Backend (Server)</h3>
-                <p className="text-muted" style={{ fontSize: '0.85rem' }}>Node.js + Express.js API</p>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>Backend (Server)</h3>
+                <p className="text-muted" style={{ fontSize: '0.82rem' }}>Node.js + Express.js API</p>
               </div>
             </div>
             {loading ? (
@@ -87,7 +87,7 @@ export default function StatusCheck() {
               </span>
             )}
           </div>
-          <div className="mt-2 text-muted" style={{ fontSize: '0.9rem' }}>
+          <div className="mt-3 text-muted" style={{ fontSize: '0.88rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
             <p><strong>Port:</strong> 5000</p>
             <p><strong>Uptime:</strong> {healthData ? `${healthData.uptimeSeconds}s` : 'N/A'}</p>
           </div>
@@ -95,15 +95,15 @@ export default function StatusCheck() {
       </div>
 
       {/* MySQL Database Card */}
-      <div className="card mt-2">
+      <div className="glass-card">
         <div className="flex-between">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <div style={{ background: '#fef3c7', padding: '0.5rem', borderRadius: '8px', color: '#b45309' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+            <div style={{ background: 'var(--warning-subtle)', padding: '0.65rem', borderRadius: '12px', color: 'var(--warning)' }}>
               <Database size={22} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 600 }}>Database (MySQL)</h3>
-              <p className="text-muted" style={{ fontSize: '0.85rem' }}>Connection Pool via <code>mysql2/promise</code></p>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>Database (MySQL 8.0)</h3>
+              <p className="text-muted" style={{ fontSize: '0.82rem' }}>Connection Pool via <code>mysql2/promise</code></p>
             </div>
           </div>
           {loading ? (
@@ -116,69 +116,43 @@ export default function StatusCheck() {
           ) : (
             <span className="badge badge-warning">
               <XCircle size={14} />
-              Pending Credentials
+              Connection Pending
             </span>
           )}
         </div>
 
         {healthData?.database?.connected && (
-          <div className="mt-2" style={{ background: '#f8fafc', padding: '0.75rem 1rem', borderRadius: '6px', fontSize: '0.85rem' }}>
+          <div className="mt-3" style={{ background: 'var(--surface-elevated)', padding: '0.85rem 1.15rem', borderRadius: '8px', fontSize: '0.85rem' }}>
             <p>Host: <code>{healthData.database.host}:{healthData.database.port}</code></p>
-            <p>Database: <code>{healthData.database.database}</code></p>
-            {healthData.database.note && <p style={{ color: 'var(--success)' }}>Note: {healthData.database.note}</p>}
+            <p style={{ marginTop: '4px' }}>Database: <code>{healthData.database.database}</code></p>
           </div>
         )}
 
-        {healthData?.database?.connected === false && (
-          <div className="mt-2" style={{ background: '#fef2f2', padding: '0.75rem 1rem', borderRadius: '6px', fontSize: '0.85rem', color: '#991b1b' }}>
-            <p><strong>MySQL Error:</strong> {healthData.database.error}</p>
-            <p className="mt-1" style={{ fontSize: '0.8rem', color: '#b91c1c' }}>
-              Tip: Update your MySQL password in <code>server/.env</code> if your MySQL root account requires a password.
-            </p>
-          </div>
-        )}
-
-        <div className="mt-2" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <button className="btn btn-secondary" onClick={fetchHealth} disabled={loading}>
+        <div className="mt-3" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <button className="btn btn-secondary btn-sm" onClick={fetchHealth} disabled={loading}>
             <RefreshCw size={14} className={loading ? 'spinner' : ''} />
-            Refresh Status
+            <span>Refresh Diagnostics</span>
           </button>
         </div>
       </div>
 
-      {/* Developer Learning Walkthrough Box */}
-      <div className="card mt-3" style={{ borderLeft: '4px solid var(--primary)' }}>
-        <h3 style={{ fontSize: '1.15rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      {/* Architecture & Security Summary */}
+      <div className="glass-card" style={{ borderLeft: '4px solid var(--primary)' }}>
+        <h3 style={{ fontSize: '1.2rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <ShieldCheck size={20} color="var(--primary)" />
-          Phase 1 Architecture & Learning Summary
+          Enterprise Security & Connection Architecture
         </h3>
-        <ul style={{ paddingLeft: '1.25rem', marginTop: '0.75rem', lineHeight: 1.8, fontSize: '0.92rem', color: 'var(--text-main)' }}>
+        <ul style={{ paddingLeft: '1.25rem', marginTop: '0.85rem', lineHeight: 1.8, fontSize: '0.92rem', color: 'var(--text-secondary)' }}>
           <li>
-            <strong>How React speaks to Express:</strong> In development, Vite runs on port <code>5173</code> and Express on port <code>5000</code>.
-            Vite's <code>vite.config.js</code> proxies all <code>/api/*</code> requests directly to port 5000, eliminating browser CORS issues.
+            <strong>Decoupled Proxy:</strong> Vite proxies all <code>/api/*</code> requests directly to Express port 5000, eliminating CORS friction while keeping client and server cleanly segregated.
           </li>
           <li>
-            <strong>Connection Pooling:</strong> Instead of opening and closing an expensive new connection for every query, <code>mysql2/promise</code> maintains a pool of 10 reusable connections.
+            <strong>Connection Pooling:</strong> <code>mysql2/promise</code> maintains 10 persistent reusable connections, drastically reducing latency compared to single connection per query.
           </li>
           <li>
-            <strong>Folder Separation:</strong> <code>client/</code> and <code>server/</code> are completely decoupled with their own <code>package.json</code>, clean controllers, routes, and services.
+            <strong>Security & Cryptography:</strong> Salted bcrypt password hashing with 10 rounds and signed JWT authentication tokens protecting all endpoints.
           </li>
         </ul>
-      </div>
-
-      {/* Next Phase Indicator */}
-      <div className="card mt-2" style={{ background: 'var(--primary-light)', border: '1px solid #c7d2fe' }}>
-        <div className="flex-between">
-          <div>
-            <h4 style={{ color: 'var(--primary)', fontWeight: 600 }}>Ready for Phase 2: Database Schema & Authentication</h4>
-            <p style={{ fontSize: '0.85rem', color: '#4338ca', marginTop: '0.25rem' }}>
-              Next step will create user tables, implement secure bcrypt password hashing, and JWT register/login endpoints.
-            </p>
-          </div>
-          <span className="badge badge-primary" style={{ background: 'var(--primary)', color: '#ffffff' }}>
-            Up Next <ArrowRight size={14} style={{ marginLeft: '4px' }} />
-          </span>
-        </div>
       </div>
     </div>
   );

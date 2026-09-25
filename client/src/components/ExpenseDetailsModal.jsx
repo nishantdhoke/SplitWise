@@ -29,58 +29,36 @@ export default function ExpenseDetailsModal({ expenseId, isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.55)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 100,
-        padding: '1rem',
-      }}
-    >
-      <div
-        className="card"
-        style={{
-          width: '100%',
-          maxWidth: '520px',
-          maxHeight: '90vh',
-          overflowY: 'auto',
-          boxShadow: 'var(--shadow-lg)',
-        }}
-      >
+    <div className="modal-backdrop">
+      <div className="modal-content glass-card" style={{ maxWidth: '520px', maxHeight: '90vh', overflowY: 'auto' }}>
         <div className="flex-between" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '1rem', marginBottom: '1.25rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div
               style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '8px',
-                backgroundColor: 'var(--primary-light)',
-                color: 'var(--primary)',
+                width: '38px',
+                height: '38px',
+                borderRadius: '10px',
+                backgroundColor: 'var(--primary-subtle)',
+                color: 'var(--primary-hover)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                boxShadow: '0 0 12px rgba(124, 92, 252, 0.3)',
               }}
             >
               <Receipt size={20} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 600 }}>Expense Split Details</h3>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800 }}>Expense Split Details</h3>
               <p className="text-muted" style={{ fontSize: '0.8rem' }}>How this expense was distributed</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="btn btn-secondary"
-            style={{ padding: '0.3rem', borderRadius: '50%', border: 'none' }}
+            className="btn btn-secondary btn-icon"
+            style={{ width: '32px', height: '32px' }}
           >
-            <X size={18} />
+            <X size={16} />
           </button>
         </div>
 
@@ -96,28 +74,36 @@ export default function ExpenseDetailsModal({ expenseId, isOpen, onClose }) {
         ) : expense ? (
           <div>
             {/* Header Summary */}
-            <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px', marginBottom: '1.25rem' }}>
+            <div
+              style={{
+                background: 'var(--surface-elevated)',
+                border: '1px solid var(--border)',
+                padding: '1.15rem',
+                borderRadius: 'var(--radius-md)',
+                marginBottom: '1.25rem',
+              }}
+            >
               <div className="flex-between">
-                <span style={{ fontSize: '1.25rem', fontWeight: 700 }}>{expense.title}</span>
-                <span style={{ fontSize: '1.35rem', fontWeight: 700, color: 'var(--primary)' }}>
+                <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-main)' }}>{expense.title}</span>
+                <span className="finance-number" style={{ fontSize: '1.35rem', color: 'var(--secondary)' }}>
                   ₹{Number(expense.amount).toFixed(2)}
                 </span>
               </div>
-              <div className="text-muted mt-1" style={{ fontSize: '0.85rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <div className="text-muted mt-2" style={{ fontSize: '0.82rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <User size={13} /> Paid by <strong>{expense.payer_name}</strong>
+                  <User size={13} color="var(--primary)" /> Paid by <strong>{expense.payer_name}</strong>
                 </span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <Calendar size={13} /> {new Date(expense.expense_date).toLocaleDateString()}
                 </span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <PieChart size={13} /> {expense.split_method} Split
+                  <PieChart size={13} color="var(--secondary)" /> {expense.split_method} Split
                 </span>
               </div>
             </div>
 
             {/* Participants Split Breakdown */}
-            <h4 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '0.75rem' }}>
+            <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--text-secondary)' }}>
               Participant Shares ({expense.participants?.length || 0})
             </h4>
 
@@ -127,14 +113,14 @@ export default function ExpenseDetailsModal({ expenseId, isOpen, onClose }) {
                   key={p.participant_record_id}
                   className="flex-between"
                   style={{
-                    padding: '0.75rem 1rem',
-                    backgroundColor: '#ffffff',
+                    padding: '0.8rem 1rem',
+                    backgroundColor: 'var(--surface-elevated)',
                     border: '1px solid var(--border)',
-                    borderRadius: '6px',
+                    borderRadius: 'var(--radius-sm)',
                   }}
                 >
                   <div>
-                    <span style={{ fontWeight: 600, fontSize: '0.9rem' }}>{p.name}</span>
+                    <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-main)' }}>{p.name}</span>
                     {p.user_id === expense.paid_by && (
                       <span className="badge badge-warning" style={{ fontSize: '0.65rem', marginLeft: '6px' }}>
                         Payer
@@ -143,7 +129,7 @@ export default function ExpenseDetailsModal({ expenseId, isOpen, onClose }) {
                     <p className="text-muted" style={{ fontSize: '0.75rem' }}>{p.email}</p>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <span style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-main)' }}>
+                    <span className="finance-number" style={{ fontSize: '1.05rem', color: 'var(--text-main)' }}>
                       ₹{Number(p.share_amount).toFixed(2)}
                     </span>
                     {p.share_percentage && (

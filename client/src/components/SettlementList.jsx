@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Check, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Check, CheckCircle2, Clock } from 'lucide-react';
 
 export default function SettlementList({
   settlements = [],
@@ -12,21 +12,36 @@ export default function SettlementList({
         className="card"
         style={{
           textAlign: 'center',
-          padding: '2.5rem 1.5rem',
-          backgroundColor: '#f8fafc',
+          padding: '3rem 1.5rem',
+          background: 'var(--surface)',
         }}
       >
-        <CheckCircle2 size={32} color="var(--success)" style={{ marginBottom: '0.5rem' }} />
-        <h4 style={{ fontSize: '1.1rem', fontWeight: 600 }}>Everyone is Settled Up!</h4>
-        <p className="text-muted mt-1" style={{ fontSize: '0.85rem' }}>
-          There are no pending debts or repayments needed in this group right now.
+        <div
+          style={{
+            width: '48px',
+            height: '48px',
+            borderRadius: '50%',
+            background: 'var(--success-subtle)',
+            color: 'var(--success)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 1rem',
+            boxShadow: '0 0 15px rgba(53, 224, 161, 0.3)',
+          }}
+        >
+          <CheckCircle2 size={28} />
+        </div>
+        <h4 style={{ fontSize: '1.2rem', fontWeight: 700 }}>Everyone is Settled Up!</h4>
+        <p className="text-muted mt-1" style={{ fontSize: '0.9rem', maxWidth: '420px', margin: '0.5rem auto 0' }}>
+          Zero debts remaining. FairShare has minimized and balanced all debts across group members.
         </p>
       </div>
     );
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
       {settlements.map((s, idx) => {
         const isUserPayer = s.payerId === currentUserId;
         const isUserReceiver = s.receiverId === currentUserId;
@@ -41,99 +56,139 @@ export default function SettlementList({
         return (
           <div
             key={`${s.payerId}-${s.receiverId}-${idx}`}
-            className="flex-between"
+            className="card"
             style={{
-              padding: '1rem 1.25rem',
-              backgroundColor: '#ffffff',
-              border: isUserInvolved ? '1px solid #c7d2fe' : '1px solid var(--border)',
-              borderRadius: '8px',
+              padding: '1.15rem 1.4rem',
+              backgroundColor: isUserInvolved ? 'var(--surface-elevated)' : 'var(--surface)',
+              border: isUserReceiver
+                ? '1px solid rgba(53, 224, 161, 0.4)'
+                : isUserPayer
+                ? '1px solid rgba(255, 100, 124, 0.4)'
+                : '1px solid var(--border)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
               flexWrap: 'wrap',
-              gap: '0.75rem',
+              gap: '1rem',
             }}
           >
-            {/* Payer and Receiver Info */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            {/* Payer Avatar -> Animated Arrow -> Receiver Avatar */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
+              {/* Payer (Owes Money -> Coral) */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
                 <div
                   style={{
-                    width: '32px',
-                    height: '32px',
+                    width: '38px',
+                    height: '38px',
                     borderRadius: '50%',
-                    backgroundColor: 'var(--danger-light)',
+                    backgroundColor: 'var(--danger-dark)',
+                    border: '1.5px solid var(--danger)',
                     color: 'var(--danger)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontWeight: 700,
-                    fontSize: '0.85rem',
+                    fontSize: '0.9rem',
+                    boxShadow: '0 0 10px rgba(255, 100, 124, 0.25)',
                   }}
                 >
                   {s.payerName.charAt(0).toUpperCase()}
                 </div>
-                <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>
-                  {isUserPayer ? 'You' : s.payerName}
-                </span>
+                <div>
+                  <span style={{ fontWeight: 700, fontSize: '0.95rem', color: isUserPayer ? 'var(--danger)' : 'var(--text-main)', display: 'block' }}>
+                    {isUserPayer ? 'You' : s.payerName}
+                  </span>
+                  <span className="text-muted" style={{ fontSize: '0.75rem' }}>Payer (Owes)</span>
+                </div>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-muted)' }}>
-                <span style={{ fontSize: '0.85rem' }}>pays</span>
-                <ArrowRight size={16} color="var(--primary)" />
+              {/* Animated Glowing Arrow */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.35rem',
+                  padding: '0.35rem 0.65rem',
+                  borderRadius: 'var(--radius-full)',
+                  background: 'var(--primary-subtle)',
+                  border: '1px solid rgba(124, 92, 252, 0.25)',
+                }}
+              >
+                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--primary-hover)' }}>pays</span>
+                <ArrowRight size={15} color="var(--primary-hover)" />
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              {/* Receiver (Receives Money -> Mint) */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
                 <div
                   style={{
-                    width: '32px',
-                    height: '32px',
+                    width: '38px',
+                    height: '38px',
                     borderRadius: '50%',
-                    backgroundColor: 'var(--success-light)',
+                    backgroundColor: 'var(--success-dark)',
+                    border: '1.5px solid var(--success)',
                     color: 'var(--success)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     fontWeight: 700,
-                    fontSize: '0.85rem',
+                    fontSize: '0.9rem',
+                    boxShadow: '0 0 10px rgba(53, 224, 161, 0.25)',
                   }}
                 >
                   {s.receiverName.charAt(0).toUpperCase()}
                 </div>
-                <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>
-                  {isUserReceiver ? 'You' : s.receiverName}
-                </span>
+                <div>
+                  <span style={{ fontWeight: 700, fontSize: '0.95rem', color: isUserReceiver ? 'var(--success)' : 'var(--text-main)', display: 'block' }}>
+                    {isUserReceiver ? 'You' : s.receiverName}
+                  </span>
+                  <span className="text-muted" style={{ fontSize: '0.75rem' }}>Receiver</span>
+                </div>
               </div>
             </div>
 
             {/* Amount and Action */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <span style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-main)' }}>
-                {formattedAmount}
-              </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+              <div style={{ textAlign: 'right' }}>
+                <div className="finance-number" style={{ fontSize: '1.35rem', color: 'var(--text-main)' }}>
+                  {formattedAmount}
+                </div>
+                <span className="text-muted" style={{ fontSize: '0.75rem' }}>Direct settlement</span>
+              </div>
 
+              {/* Authorization Gate: ONLY the Receiver can mark as paid */}
               {isUserReceiver && onMarkPaid ? (
                 <button
-                  className="btn btn-secondary"
+                  className="btn btn-success btn-sm"
                   onClick={() => onMarkPaid(s)}
-                  style={{ padding: '0.35rem 0.75rem', fontSize: '0.85rem' }}
-                  title="Confirm and mark this payment as settled"
+                  title="Confirm receipt and mark payment as settled"
+                  style={{ height: '38px', padding: '0 1rem' }}
                 >
-                  <Check size={14} color="var(--success)" />
+                  <Check size={16} />
                   <span>Mark as Paid</span>
                 </button>
               ) : isUserPayer ? (
-                <span
+                <div
                   className="badge badge-warning"
-                  style={{ fontSize: '0.78rem', textTransform: 'none', fontWeight: 500 }}
-                  title={`Only ${s.receiverName} (receiver) is authorized to mark this settlement as paid`}
+                  style={{
+                    padding: '0.4rem 0.75rem',
+                    fontSize: '0.8rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                  }}
+                  title={`Only ${s.receiverName} is authorized to confirm and settle this payment`}
                 >
-                  Waiting for confirmation
-                </span>
+                  <Clock size={13} />
+                  <span>Awaiting {s.receiverName}'s confirmation</span>
+                </div>
               ) : (
-                <span
-                  style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}
-                  title="Only the receiver is authorized to mark this settlement as paid"
+                <div
+                  className="badge badge-primary"
+                  style={{ padding: '0.35rem 0.65rem', fontSize: '0.78rem' }}
                 >
-                  Pending
-                </span>
+                  <span>Pending</span>
+                </div>
               )}
             </div>
           </div>

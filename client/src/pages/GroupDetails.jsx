@@ -1,44 +1,44 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
   getGroupDetails,
-  addMember as apiAddMember,
-  removeMember as apiRemoveMember,
-  deleteGroup as apiDeleteGroup,
   getGroupExpenses,
-  deleteExpense as apiDeleteExpense,
   getGroupBalances,
   getGroupSettlements,
-  recordSettlement as apiRecordSettlement,
   getGroupActivity,
+  deleteExpense as apiDeleteExpense,
+  deleteGroup as apiDeleteGroup,
+  removeMember as apiRemoveMember,
+  recordSettlement as apiRecordSettlement,
 } from '../services/api';
-import MemberList from '../components/MemberList';
-import AddMemberModal from '../components/AddMemberModal';
-import ExpenseCard from '../components/ExpenseCard';
-import AddExpenseModal from '../components/AddExpenseModal';
-import ExpenseDetailsModal from '../components/ExpenseDetailsModal';
-import BalanceCard from '../components/BalanceCard';
-import SettlementList from '../components/SettlementList';
-import SettleUpModal from '../components/SettleUpModal';
 import {
   ArrowLeft,
-  UserPlus,
+  Plus,
   Users,
   Receipt,
   Scale,
+  History,
+  UserPlus,
   Trash2,
-  AlertCircle,
   Calendar,
   Shield,
-  Plus,
   ArrowUpRight,
   ArrowDownLeft,
   CheckCircle2,
   Sparkles,
-  History,
+  AlertCircle,
+  Clock,
   Check,
 } from 'lucide-react';
+import ExpenseCard from '../components/ExpenseCard';
+import BalanceCard from '../components/BalanceCard';
+import SettlementList from '../components/SettlementList';
+import MemberList from '../components/MemberList';
+import AddMemberModal from '../components/AddMemberModal';
+import AddExpenseModal from '../components/AddExpenseModal';
+import ExpenseDetailsModal from '../components/ExpenseDetailsModal';
+import SettleUpModal from '../components/SettleUpModal';
 
 export default function GroupDetails() {
   const { groupId } = useParams();
@@ -99,7 +99,7 @@ export default function GroupDetails() {
       setBalanceData(balData);
       setSettlementsHistory(settData.settlements || []);
     } catch (err) {
-      console.error('Failed to load balances & settlements:', err.message);
+      console.error('Failed to load balances:', err.message);
     } finally {
       setBalancesLoading(false);
     }
@@ -111,7 +111,7 @@ export default function GroupDetails() {
       const data = await getGroupActivity(groupId);
       setActivities(data.activities || []);
     } catch (err) {
-      console.error('Failed to load activities:', err.message);
+      console.error('Failed to load activity:', err.message);
     } finally {
       setActivitiesLoading(false);
     }
@@ -121,28 +121,26 @@ export default function GroupDetails() {
     fetchGroupInfo();
     fetchExpenses();
     fetchBalancesAndSettlements();
-    fetchActivities();
   }, [groupId]);
 
+  useEffect(() => {
+    if (activeTab === 'activity') {
+      fetchActivities();
+    }
+  }, [activeTab, groupId]);
+
   const handleAddMember = async (email) => {
-    const data = await apiAddMember(groupId, email);
-    setGroup((prev) => ({
-      ...prev,
-      members: data.members,
-    }));
+    await fetchGroupInfo();
     await fetchBalancesAndSettlements();
   };
 
   const handleRemoveMember = async (userId) => {
     try {
-      const data = await apiRemoveMember(groupId, userId);
-      if (userId === user.id) {
+      await apiRemoveMember(groupId, userId);
+      if (userId === user?.id) {
         navigate('/groups');
       } else {
-        setGroup((prev) => ({
-          ...prev,
-          members: data.members,
-        }));
+        await fetchGroupInfo();
         await fetchBalancesAndSettlements();
       }
     } catch (err) {
@@ -185,7 +183,7 @@ export default function GroupDetails() {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '6rem 0' }}>
         <div className="spinner" style={{ width: '2.5rem', height: '2.5rem' }}></div>
       </div>
     );
@@ -216,66 +214,80 @@ export default function GroupDetails() {
   const currentUserSummary = balanceData?.currentUserSummary;
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       {/* Back button */}
-      <Link to="/groups" className="text-muted" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', textDecoration: 'none', marginBottom: '1.25rem', fontSize: '0.9rem' }}>
+      <Link
+        to="/groups"
+        className="text-muted"
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '0.4rem',
+          textDecoration: 'none',
+          fontSize: '0.9rem',
+          transition: 'color var(--transition-fast)',
+        }}
+      >
         <ArrowLeft size={16} /> Back to Groups
       </Link>
 
-      {/* Group Header Card */}
-      <div className="card" style={{ marginBottom: '1.5rem' }}>
-        <div className="flex-between" style={{ flexWrap: 'wrap', gap: '1rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+      {/* Group Header Card (Glassmorphism) */}
+      <div className="glass-card" style={{ padding: '2rem 2.25rem' }}>
+        <div className="flex-between" style={{ flexWrap: 'wrap', gap: '1.25rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
             <div
               style={{
-                width: '54px',
-                height: '54px',
-                borderRadius: '12px',
-                backgroundColor: 'var(--primary)',
-                color: '#ffffff',
+                width: '60px',
+                height: '60px',
+                borderRadius: '16px',
+                background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)',
+                color: '#FFFFFF',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontWeight: 700,
-                fontSize: '1.5rem',
+                fontWeight: 800,
+                fontSize: '1.75rem',
+                boxShadow: '0 0 20px rgba(124, 92, 252, 0.4)',
               }}
             >
               {group.name.charAt(0).toUpperCase()}
             </div>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                <h1 style={{ fontSize: '1.6rem', fontWeight: 700 }}>{group.name}</h1>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <h1 style={{ fontSize: '1.85rem', fontWeight: 800 }}>{group.name}</h1>
                 {isCreator && (
-                  <span className="badge badge-warning" style={{ fontSize: '0.7rem' }}>
-                    You're Creator
+                  <span className="badge badge-warning" style={{ fontSize: '0.72rem' }}>
+                    Creator
                   </span>
                 )}
-              </div>
-              <div className="text-muted" style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '0.85rem', marginTop: '0.25rem' }}>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                  <Shield size={14} /> Created by {group.creator_name}
+                <span className="badge badge-primary" style={{ fontSize: '0.72rem' }}>
+                  {group.members?.length || 0} Members
                 </span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+              </div>
+              <div className="text-muted" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', fontSize: '0.85rem', marginTop: '0.35rem', flexWrap: 'wrap' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <Shield size={14} color="var(--primary)" /> Created by <strong>{group.creator_name}</strong>
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                   <Calendar size={14} /> {formattedDate}
                 </span>
               </div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
             <button className="btn btn-primary" onClick={() => setIsExpenseModalOpen(true)}>
               <Plus size={16} />
-              Add Expense
+              <span>Add Expense</span>
             </button>
             <button className="btn btn-secondary" onClick={() => setIsMemberModalOpen(true)}>
               <UserPlus size={16} />
-              Add Member
+              <span>Invite Friend</span>
             </button>
             {isCreator && (
               <button
-                className="btn btn-secondary"
+                className="btn btn-danger btn-icon"
                 onClick={handleDeleteGroup}
-                style={{ color: 'var(--danger)', borderColor: '#fecaca' }}
                 title="Delete this group"
               >
                 <Trash2 size={16} />
@@ -284,39 +296,48 @@ export default function GroupDetails() {
           </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1.5rem', borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
+        {/* Tab Switcher */}
+        <div
+          style={{
+            display: 'flex',
+            gap: '0.5rem',
+            marginTop: '1.75rem',
+            borderTop: '1px solid var(--border)',
+            paddingTop: '1.25rem',
+            overflowX: 'auto',
+          }}
+        >
           <button
             onClick={() => setActiveTab('expenses')}
-            className={`btn ${activeTab === 'expenses' ? 'btn-primary' : 'btn-secondary'}`}
-            style={{ padding: '0.45rem 1rem', fontSize: '0.88rem' }}
+            className={`btn btn-sm ${activeTab === 'expenses' ? 'btn-primary' : 'btn-secondary'}`}
+            style={{ fontWeight: 700 }}
           >
             <Receipt size={15} />
-            Expenses ({expenses.length})
+            <span>Expenses ({expenses.length})</span>
           </button>
           <button
             onClick={() => setActiveTab('balances')}
-            className={`btn ${activeTab === 'balances' ? 'btn-primary' : 'btn-secondary'}`}
-            style={{ padding: '0.45rem 1rem', fontSize: '0.88rem' }}
+            className={`btn btn-sm ${activeTab === 'balances' ? 'btn-primary' : 'btn-secondary'}`}
+            style={{ fontWeight: 700 }}
           >
             <Scale size={15} />
-            Balances & Settlements
+            <span>Balances & Settlements</span>
           </button>
           <button
             onClick={() => setActiveTab('members')}
-            className={`btn ${activeTab === 'members' ? 'btn-primary' : 'btn-secondary'}`}
-            style={{ padding: '0.45rem 1rem', fontSize: '0.88rem' }}
+            className={`btn btn-sm ${activeTab === 'members' ? 'btn-primary' : 'btn-secondary'}`}
+            style={{ fontWeight: 700 }}
           >
             <Users size={15} />
-            Members ({group.members?.length || 0})
+            <span>Members ({group.members?.length || 0})</span>
           </button>
           <button
             onClick={() => setActiveTab('activity')}
-            className={`btn ${activeTab === 'activity' ? 'btn-primary' : 'btn-secondary'}`}
-            style={{ padding: '0.45rem 1rem', fontSize: '0.88rem' }}
+            className={`btn btn-sm ${activeTab === 'activity' ? 'btn-primary' : 'btn-secondary'}`}
+            style={{ fontWeight: 700 }}
           >
             <History size={15} />
-            Activity
+            <span>Activity Feed</span>
           </button>
         </div>
       </div>
@@ -324,50 +345,51 @@ export default function GroupDetails() {
       {/* Tab Content: EXPENSES */}
       {activeTab === 'expenses' && (
         <div>
-          <div className="flex-between" style={{ marginBottom: '1rem' }}>
+          <div className="flex-between" style={{ marginBottom: '1.15rem' }}>
             <div>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 600 }}>Group Expenses</h3>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Group Expenses</h3>
               <p className="text-muted" style={{ fontSize: '0.85rem' }}>
                 All shared bills and expenses recorded in this group
               </p>
             </div>
-            <button className="btn btn-primary" onClick={() => setIsExpenseModalOpen(true)} style={{ fontSize: '0.85rem' }}>
+            <button className="btn btn-primary btn-sm" onClick={() => setIsExpenseModalOpen(true)}>
               <Plus size={14} />
-              Record Expense
+              <span>Add Expense</span>
             </button>
           </div>
 
           {expensesLoading ? (
-            <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem 0' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}>
               <div className="spinner" style={{ width: '2rem', height: '2rem' }}></div>
             </div>
           ) : expenses.length === 0 ? (
-            <div className="card" style={{ textAlign: 'center', padding: '3.5rem 1.5rem' }}>
+            <div className="card" style={{ textAlign: 'center', padding: '4rem 1.5rem' }}>
               <div
                 style={{
                   width: '56px',
                   height: '56px',
                   borderRadius: '50%',
-                  backgroundColor: 'var(--primary-light)',
-                  color: 'var(--primary)',
-                  display: 'inline-flex',
+                  background: 'var(--primary-subtle)',
+                  color: 'var(--primary-hover)',
+                  display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginBottom: '1rem',
+                  margin: '0 auto 1rem',
+                  boxShadow: '0 0 15px rgba(124, 92, 252, 0.3)',
                 }}
               >
                 <Receipt size={28} />
               </div>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 600 }}>No Expenses Yet</h3>
-              <p className="text-muted mt-1" style={{ fontSize: '0.9rem', maxWidth: '420px', margin: '0.5rem auto' }}>
-                Nobody has recorded an expense in this group yet. Add the first expense to start splitting!
+              <h4 style={{ fontSize: '1.2rem', fontWeight: 700 }}>No expenses recorded yet</h4>
+              <p className="text-muted mt-1" style={{ fontSize: '0.88rem', maxWidth: '420px', margin: '0.5rem auto 1.5rem' }}>
+                Start tracking by recording your first group bill (dinner, cabs, stay, groceries).
               </p>
-              <button className="btn btn-primary mt-3" onClick={() => setIsExpenseModalOpen(true)}>
-                <Plus size={15} /> Add First Expense
+              <button className="btn btn-primary" onClick={() => setIsExpenseModalOpen(true)}>
+                <Plus size={16} /> Add First Expense
               </button>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
               {expenses.map((expense) => (
                 <ExpenseCard
                   key={expense.id}
@@ -387,44 +409,44 @@ export default function GroupDetails() {
       {activeTab === 'balances' && (
         <div>
           {balancesLoading ? (
-            <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem 0' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}>
               <div className="spinner" style={{ width: '2rem', height: '2rem' }}></div>
             </div>
           ) : (
             <div>
-              {/* User Standing Hero Banner */}
+              {/* Personal Standing in Group Banner */}
               {currentUserSummary && (
                 <div
                   className="card"
                   style={{
-                    marginBottom: '1.5rem',
+                    marginBottom: '1.75rem',
                     background:
                       currentUserSummary.netBalance > 0
-                        ? '#ecfdf5'
+                        ? 'linear-gradient(180deg, #10131F 0%, #111A24 100%)'
                         : currentUserSummary.netBalance < 0
-                        ? '#fef2f2'
-                        : '#f8fafc',
-                    borderColor:
+                        ? 'linear-gradient(180deg, #10131F 0%, #1E121B 100%)'
+                        : 'var(--surface)',
+                    border:
                       currentUserSummary.netBalance > 0
-                        ? '#a7f3d0'
+                        ? '1px solid rgba(53, 224, 161, 0.3)'
                         : currentUserSummary.netBalance < 0
-                        ? '#fecaca'
-                        : 'var(--border)',
+                        ? '1px solid rgba(255, 100, 124, 0.3)'
+                        : '1px solid var(--border)',
                   }}
                 >
                   <div className="flex-between" style={{ flexWrap: 'wrap', gap: '1rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
                       <div
                         style={{
-                          width: '46px',
-                          height: '46px',
+                          width: '50px',
+                          height: '50px',
                           borderRadius: '50%',
                           backgroundColor:
                             currentUserSummary.netBalance > 0
-                              ? '#d1fae5'
+                              ? 'var(--success-dark)'
                               : currentUserSummary.netBalance < 0
-                              ? '#fee2e2'
-                              : '#e2e8f0',
+                              ? 'var(--danger-dark)'
+                              : 'var(--surface-elevated)',
                           color:
                             currentUserSummary.netBalance > 0
                               ? 'var(--success)'
@@ -434,22 +456,28 @@ export default function GroupDetails() {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
+                          boxShadow:
+                            currentUserSummary.netBalance > 0
+                              ? '0 0 15px rgba(53, 224, 161, 0.3)'
+                              : currentUserSummary.netBalance < 0
+                              ? '0 0 15px rgba(255, 100, 124, 0.3)'
+                              : 'none',
                         }}
                       >
                         {currentUserSummary.netBalance > 0 ? (
-                          <ArrowUpRight size={24} />
+                          <ArrowUpRight size={26} />
                         ) : currentUserSummary.netBalance < 0 ? (
-                          <ArrowDownLeft size={24} />
+                          <ArrowDownLeft size={26} />
                         ) : (
-                          <CheckCircle2 size={24} />
+                          <CheckCircle2 size={26} />
                         )}
                       </div>
 
                       <div>
-                        <span className="text-muted" style={{ fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase' }}>
+                        <span className="text-muted" style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                           Your Standing in this Group
                         </span>
-                        <div style={{ fontSize: '1.5rem', fontWeight: 700, marginTop: '2px' }}>
+                        <div className="finance-number" style={{ fontSize: '1.65rem', marginTop: '3px' }}>
                           {currentUserSummary.netBalance > 0 ? (
                             <span style={{ color: 'var(--success)' }}>
                               You are owed ₹{currentUserSummary.netBalance.toFixed(2)}
@@ -459,30 +487,30 @@ export default function GroupDetails() {
                               You owe ₹{Math.abs(currentUserSummary.netBalance).toFixed(2)}
                             </span>
                           ) : (
-                            <span>You are all settled up</span>
+                            <span>All settled up</span>
                           )}
                         </div>
                       </div>
                     </div>
 
                     <div style={{ textAlign: 'right', fontSize: '0.85rem' }} className="text-muted">
-                      <div>Total Paid by You: <strong>₹{currentUserSummary.totalPaid.toFixed(2)}</strong></div>
-                      <div>Your Total Share: <strong>₹{currentUserSummary.totalOwed.toFixed(2)}</strong></div>
+                      <div>Total Paid by You: <strong style={{ color: 'var(--text-main)' }}>₹{currentUserSummary.totalPaid.toFixed(2)}</strong></div>
+                      <div>Your Total Share: <strong style={{ color: 'var(--text-main)' }}>₹{currentUserSummary.totalOwed.toFixed(2)}</strong></div>
                     </div>
                   </div>
                 </div>
               )}
 
-              {/* Suggested Repayments (Who Owes Whom) */}
-              <div style={{ marginBottom: '2rem' }}>
-                <div className="flex-between" style={{ marginBottom: '0.75rem' }}>
+              {/* Suggested Settlements Section */}
+              <div style={{ marginBottom: '2.5rem' }}>
+                <div className="flex-between" style={{ marginBottom: '1rem' }}>
                   <div>
-                    <h3 style={{ fontSize: '1.2rem', fontWeight: 600 }}>Suggested Settlements (Who Owes Whom)</h3>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Suggested Settlements (Who Owes Whom)</h3>
                     <p className="text-muted" style={{ fontSize: '0.85rem' }}>
-                      Minimized repayment transactions calculated by FairShare
+                      Minimized debt transfers calculated by FairShare algorithm
                     </p>
                   </div>
-                  <span className="badge badge-primary" style={{ fontSize: '0.7rem' }}>
+                  <span className="badge badge-primary">
                     <Sparkles size={11} /> Minimized Debts
                   </span>
                 </div>
@@ -494,9 +522,9 @@ export default function GroupDetails() {
                 />
               </div>
 
-              {/* Group Members Net Balances Grid */}
-              <div style={{ marginBottom: '2rem' }}>
-                <h3 style={{ fontSize: '1.2rem', fontWeight: 600, marginBottom: '0.75rem' }}>
+              {/* Individual Member Balances Grid */}
+              <div style={{ marginBottom: '2.5rem' }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1rem' }}>
                   Individual Member Balances
                 </h3>
                 <div className="grid-2">
@@ -513,39 +541,52 @@ export default function GroupDetails() {
               {/* Payment & Settlement History Log */}
               {settlementsHistory.length > 0 && (
                 <div className="card">
-                  <div className="flex-between" style={{ marginBottom: '1rem' }}>
+                  <div className="flex-between" style={{ marginBottom: '1.25rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <History size={18} color="var(--primary)" />
-                      <h3 style={{ fontSize: '1.15rem', fontWeight: 600 }}>Payment & Settlement History</h3>
+                      <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>Payment & Settlement History</h3>
                     </div>
                     <span className="badge badge-success">
                       {settlementsHistory.length} recorded
                     </span>
                   </div>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
                     {settlementsHistory.map((sh) => (
                       <div
                         key={sh.id}
                         className="flex-between"
                         style={{
-                          padding: '0.75rem 1rem',
-                          background: '#f8fafc',
-                          borderRadius: '6px',
+                          padding: '0.85rem 1.15rem',
+                          background: 'var(--surface-elevated)',
+                          borderRadius: 'var(--radius-sm)',
                           border: '1px solid var(--border)',
                         }}
                       >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <Check size={16} color="var(--success)" />
-                          <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                          <div
+                            style={{
+                              width: '28px',
+                              height: '28px',
+                              borderRadius: '50%',
+                              background: 'var(--success-subtle)',
+                              color: 'var(--success)',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            <Check size={16} />
+                          </div>
+                          <span style={{ fontSize: '0.92rem', color: 'var(--text-main)' }}>
                             <strong>{sh.payer_name}</strong> paid <strong>{sh.receiver_name}</strong>
                           </span>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                          <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--success)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+                          <span className="finance-number" style={{ fontSize: '1.1rem', color: 'var(--success)' }}>
                             ₹{Number(sh.amount).toFixed(2)}
                           </span>
-                          <span className="text-muted" style={{ fontSize: '0.75rem' }}>
+                          <span className="text-muted" style={{ fontSize: '0.78rem' }}>
                             {new Date(sh.settled_at).toLocaleDateString()}
                           </span>
                         </div>
@@ -562,16 +603,16 @@ export default function GroupDetails() {
       {/* Tab Content: MEMBERS */}
       {activeTab === 'members' && (
         <div className="card">
-          <div className="flex-between" style={{ marginBottom: '1.25rem' }}>
+          <div className="flex-between" style={{ marginBottom: '1.5rem' }}>
             <div>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 600 }}>Group Members</h3>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Group Members</h3>
               <p className="text-muted" style={{ fontSize: '0.85rem' }}>
                 People sharing expenses in this group
               </p>
             </div>
-            <button className="btn btn-secondary" onClick={() => setIsMemberModalOpen(true)} style={{ fontSize: '0.85rem' }}>
+            <button className="btn btn-primary btn-sm" onClick={() => setIsMemberModalOpen(true)}>
               <UserPlus size={14} />
-              Invite Friend
+              <span>Invite Friend</span>
             </button>
           </div>
 
@@ -588,16 +629,16 @@ export default function GroupDetails() {
       {/* Tab Content: ACTIVITY */}
       {activeTab === 'activity' && (
         <div className="card">
-          <div className="flex-between" style={{ marginBottom: '1.25rem' }}>
+          <div className="flex-between" style={{ marginBottom: '1.5rem' }}>
             <div>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 600 }}>Group Activity Feed</h3>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Group Activity Feed</h3>
               <p className="text-muted" style={{ fontSize: '0.85rem' }}>
-                Timeline of bills, repayments, and new members
+                Chronological timeline of bills, repayments, and new members
               </p>
             </div>
-            <button className="btn btn-secondary" onClick={fetchActivities} disabled={activitiesLoading} style={{ fontSize: '0.85rem' }}>
+            <button className="btn btn-secondary btn-sm" onClick={fetchActivities} disabled={activitiesLoading}>
               <History size={14} className={activitiesLoading ? 'spinner' : ''} />
-              Refresh
+              <span>Refresh</span>
             </button>
           </div>
 
@@ -606,80 +647,64 @@ export default function GroupDetails() {
               <div className="spinner" style={{ width: '2rem', height: '2rem' }}></div>
             </div>
           ) : activities.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '2rem 1rem', color: 'var(--text-muted)' }}>
-              No activity recorded in this group yet.
+            <div style={{ textAlign: 'center', padding: '3rem 1rem' }}>
+              <History size={32} color="var(--primary)" style={{ marginBottom: '0.5rem', opacity: 0.7 }} />
+              <p className="text-muted">No activity recorded in this group yet.</p>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
               {activities.map((act) => (
                 <div
                   key={act.id}
-                  className="flex-between"
                   style={{
-                    padding: '0.85rem 1rem',
-                    background: '#f8fafc',
-                    borderRadius: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1rem',
+                    padding: '0.85rem 1.15rem',
+                    background: 'var(--surface-elevated)',
                     border: '1px solid var(--border)',
+                    borderRadius: 'var(--radius-sm)',
                   }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <div
-                      style={{
-                        width: '34px',
-                        height: '34px',
-                        borderRadius: '50%',
-                        backgroundColor:
-                          act.type === 'EXPENSE'
-                            ? 'var(--primary-light)'
-                            : act.type === 'SETTLEMENT'
-                            ? 'var(--success-light)'
-                            : '#f1f5f9',
-                        color:
-                          act.type === 'EXPENSE'
-                            ? 'var(--primary)'
-                            : act.type === 'SETTLEMENT'
-                            ? 'var(--success)'
-                            : 'var(--text-muted)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0,
-                      }}
-                    >
-                      {act.type === 'EXPENSE' ? (
-                        <Receipt size={17} />
-                      ) : act.type === 'SETTLEMENT' ? (
-                        <CheckCircle2 size={17} />
-                      ) : (
-                        <UserPlus size={17} />
-                      )}
-                    </div>
-
-                    <div>
-                      <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>{act.text}</span>
-                      <p className="text-muted" style={{ fontSize: '0.75rem', marginTop: '2px' }}>
-                        {new Date(act.timestamp).toLocaleDateString(undefined, {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
-                      </p>
-                    </div>
+                  <div
+                    style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '50%',
+                      background:
+                        act.action_type === 'EXPENSE_ADDED'
+                          ? 'var(--primary-subtle)'
+                          : act.action_type === 'SETTLEMENT_RECORDED'
+                          ? 'var(--success-subtle)'
+                          : 'var(--secondary-subtle)',
+                      color:
+                        act.action_type === 'EXPENSE_ADDED'
+                          ? 'var(--primary-hover)'
+                          : act.action_type === 'SETTLEMENT_RECORDED'
+                          ? 'var(--success)'
+                          : 'var(--secondary)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {act.action_type === 'EXPENSE_ADDED' ? (
+                      <Receipt size={18} />
+                    ) : act.action_type === 'SETTLEMENT_RECORDED' ? (
+                      <Check size={18} />
+                    ) : (
+                      <Users size={18} />
+                    )}
                   </div>
 
-                  {act.amount && (
-                    <span
-                      style={{
-                        fontWeight: 700,
-                        fontSize: '0.95rem',
-                        color: act.type === 'SETTLEMENT' ? 'var(--success)' : 'var(--text-main)',
-                      }}
-                    >
-                      ₹{act.amount.toFixed(2)}
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontSize: '0.92rem', color: 'var(--text-main)', margin: 0 }}>
+                      {act.description}
+                    </p>
+                    <span className="text-muted" style={{ fontSize: '0.78rem' }}>
+                      {new Date(act.created_at).toLocaleString()}
                     </span>
-                  )}
+                  </div>
                 </div>
               ))}
             </div>

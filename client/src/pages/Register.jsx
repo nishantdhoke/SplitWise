@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { UserPlus, AlertCircle } from 'lucide-react';
+import SignatureEye from '../components/SignatureEye';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -36,7 +37,7 @@ export default function Register() {
     try {
       setIsSubmitting(true);
       await register(name.trim(), email.trim(), password);
-      navigate('/profile', { replace: true });
+      navigate('/dashboard', { replace: true });
     } catch (err) {
       setError(err.message || 'Registration failed. Please try again.');
     } finally {
@@ -45,21 +46,14 @@ export default function Register() {
   };
 
   return (
-    <div style={{ maxWidth: '460px', margin: '2.5rem auto' }}>
-      <div className="card">
-        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-          <div style={{
-            display: 'inline-flex',
-            padding: '0.75rem',
-            borderRadius: '50%',
-            backgroundColor: 'var(--primary-light)',
-            color: 'var(--primary)',
-            marginBottom: '0.75rem'
-          }}>
-            <UserPlus size={26} />
+    <div style={{ maxWidth: '460px', margin: '3rem auto' }}>
+      <div className="glass-card" style={{ padding: '2.5rem 2rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.25rem' }}>
+            <SignatureEye size={72} glowIntensity="high" />
           </div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 700 }}>Create Your Account</h2>
-          <p className="text-muted" style={{ fontSize: '0.9rem', marginTop: '0.25rem' }}>
+          <h2 style={{ fontSize: '1.75rem', fontWeight: 800 }}>Create Your Account</h2>
+          <p className="text-muted" style={{ fontSize: '0.9rem', marginTop: '0.35rem' }}>
             Join FairShare to split bills fairly with friends
           </p>
         </div>
@@ -71,7 +65,7 @@ export default function Register() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
           <div className="form-group">
             <label className="form-label" htmlFor="name">Full Name</label>
             <input
@@ -86,7 +80,7 @@ export default function Register() {
             />
           </div>
 
-          <div className="form-group mt-2">
+          <div className="form-group">
             <label className="form-label" htmlFor="email">Email Address</label>
             <input
               id="email"
@@ -99,7 +93,7 @@ export default function Register() {
             />
           </div>
 
-          <div className="form-group mt-2">
+          <div className="form-group">
             <label className="form-label" htmlFor="password">Password (min 6 characters)</label>
             <input
               id="password"
@@ -112,7 +106,7 @@ export default function Register() {
             />
           </div>
 
-          <div className="form-group mt-2">
+          <div className="form-group">
             <label className="form-label" htmlFor="confirmPassword">Confirm Password</label>
             <input
               id="confirmPassword"
@@ -128,23 +122,26 @@ export default function Register() {
           <button
             type="submit"
             className="btn btn-primary"
-            style={{ width: '100%', marginTop: '1.5rem' }}
+            style={{ width: '100%', height: '48px', marginTop: '0.75rem', fontSize: '15px' }}
             disabled={isSubmitting}
           >
             {isSubmitting ? (
               <>
                 <span className="spinner" style={{ width: '1rem', height: '1rem', borderWidth: '2px' }}></span>
-                Creating Account...
+                <span>Creating Account...</span>
               </>
             ) : (
-              'Create Account'
+              <>
+                <UserPlus size={16} />
+                <span>Create Free Account</span>
+              </>
             )}
           </button>
         </form>
 
         <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.9rem' }} className="text-muted">
           Already have an account?{' '}
-          <Link to="/login" style={{ color: 'var(--primary)', fontWeight: 600, textDecoration: 'none' }}>
+          <Link to="/login" style={{ color: 'var(--primary-hover)', fontWeight: 700, textDecoration: 'none' }}>
             Sign in
           </Link>
         </div>

@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle2, ArrowRight, AlertCircle } from 'lucide-react';
+import { X, CheckCircle2, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
 
 export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, currentUserId }) {
   const [amount, setAmount] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     if (settlement) {
       setAmount(settlement.amount || '');
       setError('');
+      setIsSuccess(false);
     }
   }, [settlement, isOpen]);
 
@@ -37,177 +39,229 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
         receiver_id: settlement.receiverId,
         amount: numericAmount,
       });
-      onClose();
+
+      // Show smooth success state
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+        onClose();
+      }, 1200);
     } catch (err) {
       setError(err.message || 'Failed to record settlement.');
-    } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.55)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 100,
-        padding: '1rem',
-      }}
-    >
-      <div
-        className="card"
-        style={{
-          width: '100%',
-          maxWidth: '460px',
-          boxShadow: 'var(--shadow-lg)',
-        }}
-      >
+    <div className="modal-backdrop">
+      <div className="modal-content glass-card" style={{ maxWidth: '480px' }}>
+        {/* Header */}
         <div className="flex-between" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '1rem', marginBottom: '1.25rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div
               style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '8px',
-                backgroundColor: 'var(--success-light)',
+                width: '38px',
+                height: '38px',
+                borderRadius: '10px',
+                backgroundColor: 'var(--success-subtle)',
                 color: 'var(--success)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                boxShadow: '0 0 12px rgba(53, 224, 161, 0.3)',
               }}
             >
               <CheckCircle2 size={20} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 600 }}>Record Payment</h3>
-              <p className="text-muted" style={{ fontSize: '0.8rem' }}>Mark debt as settled</p>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>Record Settlement</h3>
+              <p className="text-muted" style={{ fontSize: '0.8rem' }}>Confirm offline payment (UPI / Cash)</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="btn btn-secondary"
-            style={{ padding: '0.3rem', borderRadius: '50%', border: 'none' }}
+            className="btn btn-secondary btn-icon"
+            style={{ width: '32px', height: '32px' }}
+            disabled={isSubmitting || isSuccess}
           >
-            <X size={18} />
+            <X size={16} />
           </button>
         </div>
 
-        {error && (
-          <div className="alert alert-danger" style={{ marginBottom: '1.25rem' }}>
-            <AlertCircle size={16} style={{ flexShrink: 0 }} />
-            <span>{error}</span>
-          </div>
-        )}
-
-        {/* Transaction Flow Diagram */}
-        <div
-          style={{
-            background: '#f8fafc',
-            border: '1px solid var(--border)',
-            borderRadius: '8px',
-            padding: '1rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '1rem',
-            marginBottom: '1.25rem',
-          }}
-        >
-          <div style={{ textAlign: 'center' }}>
+        {isSuccess ? (
+          <div style={{ textAlign: 'center', padding: '2.5rem 1rem', animation: 'fadeIn 300ms ease' }}>
             <div
               style={{
-                width: '38px',
-                height: '38px',
+                width: '64px',
+                height: '64px',
                 borderRadius: '50%',
-                backgroundColor: 'var(--danger-light)',
-                color: 'var(--danger)',
+                background: 'var(--success)',
+                color: '#080A12',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontWeight: 700,
-                margin: '0 auto 4px',
+                margin: '0 auto 1.25rem',
+                boxShadow: '0 0 30px rgba(53, 224, 161, 0.6)',
               }}
             >
-              {settlement.payerName?.charAt(0).toUpperCase()}
+              <CheckCircle2 size={36} />
             </div>
-            <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{settlement.payerName}</span>
-            <div className="text-muted" style={{ fontSize: '0.75rem' }}>Payer</div>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>paid</span>
-            <ArrowRight size={20} color="var(--primary)" />
-          </div>
-
-          <div style={{ textAlign: 'center' }}>
-            <div
-              style={{
-                width: '38px',
-                height: '38px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--success-light)',
-                color: 'var(--success)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 700,
-                margin: '0 auto 4px',
-              }}
-            >
-              {settlement.receiverName?.charAt(0).toUpperCase()}
-            </div>
-            <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>{settlement.receiverName}</span>
-            <div className="text-muted" style={{ fontSize: '0.75rem' }}>Receiver</div>
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label className="form-label" htmlFor="settlement-amount">Settlement Amount (₹)</label>
-            <input
-              id="settlement-amount"
-              type="number"
-              step="0.01"
-              min="1"
-              className="form-input"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              required
-              autoFocus
-            />
-            <p className="text-muted" style={{ fontSize: '0.8rem', marginTop: '0.35rem' }}>
-              Records that an offline payment (cash, UPI, Google Pay, bank) was completed.
+            <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--success)' }}>Payment Confirmed!</h3>
+            <p className="text-muted mt-1" style={{ fontSize: '0.9rem' }}>
+              Balances have been recalculated and updated in real-time.
             </p>
           </div>
+        ) : (
+          <>
+            {error && (
+              <div className="alert alert-danger" style={{ marginBottom: '1.25rem' }}>
+                <AlertCircle size={16} style={{ flexShrink: 0 }} />
+                <span>{error}</span>
+              </div>
+            )}
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
-            <button type="button" className="btn btn-secondary" onClick={onClose} disabled={isSubmitting}>
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              style={{ backgroundColor: 'var(--success)', borderColor: 'var(--success)' }}
-              disabled={isSubmitting}
+            {/* Futuristic Transaction Flow Visual */}
+            <div
+              style={{
+                background: 'var(--surface-elevated)',
+                border: '1px solid var(--border)',
+                borderRadius: 'var(--radius-md)',
+                padding: '1.25rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '1.5rem',
+                marginBottom: '1.5rem',
+              }}
             >
-              {isSubmitting ? (
-                <>
-                  <span className="spinner" style={{ width: '0.9rem', height: '0.9rem', borderWidth: '2px' }}></span>
-                  Recording...
-                </>
-              ) : (
-                'Mark as Settled'
-              )}
-            </button>
-          </div>
-        </form>
+              {/* Payer Avatar */}
+              <div style={{ textAlign: 'center' }}>
+                <div
+                  style={{
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '50%',
+                    backgroundColor: 'var(--danger-dark)',
+                    border: '1.5px solid var(--danger)',
+                    color: 'var(--danger)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontWeight: 800,
+                    margin: '0 auto 6px',
+                    boxShadow: '0 0 10px rgba(255, 100, 124, 0.3)',
+                  }}
+                >
+                  {settlement.payerName?.charAt(0).toUpperCase()}
+                </div>
+                <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)', display: 'block' }}>
+                  {settlement.payerName}
+                </span>
+                <span className="text-muted" style={{ fontSize: '0.72rem' }}>Payer</span>
+              </div>
+
+              {/* Glowing Arrow */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '0.2rem',
+                }}
+              >
+                <div
+                  style={{
+                    padding: '0.4rem',
+                    borderRadius: '50%',
+                    background: 'var(--primary-subtle)',
+                    color: 'var(--primary-hover)',
+                  }}
+                >
+                  <ArrowRight size={20} />
+                </div>
+                <span style={{ fontSize: '0.72rem', color: 'var(--primary-hover)', fontWeight: 600 }}>paid</span>
+              </div>
+
+              {/* Receiver Avatar */}
+              <div style={{ textAlign: 'center' }}>
+                <div
+                  style={{
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '50%',
+                    backgroundColor: 'var(--success-dark)',
+                    border: '1.5px solid var(--success)',
+                    color: 'var(--success)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontWeight: 800,
+                    margin: '0 auto 6px',
+                    boxShadow: '0 0 10px rgba(53, 224, 161, 0.3)',
+                  }}
+                >
+                  {settlement.receiverName?.charAt(0).toUpperCase()}
+                </div>
+                <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)', display: 'block' }}>
+                  {settlement.receiverName}
+                </span>
+                <span className="text-muted" style={{ fontSize: '0.72rem' }}>Receiver</span>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label className="form-label" htmlFor="settlement-amount">
+                  Settlement Amount (₹)
+                </label>
+                <input
+                  id="settlement-amount"
+                  type="number"
+                  step="0.01"
+                  min="0.01"
+                  className="form-input"
+                  style={{ fontSize: '1.25rem', fontWeight: 700, letterSpacing: '-0.5px' }}
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  required
+                  autoFocus
+                />
+                <p className="text-muted" style={{ fontSize: '0.8rem', marginTop: '0.35rem' }}>
+                  Receiver confirms having received this payment via UPI, cash, or bank transfer.
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.75rem' }}>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={onClose}
+                  disabled={isSubmitting}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-success"
+                  disabled={isSubmitting}
+                  style={{ minWidth: '150px' }}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <span className="spinner" style={{ width: '1rem', height: '1rem', borderWidth: '2px' }}></span>
+                      <span>Recording...</span>
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 size={16} />
+                      <span>Confirm & Settle</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </>
+        )}
       </div>
     </div>
   );
