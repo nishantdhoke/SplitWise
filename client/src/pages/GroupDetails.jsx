@@ -714,6 +714,7 @@ export default function GroupDetails() {
         isOpen={!!settlementToMark}
         onClose={() => setSettlementToMark(null)}
         onConfirm={handleConfirmSettlement}
+        currentUserId={user?.id}
       />
     </div>
   );

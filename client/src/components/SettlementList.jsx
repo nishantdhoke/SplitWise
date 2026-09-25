@@ -103,22 +103,37 @@ export default function SettlementList({
               </div>
             </div>
 
-            {/* Amount and Mark as Paid button */}
+            {/* Amount and Action */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <span style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-main)' }}>
                 {formattedAmount}
               </span>
 
-              {onMarkPaid && (
+              {isUserReceiver && onMarkPaid ? (
                 <button
                   className="btn btn-secondary"
                   onClick={() => onMarkPaid(s)}
                   style={{ padding: '0.35rem 0.75rem', fontSize: '0.85rem' }}
-                  title="Mark this payment as settled"
+                  title="Confirm and mark this payment as settled"
                 >
                   <Check size={14} color="var(--success)" />
                   <span>Mark as Paid</span>
                 </button>
+              ) : isUserPayer ? (
+                <span
+                  className="badge badge-warning"
+                  style={{ fontSize: '0.78rem', textTransform: 'none', fontWeight: 500 }}
+                  title={`Only ${s.receiverName} (receiver) is authorized to mark this settlement as paid`}
+                >
+                  Waiting for confirmation
+                </span>
+              ) : (
+                <span
+                  style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}
+                  title="Only the receiver is authorized to mark this settlement as paid"
+                >
+                  Pending
+                </span>
               )}
             </div>
           </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, CheckCircle2, ArrowRight, AlertCircle } from 'lucide-react';
 
-export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm }) {
+export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, currentUserId }) {
   const [amount, setAmount] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,6 +18,11 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm }
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (currentUserId && settlement.receiverId !== currentUserId) {
+      setError(`Forbidden: Only ${settlement.receiverName || 'the receiver'} is allowed to mark this settlement as paid.`);
+      return;
+    }
 
     const numericAmount = parseFloat(amount);
     if (isNaN(numericAmount) || numericAmount <= 0) {

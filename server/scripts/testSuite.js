@@ -202,13 +202,28 @@ async function runTestSuite() {
     recordTest('6. Multiple People Owing One Person', ronakIsOwedByMultiple, `Ronak gets back +₹${ronakBalance.netBalance}`);
 
     // -------------------------------------------------------------
-    // 7. Settling a Debt ("Mark as Paid")
+    // 7. Settling a Debt ("Mark as Paid") & Authorization
     // -------------------------------------------------------------
-    // Find a suggested settlement and settle it
+    // Find a suggested settlement
     const firstSuggested = balAfterMultiPayer.data.suggestedSettlements[0];
+
+    // Authorization Test: Payer attempts to mark settlement as paid -> MUST return 403 Forbidden
+    const payerUserKey = Object.keys(users).find((k) => users[k].id === firstSuggested.payerId);
+    const unauthorizedPayerRes = await request(`/groups/${groupId}/settlements`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${users[payerUserKey].token}` },
+      body: {
+        payer_id: firstSuggested.payerId,
+        receiver_id: firstSuggested.receiverId,
+        amount: firstSuggested.amount,
+      },
+    });
+
+    // Valid Test: Receiver marks settlement as paid -> MUST succeed with 201 Created
+    const receiverUserKey = Object.keys(users).find((k) => users[k].id === firstSuggested.receiverId);
     const settleRes = await request(`/groups/${groupId}/settlements`, {
       method: 'POST',
-      headers: { Authorization: `Bearer ${users.ronak.token}` },
+      headers: { Authorization: `Bearer ${users[receiverUserKey].token}` },
       body: {
         payer_id: firstSuggested.payerId,
         receiver_id: firstSuggested.receiverId,
@@ -223,9 +238,10 @@ async function runTestSuite() {
 
     const payerAfter = balAfterSettle.data.balances.find((b) => b.userId === firstSuggested.payerId);
     const settlePass =
+      unauthorizedPayerRes.status === 403 &&
       settleRes.status === 201 &&
       payerAfter.settledPaid === firstSuggested.amount;
-    recordTest('7. Settling a Debt', settlePass, `${firstSuggested.payerName} settled ₹${firstSuggested.amount} with ${firstSuggested.receiverName}`);
+    recordTest('7. Settling a Debt (Receiver Authorization)', settlePass, `Payer got 403 Forbidden; Receiver (${firstSuggested.receiverName}) settled ₹${firstSuggested.amount}`);
 
     // -------------------------------------------------------------
     // 8. Deleting an Expense

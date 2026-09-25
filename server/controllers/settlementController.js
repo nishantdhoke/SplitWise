@@ -52,7 +52,15 @@ const recordSettlement = async (req, res, next) => {
       });
     }
 
-    // 3. Save settlement record
+    // 3. Authorization check: Only the receiver is allowed to mark the settlement as paid
+    if (req.user.id !== receiverId) {
+      return res.status(403).json({
+        success: false,
+        message: 'Forbidden: Only the receiver is allowed to mark this settlement as paid',
+      });
+    }
+
+    // 4. Save settlement record
     const settlement = await createSettlementModel(groupId, payerId, receiverId, numericAmount);
 
     res.status(201).json({
