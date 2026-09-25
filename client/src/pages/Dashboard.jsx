@@ -18,6 +18,7 @@ import {
   Wallet,
 } from 'lucide-react';
 import SignatureEye from '../components/SignatureEye';
+import AnimatedCounter from '../components/AnimatedCounter';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -185,12 +186,12 @@ export default function Dashboard() {
               <ArrowUpRight size={20} />
             </div>
           </div>
-          <div
+          <AnimatedCounter
+            value={totalOwed}
+            prefix="₹"
             className="finance-number finance-number-lg"
             style={{ color: 'var(--success)', marginTop: '0.85rem' }}
-          >
-            ₹{totalOwed.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-          </div>
+          />
           <p className="text-muted mt-1" style={{ fontSize: '0.82rem' }}>
             Friends will pay this back to you
           </p>
@@ -230,12 +231,12 @@ export default function Dashboard() {
               <ArrowDownLeft size={20} />
             </div>
           </div>
-          <div
+          <AnimatedCounter
+            value={totalOwe}
+            prefix="₹"
             className="finance-number finance-number-lg"
             style={{ color: 'var(--danger)', marginTop: '0.85rem' }}
-          >
-            ₹{totalOwe.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-          </div>
+          />
           <p className="text-muted mt-1" style={{ fontSize: '0.82rem' }}>
             Amount you need to settle with friends
           </p>
@@ -275,7 +276,9 @@ export default function Dashboard() {
               <Scale size={20} />
             </div>
           </div>
-          <div
+          <AnimatedCounter
+            value={netTotal}
+            prefix={netTotal > 0 ? '+₹' : '₹'}
             className="finance-number finance-number-lg"
             style={{
               marginTop: '0.85rem',
@@ -286,10 +289,7 @@ export default function Dashboard() {
                   ? 'var(--danger)'
                   : 'var(--text-main)',
             }}
-          >
-            {netTotal > 0 ? '+' : ''}
-            ₹{netTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-          </div>
+          />
           <p className="text-muted mt-1" style={{ fontSize: '0.82rem' }}>
             {netTotal > 0
               ? 'Positive net equity across all groups'

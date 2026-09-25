@@ -39,6 +39,7 @@ import AddMemberModal from '../components/AddMemberModal';
 import AddExpenseModal from '../components/AddExpenseModal';
 import ExpenseDetailsModal from '../components/ExpenseDetailsModal';
 import SettleUpModal from '../components/SettleUpModal';
+import AnimatedCounter from '../components/AnimatedCounter';
 
 export default function GroupDetails() {
   const { groupId } = useParams();
@@ -479,12 +480,12 @@ export default function GroupDetails() {
                         </span>
                         <div className="finance-number" style={{ fontSize: '1.65rem', marginTop: '3px' }}>
                           {currentUserSummary.netBalance > 0 ? (
-                            <span style={{ color: 'var(--success)' }}>
-                              You are owed ₹{currentUserSummary.netBalance.toFixed(2)}
+                            <span style={{ color: 'var(--success)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                              You are owed <AnimatedCounter value={currentUserSummary.netBalance} color="mint" prefix="₹" />
                             </span>
                           ) : currentUserSummary.netBalance < 0 ? (
-                            <span style={{ color: 'var(--danger)' }}>
-                              You owe ₹{Math.abs(currentUserSummary.netBalance).toFixed(2)}
+                            <span style={{ color: 'var(--danger)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                              You owe <AnimatedCounter value={Math.abs(currentUserSummary.netBalance)} color="coral" prefix="₹" />
                             </span>
                           ) : (
                             <span>All settled up</span>
@@ -494,8 +495,8 @@ export default function GroupDetails() {
                     </div>
 
                     <div style={{ textAlign: 'right', fontSize: '0.85rem' }} className="text-muted">
-                      <div>Total Paid by You: <strong style={{ color: 'var(--text-main)' }}>₹{currentUserSummary.totalPaid.toFixed(2)}</strong></div>
-                      <div>Your Total Share: <strong style={{ color: 'var(--text-main)' }}>₹{currentUserSummary.totalOwed.toFixed(2)}</strong></div>
+                      <div>Total Paid by You: <strong style={{ color: 'var(--text-main)' }}><AnimatedCounter value={currentUserSummary.totalPaid} color="neutral" prefix="₹" /></strong></div>
+                      <div>Your Total Share: <strong style={{ color: 'var(--text-main)' }}><AnimatedCounter value={currentUserSummary.totalOwed} color="neutral" prefix="₹" /></strong></div>
                     </div>
                   </div>
                 </div>

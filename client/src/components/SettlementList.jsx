@@ -102,24 +102,33 @@ export default function SettlementList({
                 </div>
               </div>
 
-              {/* Animated Glowing Arrow */}
+              {/* Dynamic Money Flow Track: Glowing ₹ traveling from Payer to Receiver */}
               <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                  padding: '0.35rem 0.65rem',
-                  borderRadius: 'var(--radius-full)',
-                  background: 'var(--primary-subtle)',
-                  border: '1px solid rgba(124, 92, 252, 0.25)',
-                }}
+                className="money-flow-track"
+                title={`₹${s.amount} transfer from ${isUserPayer ? 'You' : s.payerName} to ${isUserReceiver ? 'You' : s.receiverName}`}
+                style={{ minWidth: '110px' }}
               >
-                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--primary-hover)' }}>pays</span>
-                <ArrowRight size={15} color="var(--primary-hover)" />
+                <div className="money-flow-line" />
+                <div className="money-flow-token" title="In-flight settlement flow">
+                  ₹
+                </div>
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: '-15px',
+                    fontSize: '0.68rem',
+                    fontWeight: 700,
+                    color: 'var(--text-muted)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                  }}
+                >
+                  pays
+                </span>
               </div>
 
               {/* Receiver (Receives Money -> Mint) */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', position: 'relative' }}>
                 <div
                   style={{
                     width: '38px',

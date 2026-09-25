@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, CheckCircle2, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
+import MoneyParticleBurst from './MoneyParticleBurst';
 
 export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, currentUserId }) {
   const [amount, setAmount] = useState('');
@@ -89,7 +90,8 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
         </div>
 
         {isSuccess ? (
-          <div style={{ textAlign: 'center', padding: '2.5rem 1rem', animation: 'fadeIn 300ms ease' }}>
+          <div style={{ textAlign: 'center', padding: '2.5rem 1rem', animation: 'fadeIn 300ms ease', position: 'relative' }}>
+            <MoneyParticleBurst active={isSuccess} count={18} color="mint" />
             <div
               style={{
                 width: '64px',
@@ -106,7 +108,18 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
             >
               <CheckCircle2 size={36} />
             </div>
-            <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--success)' }}>Payment Confirmed!</h3>
+            <div
+              className="finance-number"
+              style={{
+                fontSize: '1.85rem',
+                color: 'var(--success)',
+                marginBottom: '0.4rem',
+                textShadow: '0 0 20px rgba(53, 224, 161, 0.5)',
+              }}
+            >
+              ₹{parseFloat(amount || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+            </div>
+            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--success)' }}>Payment Confirmed & Settled!</h3>
             <p className="text-muted mt-1" style={{ fontSize: '0.9rem' }}>
               Balances have been recalculated and updated in real-time.
             </p>
@@ -130,7 +143,7 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '1.5rem',
+                gap: '1.25rem',
                 marginBottom: '1.5rem',
               }}
             >
@@ -157,29 +170,30 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
                 <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)', display: 'block' }}>
                   {settlement.payerName}
                 </span>
-                <span className="text-muted" style={{ fontSize: '0.72rem' }}>Payer</span>
+                <span className="text-muted" style={{ fontSize: '0.72rem' }}>Payer (Owes)</span>
               </div>
 
-              {/* Glowing Arrow */}
+              {/* Dynamic Money Flow Track */}
               <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '0.2rem',
-                }}
+                className="money-flow-track"
+                style={{ width: '130px' }}
+                title="Money transfer path"
               >
-                <div
+                <div className="money-flow-line" />
+                <div className="money-flow-token">₹</div>
+                <span
                   style={{
-                    padding: '0.4rem',
-                    borderRadius: '50%',
-                    background: 'var(--primary-subtle)',
-                    color: 'var(--primary-hover)',
+                    position: 'absolute',
+                    top: '-15px',
+                    fontSize: '0.68rem',
+                    fontWeight: 700,
+                    color: 'var(--text-muted)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
                   }}
                 >
-                  <ArrowRight size={20} />
-                </div>
-                <span style={{ fontSize: '0.72rem', color: 'var(--primary-hover)', fontWeight: 600 }}>paid</span>
+                  pays
+                </span>
               </div>
 
               {/* Receiver Avatar */}

@@ -999,3 +999,150 @@ p {
     font-size: 36px;
   }
 }
+
+/* ===================================================================
+   Stunning Money Animation System
+   =================================================================== */
+
+/* Animated Counter Glow */
+.animated-counter {
+  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), filter 250ms ease;
+  display: inline-flex;
+}
+
+.animated-counter.counter-active {
+  transform: scale(1.03);
+  filter: drop-shadow(0 0 12px currentColor);
+}
+
+/* Rupee Particle Burst */
+@keyframes moneyBurstFly {
+  0% {
+    transform: translate(-50%, -50%) scale(0.4);
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--target-x)), calc(-50% + var(--target-y))) scale(1.15);
+    opacity: 0;
+  }
+}
+
+/* Money Flow Track in Settlement Cards */
+.money-flow-track {
+  position: relative;
+  width: 140px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0.5rem;
+}
+
+.money-flow-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 100, 124, 0.4) 0%, rgba(124, 92, 252, 0.6) 50%, rgba(53, 224, 161, 0.5) 100%);
+  border-radius: 9999px;
+}
+
+.money-flow-token {
+  position: absolute;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #35E0A1 0%, #35D6FF 100%);
+  color: #080A12;
+  font-weight: 800;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 12px rgba(53, 224, 161, 0.7);
+  animation: moneyTravelFlow 2.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  z-index: 2;
+}
+
+@keyframes moneyTravelFlow {
+  0% {
+    left: 4px;
+    transform: translateY(-50%) scale(0.85);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    transform: translateY(calc(-50% - 3px)) scale(1.08);
+    box-shadow: 0 0 16px rgba(53, 224, 161, 0.9);
+  }
+  85% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+  100% {
+    left: calc(100% - 26px);
+    transform: translateY(-50%) scale(0.85);
+    opacity: 0;
+  }
+}
+
+/* Receiver Impact Wave */
+@keyframes receiverImpact {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(53, 224, 161, 0.7);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 16px rgba(53, 224, 161, 0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(53, 224, 161, 0);
+  }
+}
+
+.receiver-avatar-impact {
+  animation: receiverImpact 1.2s ease-out;
+}
+
+/* Settled Status Pop */
+@keyframes settleSuccessStamp {
+  0% {
+    transform: scale(0.75);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.settled-badge-pop {
+  animation: settleSuccessStamp 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Floating particle subtle drift */
+@keyframes floatSubtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.floating-subtle {
+  animation: floatSubtle 3s ease-in-out infinite;
+}
+

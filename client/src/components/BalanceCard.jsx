@@ -1,16 +1,13 @@
 import React from 'react';
 import { ArrowUpRight, ArrowDownLeft, CheckCircle2 } from 'lucide-react';
+import AnimatedCounter from './AnimatedCounter';
 
 export default function BalanceCard({ balance, isCurrentUser }) {
   const isPositive = balance.netBalance > 0;
   const isNegative = balance.netBalance < 0;
   const isSettled = balance.netBalance === 0;
 
-  const absAmount = Math.abs(balance.netBalance).toLocaleString('en-IN', {
-    style: 'currency',
-    currency: 'INR',
-    maximumFractionDigits: 2,
-  });
+  const absVal = Math.abs(balance.netBalance || 0);
 
   return (
     <div
@@ -81,7 +78,7 @@ export default function BalanceCard({ balance, isCurrentUser }) {
                 Gets back
               </span>
               <div className="finance-number" style={{ fontSize: '1.25rem', color: 'var(--success)' }}>
-                +{absAmount}
+                <AnimatedCounter value={absVal} color="mint" prefix="+₹" />
               </div>
             </div>
           )}
@@ -92,7 +89,7 @@ export default function BalanceCard({ balance, isCurrentUser }) {
                 Owes
               </span>
               <div className="finance-number" style={{ fontSize: '1.25rem', color: 'var(--danger)' }}>
-                -{absAmount}
+                <AnimatedCounter value={absVal} color="coral" prefix="-₹" />
               </div>
             </div>
           )}
