@@ -149,11 +149,7 @@ const getMe = async (req, res) => {
  */
 const searchRegisteredUsers = async (req, res, next) => {
   try {
-    const { q } = req.query;
-    if (!q || q.trim().length === 0) {
-      return res.status(200).json({ success: true, users: [] });
-    }
-
+    const { q = '' } = req.query;
     const users = await searchUsers(q, req.user.id);
     res.status(200).json({
       success: true,

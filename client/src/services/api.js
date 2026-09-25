@@ -59,6 +59,10 @@ export async function checkHealth() {
   return apiRequest('/health');
 }
 
+export async function searchRegisteredUsers(query = '') {
+  return apiRequest(`/auth/search?q=${encodeURIComponent(query)}`);
+}
+
 // -------------------------------------------------------------------
 // Groups & Members (Phase 3)
 // -------------------------------------------------------------------

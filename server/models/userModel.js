@@ -67,12 +67,25 @@ const findUserById = async (id) => {
  * @param {number} excludeUserId 
  * @returns {Promise<Array>}
  */
-const searchUsers = async (queryStr, excludeUserId) => {
-  const searchPattern = `%${queryStr.trim()}%`;
+const searchUsers = async (queryStr = '', excludeUserId) => {
+  const trimmed = (queryStr || '').trim();
+  if (!trimmed) {
+    const query = `
+      SELECT id, name, email
+      FROM users
+      WHERE id != ?
+      ORDER BY id DESC
+      LIMIT 10
+    `;
+    const [rows] = await pool.execute(query, [excludeUserId]);
+    return rows;
+  }
+  const searchPattern = `%${trimmed}%`;
   const query = `
     SELECT id, name, email
     FROM users
     WHERE (email LIKE ? OR name LIKE ?) AND id != ?
+    ORDER BY name ASC
     LIMIT 10
   `;
   const [rows] = await pool.execute(query, [searchPattern, searchPattern, excludeUserId]);

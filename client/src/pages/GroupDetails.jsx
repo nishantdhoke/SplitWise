@@ -7,6 +7,7 @@ import {
   getGroupBalances,
   getGroupSettlements,
   getGroupActivity,
+  addMember as apiAddMember,
   deleteExpense as apiDeleteExpense,
   deleteGroup as apiDeleteGroup,
   removeMember as apiRemoveMember,
@@ -131,8 +132,10 @@ export default function GroupDetails() {
   }, [activeTab, groupId]);
 
   const handleAddMember = async (email) => {
+    await apiAddMember(groupId, email);
     await fetchGroupInfo();
     await fetchBalancesAndSettlements();
+    await fetchActivities();
   };
 
   const handleRemoveMember = async (userId) => {
@@ -719,6 +722,7 @@ export default function GroupDetails() {
         onClose={() => setIsMemberModalOpen(false)}
         onAddMember={handleAddMember}
         groupName={group.name}
+        existingMembers={group.members || []}
       />
 
       <AddExpenseModal
