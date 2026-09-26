@@ -182,14 +182,22 @@ export default function SettlementList({
                   className="finance-number"
                   style={{
                     fontSize: '1.35rem',
-                    color: 'var(--star-white)',
+                    color: isUserReceiver ? 'var(--cosmic-positive)' : isUserPayer ? 'var(--cosmic-negative)' : 'var(--star-white)',
                     textShadow: '0 0 14px rgba(56, 217, 255, 0.4)',
                   }}
                 >
                   {formattedAmount}
                 </div>
-                <span className="text-muted" style={{ fontSize: '0.72rem', letterSpacing: '0.04em' }}>
-                  Settlement
+                <span
+                  style={{
+                    fontSize: '0.74rem',
+                    color: isUserPayer ? 'var(--cosmic-negative)' : isUserReceiver ? 'var(--cosmic-positive)' : 'var(--text-muted)',
+                    fontWeight: 600,
+                    display: 'block',
+                    marginTop: '2px',
+                  }}
+                >
+                  {isUserPayer ? `You owe ${s.receiverName}` : isUserReceiver ? `${s.payerName} owes you` : `${s.payerName} owes ${s.receiverName}`}
                 </span>
               </div>
 

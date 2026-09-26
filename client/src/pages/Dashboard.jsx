@@ -16,6 +16,7 @@ import {
   LayoutDashboard,
   Wallet,
   Scale,
+  CheckCircle2,
 } from 'lucide-react';
 import AnimatedCounter from '../components/AnimatedCounter';
 import GroupCard from '../components/GroupCard';
@@ -163,147 +164,159 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* FINANCIAL BALANCE PANELS */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
-        {/* Total You Are Owed (POSITIVE GREEN) */}
+      {/* FINANCIAL BALANCE PANELS - SIMPLIFIED TO BE EASY TO UNDERSTAND */}
+      <div
+        className="cosmic-panel"
+        style={{
+          background:
+            netTotal > 0
+              ? 'linear-gradient(180deg, rgba(8, 13, 29, 0.9) 0%, rgba(5, 46, 33, 0.35) 100%)'
+              : netTotal < 0
+              ? 'linear-gradient(180deg, rgba(8, 13, 29, 0.9) 0%, rgba(55, 12, 24, 0.35) 100%)'
+              : 'var(--space-panel)',
+          border:
+            netTotal > 0
+              ? '1px solid rgba(52, 211, 153, 0.35)'
+              : netTotal < 0
+              ? '1px solid rgba(251, 113, 133, 0.35)'
+              : '1px solid var(--border)',
+          padding: '2rem 2.25rem',
+        }}
+      >
         <div
-          className="cosmic-panel"
           style={{
-            background: 'linear-gradient(180deg, rgba(8, 13, 29, 0.85) 0%, rgba(5, 46, 33, 0.35) 100%)',
-            border: '1px solid rgba(52, 211, 153, 0.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '1.5rem',
           }}
         >
-          <div className="flex-between">
-            <span
-              style={{
-                fontSize: '0.8rem',
-                fontWeight: 800,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                color: 'var(--cosmic-positive)',
-              }}
-            >
-              You Are Owed
-            </span>
+          {/* Main Plain-English Status */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
             <div
               style={{
-                background: 'rgba(52, 211, 153, 0.15)',
-                color: 'var(--cosmic-positive)',
-                padding: '0.45rem',
+                width: '60px',
+                height: '60px',
                 borderRadius: '50%',
+                background:
+                  netTotal > 0
+                    ? 'radial-gradient(circle at 35% 35%, #6EE7B7 0%, #059669 70%, #03040B 100%)'
+                    : netTotal < 0
+                    ? 'radial-gradient(circle at 35% 35%, #FDA4AF 0%, #E11D48 70%, #03040B 100%)'
+                    : 'radial-gradient(circle at 35% 35%, #94A3B8 0%, #334155 70%, #03040B 100%)',
+                color: netTotal > 0 ? '#03040B' : '#F8FAFF',
                 display: 'flex',
-                boxShadow: '0 0 14px rgba(52, 211, 153, 0.35)',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow:
+                  netTotal > 0
+                    ? '0 0 20px rgba(52, 211, 153, 0.4)'
+                    : netTotal < 0
+                    ? '0 0 20px rgba(251, 113, 133, 0.4)'
+                    : 'none',
               }}
             >
-              <ArrowUpRight size={18} />
+              {netTotal > 0 ? (
+                <ArrowUpRight size={30} />
+              ) : netTotal < 0 ? (
+                <ArrowDownLeft size={30} />
+              ) : (
+                <CheckCircle2 size={30} />
+              )}
+            </div>
+
+            <div>
+              <span
+                style={{
+                  fontSize: '0.78rem',
+                  fontWeight: 800,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  color:
+                    netTotal > 0
+                      ? 'var(--cosmic-positive)'
+                      : netTotal < 0
+                      ? 'var(--cosmic-negative)'
+                      : 'var(--starlight-cyan)',
+                }}
+              >
+                Overall Standing
+              </span>
+              <div
+                className="finance-number"
+                style={{
+                  fontSize: '2rem',
+                  fontWeight: 800,
+                  color:
+                    netTotal > 0
+                      ? 'var(--cosmic-positive)'
+                      : netTotal < 0
+                      ? 'var(--cosmic-negative)'
+                      : 'var(--star-white)',
+                  marginTop: '0.2rem',
+                }}
+              >
+                {netTotal > 0 ? (
+                  <span>You are owed ₹{netTotal.toFixed(2)}</span>
+                ) : netTotal < 0 ? (
+                  <span>You owe ₹{Math.abs(netTotal).toFixed(2)}</span>
+                ) : (
+                  <span>All settled up</span>
+                )}
+              </div>
+              <p className="text-muted" style={{ fontSize: '0.88rem', marginTop: '0.25rem' }}>
+                {netTotal > 0
+                  ? `Taking all your groups into account, friends owe you a net ₹${netTotal.toFixed(2)}.`
+                  : netTotal < 0
+                  ? `Taking all your groups into account, you need to pay a net ₹${Math.abs(netTotal).toFixed(2)}.`
+                  : 'You have no outstanding debts or balances across any of your groups.'}
+              </p>
             </div>
           </div>
 
-          <div style={{ marginTop: '0.85rem' }}>
-            <AnimatedCounter
-              value={totalOwed}
-              prefix="₹"
-              color="mint"
-              className="finance-number finance-number-lg"
-            />
-          </div>
-          <p className="text-muted mt-1" style={{ fontSize: '0.8rem' }}>
-            Total amount friends owe you across all groups
-          </p>
-        </div>
-
-        {/* Total You Owe (NEGATIVE CORAL) */}
-        <div
-          className="cosmic-panel"
-          style={{
-            background: 'linear-gradient(180deg, rgba(8, 13, 29, 0.85) 0%, rgba(55, 12, 24, 0.35) 100%)',
-            border: '1px solid rgba(251, 113, 133, 0.3)',
-          }}
-        >
-          <div className="flex-between">
-            <span
-              style={{
-                fontSize: '0.8rem',
-                fontWeight: 800,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                color: 'var(--cosmic-negative)',
-              }}
-            >
-              You Owe
-            </span>
+          {/* Simple breakdown badges */}
+          <div
+            style={{
+              display: 'flex',
+              gap: '1rem',
+              flexWrap: 'wrap',
+            }}
+          >
             <div
               style={{
-                background: 'rgba(251, 113, 133, 0.15)',
-                color: 'var(--cosmic-negative)',
-                padding: '0.45rem',
-                borderRadius: '50%',
-                display: 'flex',
-                boxShadow: '0 0 14px rgba(251, 113, 133, 0.35)',
+                background: 'rgba(52, 211, 153, 0.1)',
+                border: '1px solid rgba(52, 211, 153, 0.25)',
+                borderRadius: '12px',
+                padding: '0.75rem 1.25rem',
+                minWidth: '150px',
               }}
             >
-              <ArrowDownLeft size={18} />
+              <span style={{ fontSize: '0.75rem', color: 'var(--cosmic-positive)', fontWeight: 700, textTransform: 'uppercase' }}>
+                Friends Owe You
+              </span>
+              <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--cosmic-positive)', marginTop: '0.2rem' }}>
+                ₹{totalOwed.toFixed(2)}
+              </div>
             </div>
-          </div>
 
-          <div style={{ marginTop: '0.85rem' }}>
-            <AnimatedCounter
-              value={totalOwe}
-              prefix="₹"
-              color="coral"
-              className="finance-number finance-number-lg"
-            />
-          </div>
-          <p className="text-muted mt-1" style={{ fontSize: '0.8rem' }}>
-            Total amount you owe to others across all groups
-          </p>
-        </div>
-
-        {/* Total Net Balance */}
-        <div
-          className="cosmic-panel"
-          style={{
-            background: 'linear-gradient(180deg, rgba(8, 13, 29, 0.85) 0%, rgba(20, 16, 50, 0.45) 100%)',
-            border: '1px solid rgba(56, 217, 255, 0.35)',
-          }}
-        >
-          <div className="flex-between">
-            <span
-              style={{
-                fontSize: '0.8rem',
-                fontWeight: 800,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                color: 'var(--starlight-cyan)',
-              }}
-            >
-              Total Net Balance
-            </span>
             <div
               style={{
-                background: 'rgba(56, 217, 255, 0.15)',
-                color: 'var(--starlight-cyan)',
-                padding: '0.45rem',
-                borderRadius: '50%',
-                display: 'flex',
-                boxShadow: '0 0 14px rgba(56, 217, 255, 0.35)',
+                background: 'rgba(251, 113, 133, 0.1)',
+                border: '1px solid rgba(251, 113, 133, 0.25)',
+                borderRadius: '12px',
+                padding: '0.75rem 1.25rem',
+                minWidth: '150px',
               }}
             >
-              <Wallet size={18} />
+              <span style={{ fontSize: '0.75rem', color: 'var(--cosmic-negative)', fontWeight: 700, textTransform: 'uppercase' }}>
+                You Owe Friends
+              </span>
+              <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--cosmic-negative)', marginTop: '0.2rem' }}>
+                ₹{totalOwe.toFixed(2)}
+              </div>
             </div>
           </div>
-
-          <div style={{ marginTop: '0.85rem' }}>
-            <AnimatedCounter
-              value={netTotal}
-              prefix="₹"
-              color={netTotal > 0 ? 'mint' : netTotal < 0 ? 'coral' : 'cyan'}
-              className="finance-number finance-number-lg"
-            />
-          </div>
-          <p className="text-muted mt-1" style={{ fontSize: '0.8rem' }}>
-            Your overall financial balance across all groups
-          </p>
         </div>
       </div>
 

@@ -484,27 +484,34 @@ export default function GroupDetails() {
 
                       <div>
                         <span className="text-muted" style={{ fontSize: '0.76rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                          Your Balance in this Group
+                          Your Standing in this Group
                         </span>
                         <div className="finance-number" style={{ fontSize: '1.75rem', marginTop: '3px' }}>
                           {currentUserSummary.netBalance > 0 ? (
                             <span style={{ color: 'var(--cosmic-positive)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-                              You are owed <AnimatedCounter value={currentUserSummary.netBalance} color="mint" prefix="₹" />
+                              You get back <AnimatedCounter value={currentUserSummary.netBalance} color="mint" prefix="₹" />
                             </span>
                           ) : currentUserSummary.netBalance < 0 ? (
                             <span style={{ color: 'var(--cosmic-negative)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
                               You owe <AnimatedCounter value={Math.abs(currentUserSummary.netBalance)} color="coral" prefix="₹" />
                             </span>
                           ) : (
-                            <span style={{ color: 'var(--starlight-cyan)' }}>All Settled Up</span>
+                            <span style={{ color: 'var(--starlight-cyan)' }}>All Settled Up (₹0)</span>
                           )}
                         </div>
+                        <p className="text-muted" style={{ fontSize: '0.82rem', marginTop: '0.25rem' }}>
+                          {currentUserSummary.netBalance > 0
+                            ? `You spent ₹${currentUserSummary.totalPaid.toFixed(2)} on group bills, and your personal share was ₹${currentUserSummary.totalOwed.toFixed(2)}.`
+                            : currentUserSummary.netBalance < 0
+                            ? `Your share of group expenses is ₹${currentUserSummary.totalOwed.toFixed(2)}, and you have contributed ₹${currentUserSummary.totalPaid.toFixed(2)} so far.`
+                            : 'All your expenses and shares are balanced.'}
+                        </p>
                       </div>
                     </div>
 
                     <div style={{ textAlign: 'right', fontSize: '0.85rem' }} className="text-muted">
-                      <div>Total Paid by You: <strong style={{ color: 'var(--star-white)' }}><AnimatedCounter value={currentUserSummary.totalPaid} color="neutral" prefix="₹" /></strong></div>
-                      <div>Your Share: <strong style={{ color: 'var(--star-white)' }}><AnimatedCounter value={currentUserSummary.totalOwed} color="neutral" prefix="₹" /></strong></div>
+                      <div>Total Paid by You: <strong style={{ color: 'var(--star-white)' }}>₹{currentUserSummary.totalPaid.toFixed(2)}</strong></div>
+                      <div>Your Share: <strong style={{ color: 'var(--star-white)' }}>₹{currentUserSummary.totalOwed.toFixed(2)}</strong></div>
                     </div>
                   </div>
                 </div>
@@ -514,13 +521,13 @@ export default function GroupDetails() {
               <div style={{ marginBottom: '2.5rem' }}>
                 <div className="flex-between" style={{ marginBottom: '1rem' }}>
                   <div>
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Suggested Settlements (Who Owes Whom)</h3>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>How to Settle (Who Pays Whom)</h3>
                     <p className="text-muted" style={{ fontSize: '0.85rem' }}>
-                      Optimized debt transfers to settle balances with the fewest payments
+                      Clear, direct payments to make everyone even with the fewest transfers
                     </p>
                   </div>
                   <span className="badge badge-primary">
-                    <Sparkles size={11} /> Minimized Settlements
+                    <Sparkles size={11} /> Simplified Payments
                   </span>
                 </div>
 
@@ -533,9 +540,12 @@ export default function GroupDetails() {
 
               {/* Individual Member Balances Grid */}
               <div style={{ marginBottom: '2.5rem' }}>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1rem' }}>
-                  Individual Member Balances
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.35rem' }}>
+                  Member Balances
                 </h3>
+                <p className="text-muted" style={{ fontSize: '0.85rem', marginBottom: '1rem' }}>
+                  Overall balance for each member in this group
+                </p>
                 <div className="grid-2">
                   {balanceData?.balances?.map((b) => (
                     <BalanceCard

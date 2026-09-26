@@ -102,9 +102,25 @@ export default function ExpenseDetailsModal({ expenseId, isOpen, onClose }) {
               </div>
             </div>
 
+            {/* Plain English Split Summary */}
+            <div
+              style={{
+                background: 'rgba(56, 217, 255, 0.08)',
+                border: '1px solid rgba(56, 217, 255, 0.2)',
+                padding: '0.75rem 1rem',
+                borderRadius: 'var(--radius-sm)',
+                marginBottom: '1.25rem',
+                fontSize: '0.85rem',
+                color: 'var(--text-main)',
+                lineHeight: 1.5,
+              }}
+            >
+              <strong>{expense.payer_name}</strong> paid <strong>₹{Number(expense.amount).toFixed(2)}</strong> for {expense.title}, split across {expense.participants?.length} {expense.participants?.length === 1 ? 'member' : 'members'}.
+            </div>
+
             {/* Participants Split Breakdown */}
             <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--text-secondary)' }}>
-              Participant Shares ({expense.participants?.length || 0})
+              Individual Member Shares ({expense.participants?.length || 0})
             </h4>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>

@@ -71,6 +71,59 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
   }, 0);
   const percentageDiff = parseFloat((100 - percentageSum).toFixed(2));
 
+  // Auto-fill remaining difference for custom splits (eliminates manual math)
+  const autoFillRemaining = () => {
+    if (numericAmount <= 0) return;
+    const remaining = Math.max(0, customDiff);
+    if (remaining <= 0) return;
+
+    // Find participants among selectedUserIds who have no amount entered or amount is 0
+    const emptyIds = selectedUserIds.filter((id) => !customAmounts[id] || parseFloat(customAmounts[id]) === 0);
+
+    const updated = { ...customAmounts };
+    if (emptyIds.length > 0) {
+      const share = parseFloat((remaining / emptyIds.length).toFixed(2));
+      emptyIds.forEach((id, idx) => {
+        if (idx === 0) {
+          const pennyDiff = parseFloat((remaining - share * emptyIds.length).toFixed(2));
+          updated[id] = (share + pennyDiff).toFixed(2);
+        } else {
+          updated[id] = share.toFixed(2);
+        }
+      });
+    } else {
+      const lastId = selectedUserIds[selectedUserIds.length - 1];
+      const cur = parseFloat(updated[lastId]) || 0;
+      updated[lastId] = (cur + remaining).toFixed(2);
+    }
+    setCustomAmounts(updated);
+    setError('');
+  };
+
+  const autoFillSingle = (targetId) => {
+    if (numericAmount <= 0) return;
+    const curVal = parseFloat(customAmounts[targetId]) || 0;
+    const available = Math.max(0, customDiff + curVal);
+    setCustomAmounts({
+      ...customAmounts,
+      [targetId]: available.toFixed(2),
+    });
+    setError('');
+  };
+
+  const distributeEvenPercentages = () => {
+    if (selectedUserIds.length === 0) return;
+    const count = selectedUserIds.length;
+    const basePct = parseFloat((100 / count).toFixed(1));
+    const remainder = parseFloat((100 - basePct * count).toFixed(1));
+    const updated = {};
+    selectedUserIds.forEach((id, idx) => {
+      updated[id] = idx === 0 ? (basePct + remainder).toFixed(1) : basePct.toFixed(1);
+    });
+    setCustomPercentages(updated);
+    setError('');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -355,8 +408,8 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
             {numericAmount > 0 && splitMethod === 'EQUAL' && selectedUserIds.length > 0 && (
               <div
                 style={{
-                  background: 'var(--primary-subtle)',
-                  border: '1px solid rgba(124, 92, 252, 0.25)',
+                  background: 'rgba(56, 217, 255, 0.08)',
+                  border: '1px solid rgba(56, 217, 255, 0.25)',
                   padding: '0.85rem 1.15rem',
                   borderRadius: 'var(--radius-md)',
                   display: 'flex',
@@ -364,12 +417,112 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
                   alignItems: 'center',
                 }}
               >
-                <span style={{ fontSize: '0.88rem', color: 'var(--primary-hover)', fontWeight: 600 }}>
-                  Each person owes:
-                </span>
-                <strong style={{ fontSize: '1.2rem', color: '#FFFFFF', fontWeight: 800 }}>
-                  ₹{(numericAmount / selectedUserIds.length).toFixed(2)}
+                <div>
+                  <span style={{ fontSize: '0.88rem', color: 'var(--starlight-cyan)', fontWeight: 700 }}>
+                    Equal Split
+                  </span>
+                  <p className="text-muted" style={{ fontSize: '0.78rem', margin: 0 }}>
+                    ₹{numericAmount.toFixed(2)} divided equally between {selectedUserIds.length} {selectedUserIds.length === 1 ? 'person' : 'people'}
+                  </p>
+                </div>
+                <strong style={{ fontSize: '1.25rem', color: '#FFFFFF', fontWeight: 800 }}>
+                  ₹{(numericAmount / selectedUserIds.length).toFixed(2)} <span style={{ fontSize: '0.8rem', fontWeight: 500, color: 'var(--text-muted)' }}>each</span>
                 </strong>
+              </div>
+            )}
+
+            {/* Custom Split Overview & Auto-Fill helper */}
+            {numericAmount > 0 && splitMethod === 'CUSTOM' && (
+              <div
+                style={{
+                  background: Math.abs(customDiff) < 0.01
+                    ? 'rgba(52, 211, 153, 0.1)'
+                    : customDiff > 0
+                    ? 'rgba(56, 217, 255, 0.1)'
+                    : 'rgba(251, 113, 133, 0.1)',
+                  border: Math.abs(customDiff) < 0.01
+                    ? '1px solid rgba(52, 211, 153, 0.3)'
+                    : customDiff > 0
+                    ? '1px solid rgba(56, 217, 255, 0.3)'
+                    : '1px solid rgba(251, 113, 133, 0.3)',
+                  padding: '0.75rem 1rem',
+                  borderRadius: 'var(--radius-md)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: '0.5rem',
+                }}
+              >
+                <div>
+                  {Math.abs(customDiff) < 0.01 ? (
+                    <span style={{ color: 'var(--cosmic-positive)', fontWeight: 700, fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <CheckCircle2 size={16} /> Exactly matches total (₹{numericAmount.toFixed(2)})
+                    </span>
+                  ) : customDiff > 0 ? (
+                    <span style={{ color: 'var(--starlight-cyan)', fontWeight: 600, fontSize: '0.88rem' }}>
+                      ₹{customDiff.toFixed(2)} left to assign
+                    </span>
+                  ) : (
+                    <span style={{ color: 'var(--cosmic-negative)', fontWeight: 600, fontSize: '0.88rem' }}>
+                      Exceeds total expense by ₹{Math.abs(customDiff).toFixed(2)}
+                    </span>
+                  )}
+                </div>
+
+                {customDiff > 0 && (
+                  <button
+                    type="button"
+                    onClick={autoFillRemaining}
+                    className="btn btn-secondary btn-sm"
+                    style={{ height: '30px', fontSize: '0.78rem', padding: '0 0.75rem', color: 'var(--starlight-cyan)' }}
+                  >
+                    <Sparkles size={12} />
+                    <span>Auto-fill remaining (₹{customDiff.toFixed(2)})</span>
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* Percentage Split Overview & Even Distribution helper */}
+            {numericAmount > 0 && splitMethod === 'PERCENTAGE' && (
+              <div
+                style={{
+                  background: Math.abs(percentageDiff) < 0.01
+                    ? 'rgba(52, 211, 153, 0.1)'
+                    : 'rgba(56, 217, 255, 0.1)',
+                  border: Math.abs(percentageDiff) < 0.01
+                    ? '1px solid rgba(52, 211, 153, 0.3)'
+                    : '1px solid rgba(56, 217, 255, 0.3)',
+                  padding: '0.75rem 1rem',
+                  borderRadius: 'var(--radius-md)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: '0.5rem',
+                }}
+              >
+                <div>
+                  {Math.abs(percentageDiff) < 0.01 ? (
+                    <span style={{ color: 'var(--cosmic-positive)', fontWeight: 700, fontSize: '0.88rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <CheckCircle2 size={16} /> Exactly 100% of ₹{numericAmount.toFixed(2)}
+                    </span>
+                  ) : (
+                    <span style={{ color: 'var(--starlight-cyan)', fontWeight: 600, fontSize: '0.88rem' }}>
+                      {percentageDiff > 0 ? `${percentageDiff}% left to allocate` : `Exceeds by ${Math.abs(percentageDiff)}%`}
+                    </span>
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={distributeEvenPercentages}
+                  className="btn btn-secondary btn-sm"
+                  style={{ height: '30px', fontSize: '0.78rem', padding: '0 0.75rem', color: 'var(--starlight-cyan)' }}
+                >
+                  <span>Distribute Evenly</span>
+                </button>
               </div>
             )}
 
@@ -379,25 +532,30 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
                 <label className="form-label" style={{ marginBottom: 0 }}>
                   Participants ({selectedUserIds.length} of {members.length})
                 </label>
-                <button
-                  type="button"
-                  onClick={selectAll}
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    color: 'var(--secondary)',
-                    fontSize: '0.78rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
-                >
-                  Select All
-                </button>
+                <div style={{ display: 'flex', gap: '0.65rem' }}>
+                  <button
+                    type="button"
+                    onClick={selectAll}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      color: 'var(--secondary)',
+                      fontSize: '0.78rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Select All
+                  </button>
+                </div>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '200px', overflowY: 'auto', paddingRight: '4px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '240px', overflowY: 'auto', paddingRight: '4px' }}>
                 {members.map((m) => {
                   const isSelected = selectedUserIds.includes(m.id);
+                  const participantAmount = parseFloat(customAmounts[m.id]) || 0;
+                  const isUnfilled = isSelected && (!customAmounts[m.id] || participantAmount === 0);
+
                   return (
                     <div
                       key={m.id}
@@ -435,9 +593,35 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
                         </span>
                       </div>
 
+                      {/* Equal Split: Display calculated share */}
+                      {isSelected && splitMethod === 'EQUAL' && numericAmount > 0 && selectedUserIds.length > 0 && (
+                        <span style={{ fontSize: '0.88rem', color: 'var(--starlight-cyan)', fontWeight: 700 }}>
+                          ₹{(numericAmount / selectedUserIds.length).toFixed(2)}
+                        </span>
+                      )}
+
                       {/* Custom inputs inside participant rows */}
                       {isSelected && splitMethod === 'CUSTOM' && (
-                        <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                          {isUnfilled && customDiff > 0 && (
+                            <button
+                              type="button"
+                              onClick={() => autoFillSingle(m.id)}
+                              style={{
+                                background: 'rgba(56, 217, 255, 0.15)',
+                                border: '1px solid rgba(56, 217, 255, 0.35)',
+                                color: 'var(--starlight-cyan)',
+                                borderRadius: '4px',
+                                padding: '0.2rem 0.5rem',
+                                fontSize: '0.72rem',
+                                cursor: 'pointer',
+                                fontWeight: 600,
+                              }}
+                              title="Assign remaining balance to this person"
+                            >
+                              + ₹{customDiff.toFixed(2)}
+                            </button>
+                          )}
                           <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>₹</span>
                           <input
                             type="number"
@@ -461,7 +645,7 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
                       )}
 
                       {isSelected && splitMethod === 'PERCENTAGE' && (
-                        <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <div onClick={(e) => e.stopPropagation()} style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
                           <input
                             type="number"
                             step="0.1"
@@ -469,7 +653,7 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
                             max="100"
                             placeholder="0"
                             style={{
-                              width: '70px',
+                              width: '65px',
                               padding: '0.3rem 0.5rem',
                               borderRadius: '6px',
                               border: '1px solid var(--border)',
@@ -482,6 +666,11 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
                             onChange={(e) => setCustomPercentages({ ...customPercentages, [m.id]: e.target.value })}
                           />
                           <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>%</span>
+                          {numericAmount > 0 && (
+                            <span style={{ color: 'var(--starlight-cyan)', fontSize: '0.8rem', fontWeight: 600, minWidth: '60px', textAlign: 'right' }}>
+                              = ₹{((numericAmount * (parseFloat(customPercentages[m.id]) || 0)) / 100).toFixed(2)}
+                            </span>
+                          )}
                         </div>
                       )}
                     </div>
@@ -489,19 +678,6 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
                 })}
               </div>
             </div>
-
-            {/* Validation differences for Custom & Percentage */}
-            {splitMethod === 'CUSTOM' && numericAmount > 0 && (
-              <div style={{ fontSize: '0.82rem', textAlign: 'right', color: Math.abs(customDiff) < 0.01 ? 'var(--success)' : 'var(--danger)' }}>
-                Total assigned: ₹{customSum.toFixed(2)} / ₹{numericAmount.toFixed(2)} ({Math.abs(customDiff) < 0.01 ? '✓ Matches' : `Remaining: ₹${customDiff}`})
-              </div>
-            )}
-
-            {splitMethod === 'PERCENTAGE' && (
-              <div style={{ fontSize: '0.82rem', textAlign: 'right', color: Math.abs(percentageDiff) < 0.01 ? 'var(--success)' : 'var(--danger)' }}>
-                Total: {percentageSum.toFixed(1)}% / 100% ({Math.abs(percentageDiff) < 0.01 ? '✓ Matches' : `Remaining: ${percentageDiff}%`})
-              </div>
-            )}
 
             {/* Modal Actions */}
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>

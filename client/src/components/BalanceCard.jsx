@@ -116,8 +116,8 @@ export default function BalanceCard({ balance, isCurrentUser }) {
           fontSize: '0.78rem',
         }}
       >
-        <span>Paid: <strong style={{ color: 'var(--star-white)' }}>₹{Number(balance.totalPaid).toFixed(2)}</strong></span>
-        <span>Share: <strong style={{ color: 'var(--star-white)' }}>₹{Number(balance.totalOwed).toFixed(2)}</strong></span>
+        <span>Contributed: <strong style={{ color: 'var(--star-white)' }}>₹{Number(balance.totalPaid).toFixed(2)}</strong></span>
+        <span>Their share: <strong style={{ color: 'var(--star-white)' }}>₹{Number(balance.totalOwed).toFixed(2)}</strong></span>
       </div>
     </div>
   );
