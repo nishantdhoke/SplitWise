@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Sparkles, LogIn, LogOut, UserPlus, Server, Users, LayoutDashboard, User } from 'lucide-react';
+import { Sparkles, LogIn, LogOut, UserPlus, Users, LayoutDashboard, User } from 'lucide-react';
 
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -194,24 +194,6 @@ export default function Navbar() {
                   }}
                 >
                   Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/status"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
-                    textDecoration: 'none',
-                    fontSize: '0.88rem',
-                    fontWeight: 600,
-                    color: 'var(--text-secondary)',
-                    padding: '0.45rem 0.75rem',
-                  }}
-                >
-                  <Server size={14} color="var(--starlight-cyan)" />
-                  <span>System Status</span>
                 </Link>
               </li>
               <li>

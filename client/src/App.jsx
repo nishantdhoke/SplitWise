@@ -4,7 +4,6 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import CosmicBackground from './components/CosmicBackground';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
-import StatusCheck from './pages/StatusCheck';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -39,7 +38,6 @@ export default function App() {
             <Routes>
               {/* Home & Public Routes */}
               <Route path="/" element={<HomeRoute />} />
-              <Route path="/status" element={<StatusCheck />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
 
@@ -91,8 +89,7 @@ export default function App() {
           </main>
           <footer className="footer">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem' }}>
-              <span className="cosmic-status-dot" />
-              <span>FAIRSHARE &bull; SMART EXPENSE SPLITTING IN THE COSMOS</span>
+              <span>FAIRSHARE &bull; SMART EXPENSE SPLITTING</span>
             </div>
           </footer>
         </div>

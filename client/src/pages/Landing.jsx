@@ -1,46 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { checkHealth } from '../services/api';
 import {
   Sparkles,
   ArrowRight,
   LogIn,
   UserPlus,
-  Orbit,
-  Users,
   Scale,
   Receipt,
-  Server,
-  Database,
-  Compass,
-  Check,
   Shield,
 } from 'lucide-react';
 
 export default function Landing() {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [healthData, setHealthData] = useState(null);
-  const [healthLoading, setHealthLoading] = useState(true);
   const [demoLoggingIn, setDemoLoggingIn] = useState(false);
   const [demoError, setDemoError] = useState('');
-
-  const fetchHealth = async () => {
-    setHealthLoading(true);
-    try {
-      const data = await checkHealth();
-      setHealthData(data);
-    } catch {
-      setHealthData(null);
-    } finally {
-      setHealthLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchHealth();
-  }, []);
 
   const handleDemoLogin = async (email) => {
     setDemoLoggingIn(true);
@@ -472,31 +447,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
-      {/* 4. STATUS BAR */}
-      <div
-        className="cosmic-panel"
-        style={{
-          padding: '1.25rem 2rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '1rem',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-          <div className="cosmic-status-dot" />
-          <span style={{ fontSize: '0.85rem', color: 'var(--star-white)', fontWeight: 600 }}>
-            System Status: {healthLoading ? 'Checking...' : healthData?.status === 'ok' ? 'All Services Operational' : 'Connecting to Server'}
-          </span>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-          <span>DATABASE: MySQL 8.0</span>
-          <span>AUTH: JWT & BCRYPT</span>
-        </div>
-      </div>
     </div>
   );
 }
