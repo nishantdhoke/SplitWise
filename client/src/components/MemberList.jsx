@@ -1,5 +1,5 @@
 import React from 'react';
-import { Crown, UserX, LogOut, Compass } from 'lucide-react';
+import { Shield, UserX, LogOut, User } from 'lucide-react';
 
 export default function MemberList({
   members = [],
@@ -54,7 +54,7 @@ export default function MemberList({
                   <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--star-white)' }}>{member.name}</span>
                   {isThisMemberCreator && (
                     <span className="badge badge-warning" style={{ fontSize: '0.65rem', padding: '0.15rem 0.45rem' }}>
-                      <Crown size={10} /> Captain
+                      <Shield size={10} /> Creator
                     </span>
                   )}
                   {isMe && (
@@ -78,23 +78,23 @@ export default function MemberList({
                 }}
                 onClick={() => {
                   const confirmMsg = isMe
-                    ? 'Are you sure you want to abandon orbit and leave this planetary world?'
-                    : `Disembark crew member ${member.name} from orbit?`;
+                    ? 'Are you sure you want to leave this group?'
+                    : `Remove ${member.name} from the group?`;
                   if (window.confirm(confirmMsg)) {
                     onRemoveMember(member.id);
                   }
                 }}
-                title={isMe ? 'Abandon Orbit' : 'Disembark Member'}
+                title={isMe ? 'Leave Group' : 'Remove Member'}
               >
                 {isMe ? (
                   <>
                     <LogOut size={13} />
-                    <span>Abandon Orbit</span>
+                    <span>Leave Group</span>
                   </>
                 ) : (
                   <>
                     <UserX size={13} />
-                    <span>Disembark</span>
+                    <span>Remove</span>
                   </>
                 )}
               </button>

@@ -114,7 +114,7 @@ export default function Landing() {
           </div>
         </div>
 
-        {/* Telemetry Pill */}
+        {/* Tag Pill */}
         <div
           style={{
             display: 'inline-flex',
@@ -133,7 +133,7 @@ export default function Landing() {
           }}
         >
           <Sparkles size={14} />
-          <span>Interstellar Expense Management</span>
+          <span>Smart Expense Splitting & Debt Minimization</span>
         </div>
 
         <h1
@@ -162,8 +162,8 @@ export default function Landing() {
             margin: '0 auto 2.25rem',
           }}
         >
-          FairShare transforms group finances into a cosmic planetary ecosystem. Group expenses are absorbed into
-          financial orbits and automatically minimized into the fewest interstellar debt transfers.
+          FairShare makes splitting expenses with friends effortless and beautiful. Add group expenses, split bills
+          equally, by custom amounts or percentages, and let our algorithm calculate the fewest settlement payments.
         </p>
 
         {/* CTA Group */}
@@ -179,7 +179,7 @@ export default function Landing() {
             }}
           >
             <UserPlus size={18} />
-            <span>INITIALIZE ORBIT</span>
+            <span>GET STARTED FREE</span>
             <ArrowRight size={18} />
           </Link>
 
@@ -193,11 +193,11 @@ export default function Landing() {
             }}
           >
             <LogIn size={18} />
-            <span>ENTER CONSOLE</span>
+            <span>SIGN IN</span>
           </Link>
         </div>
 
-        {/* Instant Explorer Quick-Login Bar */}
+        {/* Instant Demo Quick-Login Bar */}
         <div
           style={{
             display: 'inline-flex',
@@ -214,7 +214,7 @@ export default function Landing() {
             justifyContent: 'center',
           }}
         >
-          <span>⚡ Instant Crew Access:</span>
+          <span>⚡ Instant Demo Access:</span>
           <button
             type="button"
             className="btn btn-secondary btn-sm"
@@ -248,14 +248,14 @@ export default function Landing() {
         )}
       </section>
 
-      {/* 2. THE THREE COSMIC PILLARS */}
+      {/* 2. THE THREE CORE PILLARS */}
       <section>
         <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 2.5rem' }}>
           <h2 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--star-white)' }}>
-            Cosmic Financial Architecture
+            Smart Financial Architecture
           </h2>
           <p className="text-muted" style={{ fontSize: '0.95rem', marginTop: '0.4rem' }}>
-            Engineered for celestial accuracy, algorithmic debt minimization, and zero math friction.
+            Engineered for precision, algorithmic debt minimization, and zero math friction.
           </p>
         </div>
 
@@ -276,14 +276,14 @@ export default function Landing() {
                 border: '1px solid rgba(56, 217, 255, 0.3)',
               }}
             >
-              <Orbit size={24} />
+              <Scale size={24} />
             </div>
             <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--star-white)', marginBottom: '0.65rem' }}>
-              Orbital Debt Minimization
+              Debt Minimization Algorithm
             </h3>
             <p className="text-muted" style={{ fontSize: '0.92rem', lineHeight: 1.6 }}>
-              A greedy two-pointer celestial algorithm collapses hundreds of multi-friend debts into the absolute minimum
-              number of orbital repayments.
+              A two-pointer greedy settlement algorithm collapses multi-friend group debts into the absolute minimum
+              number of cash repayments.
             </p>
           </div>
 
@@ -303,13 +303,13 @@ export default function Landing() {
                 border: '1px solid rgba(124, 58, 237, 0.35)',
               }}
             >
-              <Scale size={24} />
+              <Receipt size={24} />
             </div>
             <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--star-white)', marginBottom: '0.65rem' }}>
-              Zero-G Exact & Percent Splits
+              Equal, Custom & Percentage Splits
             </h3>
             <p className="text-muted" style={{ fontSize: '0.92rem', lineHeight: 1.6 }}>
-              Equal, custom exact amounts, or percentage splits executed in integer paise precision, completely eliminating
+              Equal, exact rupee amounts, or percentage splits executed in integer paise precision, completely eliminating
               rounding discrepancies.
             </p>
           </div>
@@ -330,20 +330,20 @@ export default function Landing() {
                 border: '1px solid rgba(52, 211, 153, 0.35)',
               }}
             >
-              <Compass size={24} />
+              <Shield size={24} />
             </div>
             <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--star-white)', marginBottom: '0.65rem' }}>
-              Protected Receiver Settlement
+              Authorized Receiver Settlements
             </h3>
             <p className="text-muted" style={{ fontSize: '0.92rem', lineHeight: 1.6 }}>
-              Cryptographically verified authorization ensures only the recipient can confirm offline settlement,
-              guaranteeing unbreachable financial security.
+              Backend-enforced authorization ensures only the money recipient can mark debts as paid,
+              protecting your balance from unauthorized changes.
             </p>
           </div>
         </div>
       </section>
 
-      {/* 3. PLANETARY WORLDS CONCEPT PREVIEW */}
+      {/* 3. GROUPS CONCEPT PREVIEW */}
       <section className="cosmic-panel" style={{ padding: '3rem 2.5rem' }}>
         <div style={{ textAlign: 'center', maxWidth: '680px', margin: '0 auto 2.5rem' }}>
           <span
@@ -355,13 +355,13 @@ export default function Landing() {
               marginBottom: '0.75rem',
             }}
           >
-            Cosmic Concept
+            Group Splitting
           </span>
           <h2 style={{ fontSize: '2.1rem', fontWeight: 800, color: 'var(--star-white)' }}>
-            Every Group is a Celestial World
+            Organized Groups for Every Occasion
           </h2>
           <p className="text-muted" style={{ fontSize: '0.96rem', marginTop: '0.5rem' }}>
-            Trips, apartments, and team projects manifest as independent planets with their own orbital crew and energy balance.
+            Trips, apartments, and outings have independent member lists and real-time balance calculations.
           </p>
         </div>
 
@@ -378,13 +378,26 @@ export default function Landing() {
               gap: '1rem',
             }}
           >
-            <div className="planet-orb-wrapper">
-              <div className="planet-orbital-ring" style={{ borderColor: 'rgba(56, 217, 255, 0.5)' }} />
-              <div className="planet-sphere planet-ice">G</div>
+            <div
+              style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: '12px',
+                background: 'radial-gradient(circle at 35% 35%, #38D9FF 0%, #0284C7 100%)',
+                color: '#03040B',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 800,
+                fontSize: '1.2rem',
+                boxShadow: '0 0 16px rgba(56, 217, 255, 0.35)',
+              }}
+            >
+              G
             </div>
             <div>
-              <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--star-white)' }}>Goa Trip Planet</h4>
-              <span className="text-muted" style={{ fontSize: '0.76rem' }}>6 Crew Members in Orbit</span>
+              <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--star-white)' }}>Goa Trip</h4>
+              <span className="text-muted" style={{ fontSize: '0.78rem' }}>6 Members sharing expenses</span>
             </div>
           </div>
 
@@ -400,13 +413,26 @@ export default function Landing() {
               gap: '1rem',
             }}
           >
-            <div className="planet-orb-wrapper">
-              <div className="planet-orbital-ring" style={{ borderColor: 'rgba(155, 92, 255, 0.5)' }} />
-              <div className="planet-sphere planet-violet">F</div>
+            <div
+              style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: '12px',
+                background: 'radial-gradient(circle at 35% 35%, #C084FC 0%, #7C3AED 100%)',
+                color: '#03040B',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 800,
+                fontSize: '1.2rem',
+                boxShadow: '0 0 16px rgba(155, 92, 255, 0.35)',
+              }}
+            >
+              F
             </div>
             <div>
-              <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--star-white)' }}>Flatmates Habitat</h4>
-              <span className="text-muted" style={{ fontSize: '0.76rem' }}>4 Crew Members in Orbit</span>
+              <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--star-white)' }}>Flatmates</h4>
+              <span className="text-muted" style={{ fontSize: '0.78rem' }}>4 Members sharing rent & groceries</span>
             </div>
           </div>
 
@@ -422,19 +448,32 @@ export default function Landing() {
               gap: '1rem',
             }}
           >
-            <div className="planet-orb-wrapper">
-              <div className="planet-orbital-ring" style={{ borderColor: 'rgba(52, 211, 153, 0.5)' }} />
-              <div className="planet-sphere planet-emerald">R</div>
+            <div
+              style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: '12px',
+                background: 'radial-gradient(circle at 35% 35%, #6EE7B7 0%, #059669 100%)',
+                color: '#03040B',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 800,
+                fontSize: '1.2rem',
+                boxShadow: '0 0 16px rgba(52, 211, 153, 0.35)',
+              }}
+            >
+              R
             </div>
             <div>
-              <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--star-white)' }}>Road Trip Odyssey</h4>
-              <span className="text-muted" style={{ fontSize: '0.76rem' }}>5 Crew Members in Orbit</span>
+              <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--star-white)' }}>Road Trip</h4>
+              <span className="text-muted" style={{ fontSize: '0.78rem' }}>5 Members splitting fuel & food</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4. TELEMETRY STATUS BAR */}
+      {/* 4. STATUS BAR */}
       <div
         className="cosmic-panel"
         style={{
@@ -449,13 +488,13 @@ export default function Landing() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
           <div className="cosmic-status-dot" />
           <span style={{ fontSize: '0.85rem', color: 'var(--star-white)', fontWeight: 600 }}>
-            Interstellar Telemetry: {healthLoading ? 'Polling...' : healthData?.status === 'ok' ? 'All Channels Operational' : 'Node Connecting'}
+            System Status: {healthLoading ? 'Checking...' : healthData?.status === 'ok' ? 'All Services Operational' : 'Connecting to Server'}
           </span>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-          <span>DATABASE: MySQL 8.0 [PORT 3306]</span>
-          <span>ORBIT PROTOCOL: JWT / BCRYPT</span>
+          <span>DATABASE: MySQL 8.0</span>
+          <span>AUTH: JWT & BCRYPT</span>
         </div>
       </div>
     </div>

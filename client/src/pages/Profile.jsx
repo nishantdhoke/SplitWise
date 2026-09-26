@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Mail, Calendar, KeyRound, LogOut, CheckCircle, Orbit, Compass } from 'lucide-react';
+import { Mail, Calendar, KeyRound, LogOut, CheckCircle, ArrowLeft, User } from 'lucide-react';
 
 export default function Profile() {
   const { user, logout } = useAuth();
@@ -18,7 +18,7 @@ export default function Profile() {
         month: 'long',
         day: 'numeric',
       })
-    : 'Recently Initialized';
+    : 'Recently Joined';
 
   return (
     <div style={{ maxWidth: '640px', margin: '3rem auto 2rem' }}>
@@ -47,14 +47,14 @@ export default function Profile() {
                 boxShadow: '0 0 25px rgba(56, 217, 255, 0.45)',
               }}
             >
-              {user?.name?.charAt(0).toUpperCase() || 'E'}
+              {user?.name?.charAt(0).toUpperCase() || 'U'}
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--star-white)' }}>{user?.name}</h2>
               </div>
               <p className="text-muted" style={{ fontSize: '0.82rem', letterSpacing: '0.04em' }}>
-                INTERSTELLAR EXPLORER ID #{user?.id}
+                USER ID #{user?.id}
               </p>
             </div>
           </div>
@@ -67,8 +67,8 @@ export default function Profile() {
               padding: '0.4rem 0.85rem',
             }}
           >
-            <Orbit size={13} />
-            <span>Orbit Link Active</span>
+            <CheckCircle size={13} />
+            <span>Active Account</span>
           </span>
         </div>
 
@@ -89,7 +89,7 @@ export default function Profile() {
             </div>
             <div>
               <span className="text-muted" style={{ fontSize: '0.72rem', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.08em' }}>
-                Interstellar Channel
+                Email Address
               </span>
               <p style={{ fontWeight: 600, color: 'var(--star-white)', marginTop: '2px' }}>{user?.email}</p>
             </div>
@@ -111,7 +111,7 @@ export default function Profile() {
             </div>
             <div>
               <span className="text-muted" style={{ fontSize: '0.72rem', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.08em' }}>
-                First Orbit Registered
+                Member Since
               </span>
               <p style={{ fontWeight: 600, color: 'var(--star-white)', marginTop: '2px' }}>{formattedDate}</p>
             </div>
@@ -133,10 +133,10 @@ export default function Profile() {
             </div>
             <div>
               <span className="text-muted" style={{ fontSize: '0.72rem', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.08em' }}>
-                Security Encryption
+                Security & Authentication
               </span>
               <p style={{ fontWeight: 600, color: 'var(--star-white)', marginTop: '2px' }}>
-                Protected with bcrypt (10 rounds) & Interstellar JWT
+                Protected with bcrypt password hashing & secure JWT tokens
               </p>
             </div>
           </div>
@@ -144,12 +144,12 @@ export default function Profile() {
 
         <div className="flex-between" style={{ paddingTop: '1.75rem', marginTop: '1.75rem', borderTop: '1px solid var(--border)' }}>
           <button className="btn btn-secondary" onClick={() => navigate('/dashboard')}>
-            <Compass size={15} />
-            <span>Return to Orbit Command</span>
+            <ArrowLeft size={15} />
+            <span>Return to Dashboard</span>
           </button>
           <button className="btn btn-danger" onClick={handleLogout}>
             <LogOut size={15} />
-            <span>Disconnect</span>
+            <span>Logout</span>
           </button>
         </div>
       </div>

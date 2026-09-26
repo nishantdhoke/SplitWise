@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle2, Orbit, AlertCircle, Sparkles } from 'lucide-react';
+import { X, CheckCircle2, AlertCircle, IndianRupee } from 'lucide-react';
 import CosmicParticleBurst from './CosmicParticleBurst';
 
 export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, currentUserId }) {
@@ -23,13 +23,13 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
     setError('');
 
     if (currentUserId && settlement.receiverId !== currentUserId) {
-      setError(`Access Restricted: Only ${settlement.receiverName || 'the creditor'} is authorized to confirm and settle this orbit.`);
+      setError(`Access Restricted: Only ${settlement.receiverName || 'the receiver'} is authorized to mark this settlement as paid.`);
       return;
     }
 
     const numericAmount = parseFloat(amount);
     if (isNaN(numericAmount) || numericAmount <= 0) {
-      setError('Please specify a cosmic energy balance greater than ₹0.');
+      setError('Please enter a valid amount greater than ₹0.');
       return;
     }
 
@@ -48,7 +48,7 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
         onClose();
       }, 1200);
     } catch (err) {
-      setError(err.message || 'Failed to record orbit settlement.');
+      setError(err.message || 'Failed to record settlement.');
       setIsSubmitting(false);
     }
   };
@@ -72,11 +72,11 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
                 boxShadow: '0 0 16px rgba(52, 211, 153, 0.3)',
               }}
             >
-              <Orbit size={20} />
+              <CheckCircle2 size={20} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 800 }}>Confirm Orbit Settlement</h3>
-              <p className="text-muted" style={{ fontSize: '0.8rem' }}>Rebalance energy between celestial bodies</p>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 800 }}>Record Settlement</h3>
+              <p className="text-muted" style={{ fontSize: '0.8rem' }}>Confirm payment between group members</p>
             </div>
           </div>
           <button
@@ -120,10 +120,10 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
               ₹{parseFloat(amount || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
             </div>
             <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--star-white)' }}>
-              Orbit Cleared & Settled!
+              Payment Recorded & Settled!
             </h3>
             <p className="text-muted mt-1" style={{ fontSize: '0.9rem' }}>
-              Gravitational debts have neutralized. All planetary balances updated.
+              The settlement has been recorded and group balances have updated.
             </p>
           </div>
         ) : (
@@ -135,7 +135,7 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
               </div>
             )}
 
-            {/* Cosmic Energy Flow Visual */}
+            {/* Payment Flow Visual */}
             <div
               style={{
                 background: 'rgba(6, 9, 20, 0.85)',
@@ -149,7 +149,7 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
                 marginBottom: '1.5rem',
               }}
             >
-              {/* Debtor Celestial Body */}
+              {/* Payer */}
               <div style={{ textAlign: 'center' }}>
                 <div
                   style={{
@@ -172,14 +172,14 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
                 <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--star-white)', display: 'block' }}>
                   {settlement.payerName}
                 </span>
-                <span className="text-muted" style={{ fontSize: '0.72rem' }}>Debtor</span>
+                <span className="text-muted" style={{ fontSize: '0.72rem' }}>Payer (Owes)</span>
               </div>
 
-              {/* Orbital Energy Path */}
+              {/* Payment Path */}
               <div
                 className="orbital-path-track"
                 style={{ width: '130px' }}
-                title="Orbital energy flow"
+                title="Payment flow"
               >
                 <div className="orbital-path-line" />
                 <div className="orbital-energy-pulse" />
@@ -194,11 +194,11 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
                     letterSpacing: '0.08em',
                   }}
                 >
-                  Energy Beam
+                  Pays
                 </span>
               </div>
 
-              {/* Creditor Celestial Body */}
+              {/* Receiver */}
               <div style={{ textAlign: 'center' }}>
                 <div
                   style={{
@@ -221,14 +221,14 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
                 <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--star-white)', display: 'block' }}>
                   {settlement.receiverName}
                 </span>
-                <span className="text-muted" style={{ fontSize: '0.72rem' }}>Creditor</span>
+                <span className="text-muted" style={{ fontSize: '0.72rem' }}>Receiver</span>
               </div>
             </div>
 
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label className="form-label" htmlFor="settlement-amount">
-                  Settlement Energy Units (₹)
+                  Settlement Amount (₹)
                 </label>
                 <input
                   id="settlement-amount"
@@ -243,7 +243,7 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
                   autoFocus
                 />
                 <p className="text-muted" style={{ fontSize: '0.8rem', marginTop: '0.35rem' }}>
-                  Receiver confirms receipt via UPI, cash, or interstellar transfer.
+                  Receiver confirms payment received via UPI, cash, or bank transfer.
                 </p>
               </div>
 
@@ -254,7 +254,7 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
                   onClick={onClose}
                   disabled={isSubmitting}
                 >
-                  Abort
+                  Cancel
                 </button>
                 <button
                   type="submit"
@@ -265,7 +265,7 @@ export default function SettleUpModal({ settlement, isOpen, onClose, onConfirm, 
                   {isSubmitting ? (
                     <>
                       <span className="cosmic-spinner" style={{ width: '1rem', height: '1rem', borderWidth: '2px' }}></span>
-                      <span>Neutralizing...</span>
+                      <span>Recording...</span>
                     </>
                   ) : (
                     <>

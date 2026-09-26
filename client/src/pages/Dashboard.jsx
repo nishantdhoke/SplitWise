@@ -13,8 +13,9 @@ import {
   RefreshCw,
   AlertCircle,
   Sparkles,
-  Orbit,
-  Compass,
+  LayoutDashboard,
+  Wallet,
+  Scale,
 } from 'lucide-react';
 import AnimatedCounter from '../components/AnimatedCounter';
 import GroupCard from '../components/GroupCard';
@@ -32,7 +33,7 @@ export default function Dashboard() {
       const data = await getDashboard();
       setDashboardData(data);
     } catch (err) {
-      setError(err.message || 'Failed to sync with cosmic ledger.');
+      setError(err.message || 'Failed to load dashboard data.');
     } finally {
       setLoading(false);
     }
@@ -47,7 +48,7 @@ export default function Dashboard() {
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '7rem 0', gap: '1.25rem' }}>
         <div className="cosmic-spinner" style={{ width: '3rem', height: '3rem', borderWidth: '3px' }}></div>
         <span style={{ fontSize: '0.88rem', color: 'var(--starlight-cyan)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-          Calibrating Cosmic Coordinates...
+          Loading Dashboard...
         </span>
       </div>
     );
@@ -70,7 +71,7 @@ export default function Dashboard() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-      {/* 4. DRAMATIC COSMIC HERO SECTION */}
+      {/* HERO SECTION */}
       <div
         className="cosmic-panel"
         style={{
@@ -85,7 +86,7 @@ export default function Dashboard() {
           background: 'radial-gradient(ellipse at top left, rgba(124, 58, 237, 0.25) 0%, rgba(8, 13, 29, 0.9) 65%)',
         }}
       >
-        {/* Ambient Nebula Light behind the hero message */}
+        {/* Ambient Nebula Light */}
         <div
           style={{
             position: 'absolute',
@@ -101,7 +102,7 @@ export default function Dashboard() {
         />
 
         <div>
-          {/* Cosmic Telemetry Tag */}
+          {/* Header Tag */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
             <span
               className="badge"
@@ -114,11 +115,11 @@ export default function Dashboard() {
                 gap: '0.35rem',
               }}
             >
-              <Orbit size={13} />
-              <span>ORBIT COMMAND // SECTOR 01</span>
+              <LayoutDashboard size={13} />
+              <span>DASHBOARD OVERVIEW</span>
             </span>
             <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.04em' }}>
-              {groups.length} Planetary {groups.length === 1 ? 'World' : 'Worlds'} in Sync
+              {groups.length} {groups.length === 1 ? 'Group' : 'Groups'} Active
             </span>
           </div>
 
@@ -135,7 +136,7 @@ export default function Dashboard() {
           </h1>
 
           <p className="text-muted" style={{ fontSize: '0.96rem', marginTop: '0.35rem', maxWidth: '560px' }}>
-            All orbital financial paths are mapped. Monitor your interstellar balances and cosmic settlements in real time.
+            Track shared group expenses, monitor balances, and settle debts with friends in real time.
           </p>
         </div>
 
@@ -144,7 +145,7 @@ export default function Dashboard() {
           <button
             className="btn btn-secondary btn-icon"
             onClick={fetchDashboard}
-            title="Refresh Cosmic Telemetry"
+            title="Refresh Dashboard"
           >
             <RefreshCw size={16} />
           </button>
@@ -157,14 +158,14 @@ export default function Dashboard() {
             }}
           >
             <Plus size={18} />
-            <span>Chart Planet</span>
+            <span>Create Group</span>
           </Link>
         </div>
       </div>
 
-      {/* 5. FINANCIAL BALANCE AS COSMIC ENERGY (3 Telemetry Panels) */}
+      {/* FINANCIAL BALANCE PANELS */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
-        {/* Total You Are Owed (POSITIVE GREEN COSMIC ENERGY) */}
+        {/* Total You Are Owed (POSITIVE GREEN) */}
         <div
           className="cosmic-panel"
           style={{
@@ -207,11 +208,11 @@ export default function Dashboard() {
             />
           </div>
           <p className="text-muted mt-1" style={{ fontSize: '0.8rem' }}>
-            Inflowing energy due from fellow travelers
+            Total amount friends owe you across all groups
           </p>
         </div>
 
-        {/* Total You Owe (NEGATIVE CORAL COSMIC ENERGY) */}
+        {/* Total You Owe (NEGATIVE CORAL) */}
         <div
           className="cosmic-panel"
           style={{
@@ -254,11 +255,11 @@ export default function Dashboard() {
             />
           </div>
           <p className="text-muted mt-1" style={{ fontSize: '0.8rem' }}>
-            Outflowing orbital debt to be cleared
+            Total amount you owe to others across all groups
           </p>
         </div>
 
-        {/* Net Cosmic Standing */}
+        {/* Total Net Balance */}
         <div
           className="cosmic-panel"
           style={{
@@ -276,7 +277,7 @@ export default function Dashboard() {
                 color: 'var(--starlight-cyan)',
               }}
             >
-              Net Cosmic Orbit
+              Total Net Balance
             </span>
             <div
               style={{
@@ -288,7 +289,7 @@ export default function Dashboard() {
                 boxShadow: '0 0 14px rgba(56, 217, 255, 0.35)',
               }}
             >
-              <Orbit size={18} />
+              <Wallet size={18} />
             </div>
           </div>
 
@@ -301,25 +302,25 @@ export default function Dashboard() {
             />
           </div>
           <p className="text-muted mt-1" style={{ fontSize: '0.8rem' }}>
-            Overall gravitational balance across all galaxies
+            Your overall financial balance across all groups
           </p>
         </div>
       </div>
 
-      {/* 7. PLANETARY WORLDS (Your Groups) */}
+      {/* MY GROUPS */}
       <div>
         <div className="flex-between" style={{ marginBottom: '1.25rem' }}>
           <div>
             <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: 'var(--star-white)' }}>
-              Planetary Worlds ({groups.length})
+              My Groups ({groups.length})
             </h2>
             <p className="text-muted" style={{ fontSize: '0.85rem' }}>
-              Distinct cosmic sectors sharing mutual resource pools
+              Active expense groups with friends, flatmates, and trips
             </p>
           </div>
           <Link to="/groups/new" className="btn btn-secondary btn-sm">
             <Plus size={14} />
-            <span>Chart Planet</span>
+            <span>Create Group</span>
           </Link>
         </div>
 
@@ -342,16 +343,16 @@ export default function Dashboard() {
                 boxShadow: '0 0 20px rgba(56, 217, 255, 0.3)',
               }}
             >
-              <Compass size={28} />
+              <Users size={28} />
             </div>
             <h4 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--star-white)' }}>
-              No Planets Charted Yet
+              No Groups Yet
             </h4>
             <p className="text-muted mt-1" style={{ fontSize: '0.88rem', maxWidth: '420px', margin: '0.5rem auto 1.5rem' }}>
-              Chart your first planetary world (e.g. Goa Trip, Flatmates, Road Trip) to begin balancing expenses.
+              Create your first group (e.g. Goa Trip, Flatmates, Road Trip) to start splitting expenses.
             </p>
             <Link to="/groups/new" className="btn btn-primary">
-              <Plus size={16} /> Chart Your First Planet
+              <Plus size={16} /> Create Your First Group
             </Link>
           </div>
         ) : (
@@ -363,20 +364,20 @@ export default function Dashboard() {
         )}
       </div>
 
-      {/* Recent Cosmic Transactions */}
+      {/* RECENT EXPENSES */}
       {recentExpenses.length > 0 && (
         <div className="cosmic-panel">
           <div className="flex-between" style={{ marginBottom: '1.25rem' }}>
             <div>
               <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--star-white)' }}>
-                Recent Cosmic Transmissions
+                Recent Expenses
               </h3>
               <p className="text-muted" style={{ fontSize: '0.8rem' }}>
-                Latest shared resources entering financial orbits
+                Latest shared expenses recorded across your groups
               </p>
             </div>
             <span className="badge badge-primary">
-              <Receipt size={12} /> Live Stream
+              <Receipt size={12} /> Recent Activity
             </span>
           </div>
 

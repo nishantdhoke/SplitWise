@@ -245,23 +245,23 @@ export default function GroupDetails() {
       >
         <div className="flex-between" style={{ flexWrap: 'wrap', gap: '1.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.35rem' }}>
-            {/* Planetary World Sphere with Orbital Ring */}
-            <div className="planet-orb-wrapper" style={{ width: '64px', height: '64px' }}>
-              <div
-                className="planet-orbital-ring"
-                style={{
-                  width: '84px',
-                  height: '32px',
-                  borderColor: 'rgba(56, 217, 255, 0.5)',
-                  boxShadow: '0 0 16px rgba(56, 217, 255, 0.3)',
-                }}
-              />
-              <div
-                className="planet-sphere planet-ice"
-                style={{ width: '48px', height: '48px', fontSize: '1.35rem' }}
-              >
-                {group.name.charAt(0).toUpperCase()}
-              </div>
+            {/* Group Initials Badge */}
+            <div
+              style={{
+                width: '56px',
+                height: '56px',
+                borderRadius: '16px',
+                background: 'radial-gradient(circle at 35% 35%, #38D9FF 0%, #7C3AED 70%, #03040B 100%)',
+                color: '#F8FAFF',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '1.6rem',
+                fontWeight: 800,
+                boxShadow: '0 0 20px rgba(56, 217, 255, 0.45)',
+              }}
+            >
+              {group.name.charAt(0).toUpperCase()}
             </div>
 
             <div>
@@ -271,16 +271,16 @@ export default function GroupDetails() {
                 </h1>
                 {isCreator && (
                   <span className="badge badge-warning" style={{ fontSize: '0.7rem' }}>
-                    Captain
+                    Creator
                   </span>
                 )}
                 <span className="badge badge-primary" style={{ fontSize: '0.7rem' }}>
-                  {group.members?.length || 0} In Orbit
+                  {group.members?.length || 0} {group.members?.length === 1 ? 'Member' : 'Members'}
                 </span>
               </div>
               <div className="text-muted" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', fontSize: '0.82rem', marginTop: '0.35rem', flexWrap: 'wrap' }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                  <Shield size={13} color="var(--starlight-cyan)" /> Chartered by <strong>{group.creator_name}</strong>
+                  <Shield size={13} color="var(--starlight-cyan)" /> Created by <strong>{group.creator_name}</strong>
                 </span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                   <Calendar size={13} /> {formattedDate}
@@ -292,17 +292,17 @@ export default function GroupDetails() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
             <button className="btn btn-primary" onClick={() => setIsExpenseModalOpen(true)}>
               <Plus size={16} />
-              <span>Record Expense</span>
+              <span>Add Expense</span>
             </button>
             <button className="btn btn-secondary" onClick={() => setIsMemberModalOpen(true)}>
               <UserPlus size={16} />
-              <span>Invite Crew</span>
+              <span>Invite Member</span>
             </button>
             {isCreator && (
               <button
                 className="btn btn-danger btn-icon"
                 onClick={handleDeleteGroup}
-                title="Decommission this planetary world"
+                title="Delete group"
               >
                 <Trash2 size={16} />
               </button>
@@ -310,7 +310,7 @@ export default function GroupDetails() {
           </div>
         </div>
 
-        {/* Spacecraft Telemetry Tabs */}
+        {/* Navigation Tabs */}
         <div
           style={{
             display: 'flex',
@@ -335,7 +335,7 @@ export default function GroupDetails() {
             style={{ fontWeight: 700 }}
           >
             <Scale size={14} />
-            <span>Orbits & Settlements</span>
+            <span>Balances & Settlements</span>
           </button>
           <button
             onClick={() => setActiveTab('members')}
@@ -343,7 +343,7 @@ export default function GroupDetails() {
             style={{ fontWeight: 700 }}
           >
             <Users size={14} />
-            <span>Crew ({group.members?.length || 0})</span>
+            <span>Members ({group.members?.length || 0})</span>
           </button>
           <button
             onClick={() => setActiveTab('activity')}
@@ -351,7 +351,7 @@ export default function GroupDetails() {
             style={{ fontWeight: 700 }}
           >
             <History size={14} />
-            <span>Telemetry Feed</span>
+            <span>Activity</span>
           </button>
         </div>
       </div>
@@ -484,7 +484,7 @@ export default function GroupDetails() {
 
                       <div>
                         <span className="text-muted" style={{ fontSize: '0.76rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                          Your Gravitational Standing in this Planet
+                          Your Balance in this Group
                         </span>
                         <div className="finance-number" style={{ fontSize: '1.75rem', marginTop: '3px' }}>
                           {currentUserSummary.netBalance > 0 ? (
@@ -496,15 +496,15 @@ export default function GroupDetails() {
                               You owe <AnimatedCounter value={Math.abs(currentUserSummary.netBalance)} color="coral" prefix="₹" />
                             </span>
                           ) : (
-                            <span style={{ color: 'var(--starlight-cyan)' }}>Orbit in Equilibrium</span>
+                            <span style={{ color: 'var(--starlight-cyan)' }}>All Settled Up</span>
                           )}
                         </div>
                       </div>
                     </div>
 
                     <div style={{ textAlign: 'right', fontSize: '0.85rem' }} className="text-muted">
-                      <div>Total Supplied by You: <strong style={{ color: 'var(--star-white)' }}><AnimatedCounter value={currentUserSummary.totalPaid} color="neutral" prefix="₹" /></strong></div>
-                      <div>Your Planetary Share: <strong style={{ color: 'var(--star-white)' }}><AnimatedCounter value={currentUserSummary.totalOwed} color="neutral" prefix="₹" /></strong></div>
+                      <div>Total Paid by You: <strong style={{ color: 'var(--star-white)' }}><AnimatedCounter value={currentUserSummary.totalPaid} color="neutral" prefix="₹" /></strong></div>
+                      <div>Your Share: <strong style={{ color: 'var(--star-white)' }}><AnimatedCounter value={currentUserSummary.totalOwed} color="neutral" prefix="₹" /></strong></div>
                     </div>
                   </div>
                 </div>
@@ -516,11 +516,11 @@ export default function GroupDetails() {
                   <div>
                     <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Suggested Settlements (Who Owes Whom)</h3>
                     <p className="text-muted" style={{ fontSize: '0.85rem' }}>
-                      Minimized debt transfers calculated by FairShare algorithm
+                      Optimized debt transfers to settle balances with the fewest payments
                     </p>
                   </div>
                   <span className="badge badge-primary">
-                    <Sparkles size={11} /> Minimized Debts
+                    <Sparkles size={11} /> Minimized Settlements
                   </span>
                 </div>
 

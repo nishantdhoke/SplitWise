@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { LogIn, AlertCircle, Orbit, Sparkles, KeyRound, Mail } from 'lucide-react';
+import { LogIn, AlertCircle, KeyRound, Mail, Sparkles } from 'lucide-react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -20,7 +20,7 @@ export default function Login() {
     setError('');
 
     if (!email.trim() || !password) {
-      setError('Please provide your interstellar credentials.');
+      setError('Please provide your email and password.');
       return;
     }
 
@@ -29,7 +29,7 @@ export default function Login() {
       await login(email, password);
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.message || 'Authentication rejected. Verify credentials.');
+      setError(err.message || 'Authentication failed. Please verify your credentials.');
     } finally {
       setIsSubmitting(false);
     }
@@ -37,7 +37,7 @@ export default function Login() {
 
   return (
     <div style={{ maxWidth: '440px', margin: '4rem auto 2rem' }}>
-      {/* Floating Deep Space Command Console */}
+      {/* Floating Deep Space Login Console */}
       <div
         className="cosmic-panel"
         style={{
@@ -47,7 +47,6 @@ export default function Login() {
           position: 'relative',
         }}
       >
-        {/* Subtle Decorative Star Points around the console */}
         <div style={{ textAlign: 'center', marginBottom: '2rem', position: 'relative' }}>
           <div
             style={{
@@ -64,12 +63,12 @@ export default function Login() {
           >
             <span>✦</span>
             <span>·</span>
-            <span>SECURE ORBITAL LINK</span>
+            <span>SECURE LOGIN</span>
             <span>·</span>
             <span>✦</span>
           </div>
 
-          {/* Central Orbit Icon */}
+          {/* Central Login Icon */}
           <div
             style={{
               width: '56px',
@@ -84,14 +83,14 @@ export default function Login() {
               color: '#F8FAFF',
             }}
           >
-            <Orbit size={28} />
+            <LogIn size={26} />
           </div>
 
           <h2 style={{ fontSize: '1.85rem', fontWeight: 800, color: 'var(--star-white)', letterSpacing: '-0.03em' }}>
-            Access Orbit
+            Welcome Back
           </h2>
           <p className="text-muted" style={{ fontSize: '0.88rem', marginTop: '0.35rem' }}>
-            Authenticate with FairShare cosmic console
+            Sign in to manage your group expenses
           </p>
         </div>
 
@@ -106,13 +105,13 @@ export default function Login() {
           <div className="form-group">
             <label className="form-label" htmlFor="email" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <Mail size={13} color="var(--starlight-cyan)" />
-              <span>Cosmic Identifier (Email)</span>
+              <span>Email Address</span>
             </label>
             <input
               id="email"
               type="email"
               className="form-input"
-              placeholder="astronaut@fairshare.io"
+              placeholder="user@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -123,7 +122,7 @@ export default function Login() {
           <div className="form-group">
             <label className="form-label" htmlFor="password" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <KeyRound size={13} color="var(--starlight-cyan)" />
-              <span>Passkey</span>
+              <span>Password</span>
             </label>
             <input
               id="password"
@@ -145,12 +144,12 @@ export default function Login() {
             {isSubmitting ? (
               <>
                 <span className="cosmic-spinner" style={{ width: '1rem', height: '1rem', borderWidth: '2px' }}></span>
-                <span>Warping into Orbit...</span>
+                <span>Signing In...</span>
               </>
             ) : (
               <>
                 <LogIn size={16} />
-                <span>ENTER ORBIT</span>
+                <span>SIGN IN</span>
               </>
             )}
           </button>
@@ -159,7 +158,7 @@ export default function Login() {
         {/* Quick Demo Pre-fills */}
         <div style={{ marginTop: '1.75rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border)' }}>
           <p style={{ fontSize: '0.76rem', color: 'var(--text-muted)', textAlign: 'center', marginBottom: '0.75rem', letterSpacing: '0.05em' }}>
-            ⚡ TELEMETRY PRE-SETS:
+            ⚡ QUICK DEMO LOGINS:
           </p>
           <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
             <button
@@ -187,9 +186,9 @@ export default function Login() {
         </div>
 
         <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.88rem' }} className="text-muted">
-          New explorer?{' '}
+          Don't have an account?{' '}
           <Link to="/register" style={{ color: 'var(--starlight-cyan)', fontWeight: 700, textDecoration: 'none' }}>
-            Initialize Profile
+            Sign Up
           </Link>
         </div>
       </div>

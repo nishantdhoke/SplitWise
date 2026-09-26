@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { UserPlus, AlertCircle, Orbit, Sparkles } from 'lucide-react';
+import { UserPlus, AlertCircle, Sparkles } from 'lucide-react';
 import CosmicParticleBurst from '../components/CosmicParticleBurst';
 
 export default function Register() {
@@ -21,17 +21,17 @@ export default function Register() {
     setError('');
 
     if (!name.trim() || !email.trim() || !password) {
-      setError('Please provide all planetary identification details.');
+      setError('Please fill in all fields.');
       return;
     }
 
     if (password.length < 6) {
-      setError('Passkey must contain at least 6 characters.');
+      setError('Password must contain at least 6 characters.');
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passkeys do not synchronize.');
+      setError('Passwords do not match.');
       return;
     }
 
@@ -43,7 +43,7 @@ export default function Register() {
         navigate('/dashboard', { replace: true });
       }, 900);
     } catch (err) {
-      setError(err.message || 'Initialization failed. Verify inputs.');
+      setError(err.message || 'Registration failed. Please check your information.');
       setIsSubmitting(false);
     }
   };
@@ -52,7 +52,7 @@ export default function Register() {
     <div style={{ maxWidth: '460px', margin: '3.5rem auto 2rem', position: 'relative' }}>
       <CosmicParticleBurst active={isSuccess} count={28} color="cyan" />
 
-      {/* Floating Deep Space Initialization Console */}
+      {/* Floating Deep Space Registration Console */}
       <div
         className="cosmic-panel"
         style={{
@@ -78,7 +78,7 @@ export default function Register() {
           >
             <span>✦</span>
             <span>·</span>
-            <span>INITIALIZE PROFILE</span>
+            <span>CREATE ACCOUNT</span>
             <span>·</span>
             <span>✦</span>
           </div>
@@ -97,14 +97,14 @@ export default function Register() {
               color: '#F8FAFF',
             }}
           >
-            <Orbit size={28} />
+            <UserPlus size={26} />
           </div>
 
           <h2 style={{ fontSize: '1.85rem', fontWeight: 800, color: 'var(--star-white)', letterSpacing: '-0.03em' }}>
-            Enter the Universe
+            Create an Account
           </h2>
           <p className="text-muted" style={{ fontSize: '0.88rem', marginTop: '0.35rem' }}>
-            Initialize your profile on FairShare cosmic network
+            Sign up to start splitting expenses with friends
           </p>
         </div>
 
@@ -117,12 +117,12 @@ export default function Register() {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
           <div className="form-group">
-            <label className="form-label" htmlFor="name">Cosmic Call-Sign (Full Name)</label>
+            <label className="form-label" htmlFor="name">Full Name</label>
             <input
               id="name"
               type="text"
               className="form-input"
-              placeholder="e.g. Nishant Dhoke"
+              placeholder="e.g. Rahul Sharma"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -131,12 +131,12 @@ export default function Register() {
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="email">Interstellar Channel (Email)</label>
+            <label className="form-label" htmlFor="email">Email Address</label>
             <input
               id="email"
               type="email"
               className="form-input"
-              placeholder="nishant@universe.io"
+              placeholder="rahul@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -144,7 +144,7 @@ export default function Register() {
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="password">Passkey (min 6 characters)</label>
+            <label className="form-label" htmlFor="password">Password (min 6 characters)</label>
             <input
               id="password"
               type="password"
@@ -157,7 +157,7 @@ export default function Register() {
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="confirmPassword">Confirm Passkey</label>
+            <label className="form-label" htmlFor="confirmPassword">Confirm Password</label>
             <input
               id="confirmPassword"
               type="password"
@@ -178,21 +178,21 @@ export default function Register() {
             {isSubmitting ? (
               <>
                 <span className="cosmic-spinner" style={{ width: '1rem', height: '1rem', borderWidth: '2px' }}></span>
-                <span>Calibrating Orbit...</span>
+                <span>Creating Account...</span>
               </>
             ) : (
               <>
                 <UserPlus size={16} />
-                <span>INITIALIZE PROFILE</span>
+                <span>CREATE ACCOUNT</span>
               </>
             )}
           </button>
         </form>
 
         <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.88rem' }} className="text-muted">
-          Already charted?{' '}
+          Already have an account?{' '}
           <Link to="/login" style={{ color: 'var(--starlight-cyan)', fontWeight: 700, textDecoration: 'none' }}>
-            Access Orbit
+            Sign In
           </Link>
         </div>
       </div>

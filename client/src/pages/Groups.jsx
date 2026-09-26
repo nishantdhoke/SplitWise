@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getGroups } from '../services/api';
 import GroupCard from '../components/GroupCard';
-import { Plus, Orbit, RefreshCw, AlertCircle, Compass } from 'lucide-react';
+import { Plus, Users, RefreshCw, AlertCircle } from 'lucide-react';
 
 export default function Groups() {
   const [groups, setGroups] = useState([]);
@@ -16,7 +16,7 @@ export default function Groups() {
       const data = await getGroups();
       setGroups(data.groups || []);
     } catch (err) {
-      setError(err.message || 'Failed to chart your planetary worlds.');
+      setError(err.message || 'Failed to load your groups.');
     } finally {
       setLoading(false);
     }
@@ -33,7 +33,7 @@ export default function Groups() {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
             <h1 style={{ fontSize: '2.1rem', fontWeight: 800, color: 'var(--star-white)', letterSpacing: '-0.03em' }}>
-              Planetary Worlds
+              My Groups
             </h1>
             <span
               className="badge"
@@ -43,11 +43,11 @@ export default function Groups() {
                 color: 'var(--starlight-cyan)',
               }}
             >
-              {groups.length} In Orbit
+              {groups.length} {groups.length === 1 ? 'Group' : 'Groups'}
             </span>
           </div>
           <p className="text-muted" style={{ fontSize: '0.95rem' }}>
-            Active cosmic sectors for shared expenses, road trips, and shared habitats
+            Manage shared expenses with your friends, roommates, and trips
           </p>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem' }}>
@@ -55,13 +55,13 @@ export default function Groups() {
             className="btn btn-secondary btn-icon"
             onClick={fetchUserGroups}
             disabled={loading}
-            title="Refresh Telemetry"
+            title="Refresh Groups"
           >
             <RefreshCw size={16} className={loading ? 'cosmic-spinner' : ''} />
           </button>
           <Link to="/groups/new" className="btn btn-primary">
             <Plus size={16} />
-            <span>Chart Planet</span>
+            <span>Create Group</span>
           </Link>
         </div>
       </div>
@@ -104,15 +104,15 @@ export default function Groups() {
               boxShadow: '0 0 25px rgba(56, 217, 255, 0.35)',
             }}
           >
-            <Compass size={32} />
+            <Users size={32} />
           </div>
-          <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--star-white)' }}>No Planets Charted Yet</h3>
+          <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--star-white)' }}>No Groups Yet</h3>
           <p className="text-muted mt-2" style={{ fontSize: '0.92rem', lineHeight: 1.6 }}>
-            You haven't charted or joined any planetary worlds yet. Create one for a trip, flat expenses, or dinner outings!
+            You haven't created or joined any expense groups yet. Create one for a trip, flat expenses, or dinner outings!
           </p>
           <Link to="/groups/new" className="btn btn-primary mt-3" style={{ padding: '0 1.75rem' }}>
             <Plus size={16} />
-            <span>Chart Your First Planet</span>
+            <span>Create Your First Group</span>
           </Link>
         </div>
       ) : (

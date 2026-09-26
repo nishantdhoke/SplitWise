@@ -160,16 +160,16 @@ export default function AddMemberModal({
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 1.25rem',
-                boxShadow: '0 0 30px rgba(155, 92, 255, 0.6)',
+                boxShadow: '0 0 35px rgba(155, 92, 255, 0.6)',
               }}
             >
-              <Orbit size={32} />
+              <CheckCircle2 size={32} />
             </div>
             <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--star-white)' }}>
-              Crew Member Initialized!
+              Member Added!
             </h3>
             <p className="text-muted mt-1" style={{ fontSize: '0.9rem' }}>
-              <strong>{addedName}</strong> has entered orbit in {groupName}.
+              <strong>{addedName}</strong> has been added to {groupName}.
             </p>
           </div>
         ) : (

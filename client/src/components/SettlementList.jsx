@@ -1,13 +1,6 @@
 import React from 'react';
-import { Orbit, Check, CheckCircle2, Clock, Sparkles } from 'lucide-react';
+import { Check, CheckCircle2, Clock, IndianRupee } from 'lucide-react';
 
-/**
- * SettlementList Component (COSMIC ORBITAL RELATIONSHIPS)
- * 
- * Visualizes debts as cosmic orbital paths connecting celestial bodies.
- * Cosmic energy travels from debtor to creditor along the orbital path.
- * Only the authorized receiver can settle the debt.
- */
 export default function SettlementList({
   settlements = [],
   currentUserId,
@@ -41,10 +34,10 @@ export default function SettlementList({
           <CheckCircle2 size={30} />
         </div>
         <h4 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--star-white)' }}>
-          All Orbits Balanced
+          All Debts Settled
         </h4>
         <p className="text-muted mt-1" style={{ fontSize: '0.9rem', maxWidth: '420px', margin: '0.5rem auto 0' }}>
-          Zero gravitational debt remaining. All member balances are in cosmic harmony.
+          Zero debt remaining. Everyone in this group is fully settled up!
         </p>
       </div>
     );
@@ -82,9 +75,9 @@ export default function SettlementList({
               gap: '1.25rem',
             }}
           >
-            {/* Payer Celestial Body ──── Orbital Energy Path ────> Receiver Celestial Body */}
+            {/* Payer ──── Payment Flow ────> Receiver */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
-              {/* Payer (Debtor: Coral Atmosphere) */}
+              {/* Payer */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 <div
                   style={{
@@ -116,15 +109,15 @@ export default function SettlementList({
                     {isUserPayer ? 'You' : s.payerName}
                   </span>
                   <span className="text-muted" style={{ fontSize: '0.72rem', letterSpacing: '0.04em' }}>
-                    Debtor
+                    Owes
                   </span>
                 </div>
               </div>
 
-              {/* Glowing Orbital Path: Energy Traveling from Payer to Receiver */}
+              {/* Glowing Payment Path: Money Traveling from Payer to Receiver */}
               <div
                 className="orbital-path-track"
-                title={`Cosmic energy debt of ₹${s.amount} directed from ${isUserPayer ? 'You' : s.payerName} to ${isUserReceiver ? 'You' : s.receiverName}`}
+                title={`Settlement of ₹${s.amount} from ${isUserPayer ? 'You' : s.payerName} to ${isUserReceiver ? 'You' : s.receiverName}`}
                 style={{ minWidth: '120px' }}
               >
                 <div className="orbital-path-line" />
@@ -140,11 +133,11 @@ export default function SettlementList({
                     letterSpacing: '0.08em',
                   }}
                 >
-                  Orbit Energy
+                  Pays
                 </span>
               </div>
 
-              {/* Receiver (Creditor: Mint Starlight Atmosphere) */}
+              {/* Receiver */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', position: 'relative' }}>
                 <div
                   style={{
@@ -176,13 +169,13 @@ export default function SettlementList({
                     {isUserReceiver ? 'You' : s.receiverName}
                   </span>
                   <span className="text-muted" style={{ fontSize: '0.72rem', letterSpacing: '0.04em' }}>
-                    Creditor
+                    Gets
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Amount and Orbital Settlement Action */}
+            {/* Amount and Settlement Action */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
               <div style={{ textAlign: 'right' }}>
                 <div
@@ -196,7 +189,7 @@ export default function SettlementList({
                   {formattedAmount}
                 </div>
                 <span className="text-muted" style={{ fontSize: '0.72rem', letterSpacing: '0.04em' }}>
-                  Direct Orbit Settlement
+                  Settlement
                 </span>
               </div>
 
@@ -205,11 +198,11 @@ export default function SettlementList({
                 <button
                   className="btn btn-success btn-sm"
                   onClick={() => onMarkPaid(s)}
-                  title="Confirm energy reception and mark orbit as settled"
+                  title="Confirm payment reception and mark debt as settled"
                   style={{ height: '38px', padding: '0 1.1rem' }}
                 >
                   <Check size={16} />
-                  <span>Settle Orbit</span>
+                  <span>Mark as Paid</span>
                 </button>
               ) : isUserPayer ? (
                 <div
@@ -221,7 +214,7 @@ export default function SettlementList({
                     alignItems: 'center',
                     gap: '0.4rem',
                   }}
-                  title={`Only ${s.receiverName} is authorized to confirm and settle this orbit`}
+                  title={`Only ${s.receiverName} is authorized to confirm and mark this as paid`}
                 >
                   <Clock size={13} />
                   <span>Awaiting {s.receiverName}'s confirmation</span>
@@ -231,7 +224,7 @@ export default function SettlementList({
                   className="badge badge-primary"
                   style={{ padding: '0.4rem 0.75rem', fontSize: '0.75rem' }}
                 >
-                  <Orbit size={12} />
+                  <Clock size={12} />
                   <span>Pending</span>
                 </div>
               )}

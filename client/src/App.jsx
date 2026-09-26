@@ -92,7 +92,7 @@ export default function App() {
           <footer className="footer">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem' }}>
               <span className="cosmic-status-dot" />
-              <span>FAIRSHARE // COSMIC FINANCIAL NETWORK &bull; NODE ACTIVE</span>
+              <span>FAIRSHARE &bull; SMART EXPENSE SPLITTING IN THE COSMOS</span>
             </div>
           </footer>
         </div>

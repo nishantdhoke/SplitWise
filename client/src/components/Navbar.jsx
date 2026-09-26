@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Orbit, LogIn, LogOut, UserPlus, Server, Users, Compass, Sparkles } from 'lucide-react';
+import { Sparkles, LogIn, LogOut, UserPlus, Server, Users, LayoutDashboard, User } from 'lucide-react';
 
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -35,7 +35,7 @@ export default function Navbar() {
           justifyContent: 'space-between',
         }}
       >
-        {/* Brand: Celestial Orbit & Deep Space Telemetry */}
+        {/* Brand: FairShare in the Cosmic Environment */}
         <Link
           to={isAuthenticated ? '/dashboard' : '/'}
           style={{
@@ -59,7 +59,7 @@ export default function Navbar() {
               boxShadow: '0 0 16px rgba(56, 217, 255, 0.45)',
             }}
           >
-            <Orbit size={20} />
+            <Sparkles size={18} />
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
@@ -71,19 +71,19 @@ export default function Navbar() {
               style={{
                 fontSize: '0.62rem',
                 color: 'var(--text-muted)',
-                letterSpacing: '0.12em',
+                letterSpacing: '0.08em',
                 textTransform: 'uppercase',
                 display: 'block',
                 marginTop: '-2px',
               }}
             >
-              Cosmic Financial Orbit
+              Smart Expense Splitting
             </span>
           </div>
         </Link>
 
-        {/* Navigation Console */}
-        <ul style={{ display: 'flex', alignItems: 'center', gap: '1rem', listStyle: 'none' }}>
+        {/* Navigation Links */}
+        <ul style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', listStyle: 'none' }}>
           {isAuthenticated ? (
             <>
               <li>
@@ -104,8 +104,8 @@ export default function Navbar() {
                     transition: 'all var(--transition-fast)',
                   }}
                 >
-                  <Compass size={16} />
-                  <span>Orbit Command</span>
+                  <LayoutDashboard size={16} />
+                  <span>Dashboard</span>
                 </Link>
               </li>
               <li>
@@ -127,7 +127,7 @@ export default function Navbar() {
                   }}
                 >
                   <Users size={16} />
-                  <span>Planets</span>
+                  <span>My Groups</span>
                 </Link>
               </li>
               <li>
@@ -143,6 +143,9 @@ export default function Navbar() {
                     color: location.pathname === '/profile' ? 'var(--starlight-cyan)' : 'var(--text-secondary)',
                     padding: '0.4rem 0.75rem',
                     borderRadius: 'var(--radius-sm)',
+                    background: location.pathname === '/profile' ? 'rgba(56, 217, 255, 0.1)' : 'transparent',
+                    border: location.pathname === '/profile' ? '1px solid rgba(56, 217, 255, 0.25)' : '1px solid transparent',
+                    transition: 'all var(--transition-fast)',
                   }}
                 >
                   <div
@@ -169,11 +172,11 @@ export default function Navbar() {
                 <button
                   onClick={handleLogout}
                   className="btn btn-secondary btn-sm"
-                  title="Disconnect console"
+                  title="Logout from account"
                   style={{ gap: '0.4rem', color: 'var(--text-muted)' }}
                 >
                   <LogOut size={13} />
-                  <span>Exit</span>
+                  <span>Logout</span>
                 </button>
               </li>
             </>
@@ -190,7 +193,7 @@ export default function Navbar() {
                     padding: '0.45rem 0.75rem',
                   }}
                 >
-                  Cosmos
+                  Home
                 </Link>
               </li>
               <li>
@@ -208,7 +211,7 @@ export default function Navbar() {
                   }}
                 >
                   <Server size={14} color="var(--starlight-cyan)" />
-                  <span>Telemetry</span>
+                  <span>System Status</span>
                 </Link>
               </li>
               <li>
@@ -226,13 +229,13 @@ export default function Navbar() {
                   }}
                 >
                   <LogIn size={15} />
-                  <span>Enter</span>
+                  <span>Sign In</span>
                 </Link>
               </li>
               <li>
                 <Link to="/register" className="btn btn-primary btn-sm">
                   <UserPlus size={14} />
-                  <span>Initialize</span>
+                  <span>Sign Up</span>
                 </Link>
               </li>
             </>

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { createGroup } from '../services/api';
-import { Orbit, ArrowLeft, AlertCircle, Sparkles, Compass } from 'lucide-react';
+import { Users, ArrowLeft, AlertCircle, Sparkles, Plus } from 'lucide-react';
 import CosmicParticleBurst from '../components/CosmicParticleBurst';
 
-const PLANET_IDEAS = [
-  'Goa Expedition',
-  'Interstellar Habitat',
-  'Cosmic Road Odyssey',
-  'Weekend Haven',
-  'Office Crew',
-  'Research Cluster',
+const GROUP_IDEAS = [
+  'Goa Trip',
+  'Flatmates',
+  'Weekend Getaway',
+  'Office Lunch',
+  'Road Trip',
+  'Groceries',
 ];
 
 export default function CreateGroup() {
@@ -26,7 +26,7 @@ export default function CreateGroup() {
     setError('');
 
     if (!name.trim()) {
-      setError('Please provide a planetary world name.');
+      setError('Please provide a group name.');
       return;
     }
 
@@ -38,7 +38,7 @@ export default function CreateGroup() {
         navigate(`/groups/${data.group.id}`);
       }, 700);
     } catch (err) {
-      setError(err.message || 'Failed to chart planetary world.');
+      setError(err.message || 'Failed to create group.');
       setIsSubmitting(false);
     }
   };
@@ -60,7 +60,7 @@ export default function CreateGroup() {
           transition: 'color var(--transition-fast)',
         }}
       >
-        <ArrowLeft size={16} /> Back to Planetary Worlds
+        <ArrowLeft size={16} /> Back to Groups
       </Link>
 
       <div
@@ -86,13 +86,13 @@ export default function CreateGroup() {
               color: '#F8FAFF',
             }}
           >
-            <Orbit size={30} />
+            <Users size={28} />
           </div>
           <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--star-white)', letterSpacing: '-0.03em' }}>
-            Chart Planetary World
+            Create New Group
           </h2>
           <p className="text-muted" style={{ fontSize: '0.88rem', marginTop: '0.35rem' }}>
-            You will be designated as the founding captain of this celestial sector
+            Start a group to split expenses with friends, flatmates, or travel buddies
           </p>
         </div>
 
@@ -106,13 +106,13 @@ export default function CreateGroup() {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="form-label" htmlFor="group-name">
-              Planetary System Designation
+              Group Name
             </label>
             <input
               id="group-name"
               type="text"
               className="form-input"
-              placeholder="e.g. Goa Expedition, Flat Habitat"
+              placeholder="e.g. Goa Trip, Flat 402, Weekend Getaway"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -123,10 +123,10 @@ export default function CreateGroup() {
           {/* Quick Suggestions */}
           <div style={{ marginTop: '1.5rem' }}>
             <span className="text-muted" style={{ fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '0.35rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              <Sparkles size={13} color="var(--starlight-cyan)" /> Celestial Archetypes:
+              <Sparkles size={13} color="var(--starlight-cyan)" /> Suggestions:
             </span>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.65rem' }}>
-              {PLANET_IDEAS.map((idea) => (
+              {GROUP_IDEAS.map((idea) => (
                 <button
                   key={idea}
                   type="button"
@@ -149,12 +149,12 @@ export default function CreateGroup() {
             {isSubmitting ? (
               <>
                 <span className="cosmic-spinner" style={{ width: '1rem', height: '1rem', borderWidth: '2px' }}></span>
-                <span>Establishing Orbit...</span>
+                <span>Creating Group...</span>
               </>
             ) : (
               <>
-                <Compass size={16} />
-                <span>CHART PLANET</span>
+                <Plus size={16} />
+                <span>Create Group</span>
               </>
             )}
           </button>

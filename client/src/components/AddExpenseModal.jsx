@@ -196,7 +196,7 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
                 boxShadow: '0 0 35px rgba(56, 217, 255, 0.65)',
               }}
             >
-              <Orbit size={34} />
+              <CheckCircle2 size={34} />
             </div>
             <div
               className="finance-number"
@@ -210,10 +210,10 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
               +₹{numericAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
             </div>
             <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--star-white)' }}>
-              Absorbed into Orbit!
+              Expense Added!
             </h3>
             <p className="text-muted mt-1" style={{ fontSize: '0.9rem' }}>
-              Cosmic expense recorded. Planetary balances synchronized instantly.
+              Expense recorded and group balances updated successfully.
             </p>
           </div>
         ) : (

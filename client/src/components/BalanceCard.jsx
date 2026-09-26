@@ -88,7 +88,7 @@ export default function BalanceCard({ balance, isCurrentUser }) {
           {isNegative && (
             <div>
               <span style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--cosmic-negative)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                Owes Orbit
+                Owes
               </span>
               <div className="finance-number" style={{ fontSize: '1.25rem', marginTop: '2px' }}>
                 <AnimatedCounter value={absVal} color="coral" prefix="-₹" />
@@ -98,9 +98,9 @@ export default function BalanceCard({ balance, isCurrentUser }) {
 
           {isSettled && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--text-muted)' }}>
-              <Orbit size={16} color="var(--starlight-cyan)" />
+              <CheckCircle2 size={16} color="var(--starlight-cyan)" />
               <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--starlight-cyan)' }}>
-                Equilibrium
+                Settled Up
               </span>
             </div>
           )}
