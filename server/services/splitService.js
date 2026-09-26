@@ -82,9 +82,10 @@ const calculateCustomSplit = (totalAmountRupees, shares) => {
   let sumSharesPaise = 0;
 
   const results = shares.map((item) => {
+    const userId = parseInt(item.userId !== undefined ? item.userId : item.user_id, 10);
     const amountNum = parseFloat(item.amount);
     if (isNaN(amountNum) || amountNum < 0) {
-      throw new Error(`Invalid amount provided for participant ID ${item.userId}`);
+      throw new Error(`Invalid amount provided for participant ID ${userId}`);
     }
 
     const sharePaise = toPaise(amountNum);
@@ -95,7 +96,7 @@ const calculateCustomSplit = (totalAmountRupees, shares) => {
       : 0;
 
     return {
-      userId: item.userId,
+      userId,
       shareAmount: toRupees(sharePaise),
       sharePercentage: percentage,
     };
@@ -137,11 +138,12 @@ const calculatePercentageSplit = (totalAmountRupees, percentages) => {
   let allocatedPaise = 0;
 
   const rawShares = percentages.map((item) => {
+    const userId = parseInt(item.userId !== undefined ? item.userId : item.user_id, 10);
     const pct = parseFloat(item.percentage);
     const calculatedPaise = Math.floor((totalPaise * pct) / 100);
     allocatedPaise += calculatedPaise;
     return {
-      userId: item.userId,
+      userId,
       sharePaise: calculatedPaise,
       percentage: pct,
     };

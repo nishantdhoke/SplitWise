@@ -93,14 +93,15 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
     let payloadParticipants = [];
 
     if (splitMethod === 'EQUAL') {
-      payloadParticipants = selectedUserIds;
+      payloadParticipants = selectedUserIds.map((id) => Number(id));
     } else if (splitMethod === 'CUSTOM') {
       if (Math.abs(customDiff) > 0.01) {
         setError(`Custom amounts must equal exactly ₹${numericAmount} (Difference: ₹${Math.abs(customDiff)})`);
         return;
       }
       payloadParticipants = selectedUserIds.map((id) => ({
-        user_id: id,
+        userId: Number(id),
+        user_id: Number(id),
         amount: parseFloat(customAmounts[id]) || 0,
       }));
     } else if (splitMethod === 'PERCENTAGE') {
@@ -109,7 +110,8 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
         return;
       }
       payloadParticipants = selectedUserIds.map((id) => ({
-        user_id: id,
+        userId: Number(id),
+        user_id: Number(id),
         percentage: parseFloat(customPercentages[id]) || 0,
       }));
     }

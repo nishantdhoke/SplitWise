@@ -74,43 +74,44 @@ const createExpense = async (req, res, next) => {
 
     // Ensure all participants are group members
     const groupMembers = await getGroupMembers(groupId);
-    const groupMemberIdSet = new Set(groupMembers.map((m) => m.id));
+    const groupMemberIdSet = new Set(groupMembers.map((m) => Number(m.id)));
+
+    // Normalize participants array so every element consistently has numeric userId
+    const normalizedParticipants = participants.map((p) => {
+      if (typeof p === 'object' && p !== null) {
+        const rawId = p.userId !== undefined ? p.userId : p.user_id;
+        const uid = parseInt(rawId, 10);
+        return {
+          ...p,
+          userId: uid,
+          user_id: uid,
+          amount: p.amount !== undefined ? parseFloat(p.amount) : undefined,
+          percentage: p.percentage !== undefined ? parseFloat(p.percentage) : undefined,
+        };
+      }
+      const uid = parseInt(p, 10);
+      return { userId: uid, user_id: uid };
+    });
+
+    for (const p of normalizedParticipants) {
+      if (isNaN(p.userId) || !groupMemberIdSet.has(p.userId)) {
+        return res.status(400).json({
+          success: false,
+          message: `Participant with user ID ${p.userId} is not a member of this group`,
+        });
+      }
+    }
 
     // 6. Calculate Participant Shares using SplitService
     let calculatedShares = [];
     try {
       if (normalizedSplitMethod === 'EQUAL') {
-        // Participants can be array of IDs: [1, 2, 3] or array of objects [{ userId: 1 }, ...]
-        const userIds = participants.map((p) => (typeof p === 'object' ? p.userId : p));
-        for (const uid of userIds) {
-          if (!groupMemberIdSet.has(uid)) {
-            return res.status(400).json({
-              success: false,
-              message: `Participant with user ID ${uid} is not a member of this group`,
-            });
-          }
-        }
+        const userIds = normalizedParticipants.map((p) => p.userId);
         calculatedShares = calculateEqualSplit(numericAmount, userIds);
       } else if (normalizedSplitMethod === 'CUSTOM') {
-        for (const p of participants) {
-          if (!groupMemberIdSet.has(p.userId)) {
-            return res.status(400).json({
-              success: false,
-              message: `Participant with user ID ${p.userId} is not a member of this group`,
-            });
-          }
-        }
-        calculatedShares = calculateCustomSplit(numericAmount, participants);
+        calculatedShares = calculateCustomSplit(numericAmount, normalizedParticipants);
       } else if (normalizedSplitMethod === 'PERCENTAGE') {
-        for (const p of participants) {
-          if (!groupMemberIdSet.has(p.userId)) {
-            return res.status(400).json({
-              success: false,
-              message: `Participant with user ID ${p.userId} is not a member of this group`,
-            });
-          }
-        }
-        calculatedShares = calculatePercentageSplit(numericAmount, participants);
+        calculatedShares = calculatePercentageSplit(numericAmount, normalizedParticipants);
       }
     } catch (splitError) {
       return res.status(400).json({
