@@ -152,3 +152,17 @@ export async function getDashboard() {
 export async function getGroupActivity(groupId) {
   return apiRequest(`/groups/${groupId}/activity`);
 }
+
+// -------------------------------------------------------------------
+// Group Chat & Member Messaging
+// -------------------------------------------------------------------
+export async function getGroupMessages(groupId) {
+  return apiRequest(`/groups/${groupId}/messages`);
+}
+
+export async function sendGroupMessage(groupId, message) {
+  return apiRequest(`/groups/${groupId}/messages`, {
+    method: 'POST',
+    body: { message },
+  });
+}

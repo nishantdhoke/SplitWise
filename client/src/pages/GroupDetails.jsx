@@ -31,6 +31,7 @@ import {
   AlertCircle,
   Clock,
   Check,
+  MessageSquare,
 } from 'lucide-react';
 import ExpenseCard from '../components/ExpenseCard';
 import BalanceCard from '../components/BalanceCard';
@@ -40,6 +41,7 @@ import AddMemberModal from '../components/AddMemberModal';
 import AddExpenseModal from '../components/AddExpenseModal';
 import ExpenseDetailsModal from '../components/ExpenseDetailsModal';
 import SettleUpModal from '../components/SettleUpModal';
+import GroupChat from '../components/GroupChat';
 import AnimatedCounter from '../components/AnimatedCounter';
 
 export default function GroupDetails() {
@@ -346,6 +348,14 @@ export default function GroupDetails() {
             <span>Members ({group.members?.length || 0})</span>
           </button>
           <button
+            onClick={() => setActiveTab('chat')}
+            className={`btn btn-sm ${activeTab === 'chat' ? 'btn-primary' : 'btn-secondary'}`}
+            style={{ fontWeight: 700 }}
+          >
+            <MessageSquare size={14} />
+            <span>Group Chat</span>
+          </button>
+          <button
             onClick={() => setActiveTab('activity')}
             className={`btn btn-sm ${activeTab === 'activity' ? 'btn-primary' : 'btn-secondary'}`}
             style={{ fontWeight: 700 }}
@@ -643,6 +653,11 @@ export default function GroupDetails() {
             onRemoveMember={handleRemoveMember}
           />
         </div>
+      )}
+
+      {/* Tab Content: GROUP CHAT */}
+      {activeTab === 'chat' && (
+        <GroupChat groupId={groupId} groupName={group.name} />
       )}
 
       {/* Tab Content: ACTIVITY */}

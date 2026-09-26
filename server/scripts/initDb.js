@@ -114,6 +114,21 @@ const initDatabase = async () => {
     `);
     console.log('✅ Table `settlements` created or verified.');
 
+    // 9. Create 'messages' table for group chatting
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS \`messages\` (
+        \`id\` INT AUTO_INCREMENT PRIMARY KEY,
+        \`group_id\` INT NOT NULL,
+        \`user_id\` INT NOT NULL,
+        \`message\` TEXT NOT NULL,
+        \`created_at\` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX \`idx_group_created\` (\`group_id\`, \`created_at\`),
+        FOREIGN KEY (\`group_id\`) REFERENCES \`groups\`(\`id\`) ON DELETE CASCADE,
+        FOREIGN KEY (\`user_id\`) REFERENCES \`users\`(\`id\`) ON DELETE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+    console.log('✅ Table `messages` created or verified.');
+
     await connection.end();
     console.log('🎉 FairShare database tables successfully initialized!');
     process.exit(0);

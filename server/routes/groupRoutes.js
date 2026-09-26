@@ -21,6 +21,10 @@ const {
 const {
   getGroupActivity,
 } = require('../controllers/activityController');
+const {
+  postGroupMessage,
+  fetchGroupMessages,
+} = require('../controllers/messageController');
 const { requireAuth } = require('../middleware/authMiddleware');
 const { requireGroupMember } = require('../middleware/groupMiddleware');
 
@@ -112,5 +116,19 @@ router.get('/:groupId/settlements', requireGroupMember, getGroupSettlements);
  * @access  Private (Group Member)
  */
 router.get('/:groupId/activity', requireGroupMember, getGroupActivity);
+
+/**
+ * @route   GET /api/groups/:groupId/messages
+ * @desc    Get group chat messages
+ * @access  Private (Group Member)
+ */
+router.get('/:groupId/messages', requireGroupMember, fetchGroupMessages);
+
+/**
+ * @route   POST /api/groups/:groupId/messages
+ * @desc    Send a new message to group members
+ * @access  Private (Group Member)
+ */
+router.post('/:groupId/messages', requireGroupMember, postGroupMessage);
 
 module.exports = router;
