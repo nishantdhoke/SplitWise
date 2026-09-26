@@ -13,6 +13,48 @@ import CreateGroup from './pages/CreateGroup';
 import GroupDetails from './pages/GroupDetails';
 import Dashboard from './pages/Dashboard';
 
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('ErrorBoundary caught error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+          <div className="cosmic-panel" style={{ maxWidth: '500px', textAlign: 'center', padding: '2.5rem 2rem' }}>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--star-white)', marginBottom: '0.75rem' }}>
+              Interface Notice
+            </h2>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+              {this.state.error?.message || 'An unexpected error occurred while loading this view.'}
+            </p>
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                this.setState({ hasError: false, error: null });
+                window.location.href = '/';
+              }}
+            >
+              Return to Home
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 function HomeRoute() {
   const { isAuthenticated, loading } = useAuth();
   if (loading) {
@@ -27,14 +69,15 @@ function HomeRoute() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div className="app-container">
-          {/* Universal Cinematic Deep Space Environment */}
-          <CosmicBackground />
+    <ErrorBoundary>
+      <AuthProvider>
+        <Router>
+          <div className="app-container">
+            {/* Universal Cinematic Deep Space Environment */}
+            <CosmicBackground />
 
-          <Navbar />
-          <main className="main-content">
+            <Navbar />
+            <main className="main-content">
             <Routes>
               {/* Home & Public Routes */}
               <Route path="/" element={<HomeRoute />} />
@@ -95,5 +138,6 @@ export default function App() {
         </div>
       </Router>
     </AuthProvider>
+    </ErrorBoundary>
   );
 }

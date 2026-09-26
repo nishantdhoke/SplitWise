@@ -9,6 +9,7 @@ import {
   Scale,
   Receipt,
   Shield,
+  Orbit,
 } from 'lucide-react';
 
 export default function Landing() {
