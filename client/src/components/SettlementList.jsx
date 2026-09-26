@@ -1,6 +1,13 @@
 import React from 'react';
-import { ArrowRight, Check, CheckCircle2, Clock } from 'lucide-react';
+import { Orbit, Check, CheckCircle2, Clock, Sparkles } from 'lucide-react';
 
+/**
+ * SettlementList Component (COSMIC ORBITAL RELATIONSHIPS)
+ * 
+ * Visualizes debts as cosmic orbital paths connecting celestial bodies.
+ * Cosmic energy travels from debtor to creditor along the orbital path.
+ * Only the authorized receiver can settle the debt.
+ */
 export default function SettlementList({
   settlements = [],
   currentUserId,
@@ -12,36 +19,39 @@ export default function SettlementList({
         className="card"
         style={{
           textAlign: 'center',
-          padding: '3rem 1.5rem',
-          background: 'var(--surface)',
+          padding: '3.5rem 1.5rem',
+          background: 'var(--space-panel)',
         }}
       >
         <div
           style={{
-            width: '48px',
-            height: '48px',
+            width: '54px',
+            height: '54px',
             borderRadius: '50%',
-            background: 'var(--success-subtle)',
-            color: 'var(--success)',
+            background: 'radial-gradient(circle, rgba(52, 211, 153, 0.25) 0%, rgba(3, 4, 11, 0.8) 100%)',
+            border: '1px solid rgba(52, 211, 153, 0.5)',
+            color: 'var(--cosmic-positive)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto 1rem',
-            boxShadow: '0 0 15px rgba(53, 224, 161, 0.3)',
+            margin: '0 auto 1.25rem',
+            boxShadow: '0 0 25px rgba(52, 211, 153, 0.35)',
           }}
         >
-          <CheckCircle2 size={28} />
+          <CheckCircle2 size={30} />
         </div>
-        <h4 style={{ fontSize: '1.2rem', fontWeight: 700 }}>Everyone is Settled Up!</h4>
+        <h4 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--star-white)' }}>
+          All Orbits Balanced
+        </h4>
         <p className="text-muted mt-1" style={{ fontSize: '0.9rem', maxWidth: '420px', margin: '0.5rem auto 0' }}>
-          Zero debts remaining. FairShare has minimized and balanced all debts across group members.
+          Zero gravitational debt remaining. All member balances are in cosmic harmony.
         </p>
       </div>
     );
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.95rem' }}>
       {settlements.map((s, idx) => {
         const isUserPayer = s.payerId === currentUserId;
         const isUserReceiver = s.receiverId === currentUserId;
@@ -58,135 +68,160 @@ export default function SettlementList({
             key={`${s.payerId}-${s.receiverId}-${idx}`}
             className="card"
             style={{
-              padding: '1.15rem 1.4rem',
-              backgroundColor: isUserInvolved ? 'var(--surface-elevated)' : 'var(--surface)',
+              padding: '1.25rem 1.5rem',
+              backgroundColor: isUserInvolved ? 'rgba(13, 20, 41, 0.85)' : 'var(--space-panel)',
               border: isUserReceiver
-                ? '1px solid rgba(53, 224, 161, 0.4)'
+                ? '1px solid rgba(52, 211, 153, 0.45)'
                 : isUserPayer
-                ? '1px solid rgba(255, 100, 124, 0.4)'
+                ? '1px solid rgba(251, 113, 133, 0.45)'
                 : '1px solid var(--border)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               flexWrap: 'wrap',
-              gap: '1rem',
+              gap: '1.25rem',
             }}
           >
-            {/* Payer Avatar -> Animated Arrow -> Receiver Avatar */}
+            {/* Payer Celestial Body ──── Orbital Energy Path ────> Receiver Celestial Body */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
-              {/* Payer (Owes Money -> Coral) */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+              {/* Payer (Debtor: Coral Atmosphere) */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 <div
                   style={{
-                    width: '38px',
-                    height: '38px',
+                    width: '42px',
+                    height: '42px',
                     borderRadius: '50%',
-                    backgroundColor: 'var(--danger-dark)',
-                    border: '1.5px solid var(--danger)',
-                    color: 'var(--danger)',
+                    background: 'radial-gradient(circle at 35% 35%, #FDA4AF 0%, #E11D48 70%, #03040B 100%)',
+                    border: '1.5px solid rgba(251, 113, 133, 0.6)',
+                    color: '#F8FAFF',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontWeight: 700,
-                    fontSize: '0.9rem',
-                    boxShadow: '0 0 10px rgba(255, 100, 124, 0.25)',
+                    fontWeight: 800,
+                    fontSize: '0.95rem',
+                    boxShadow: '0 0 14px rgba(251, 113, 133, 0.35)',
                   }}
                 >
                   {s.payerName.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <span style={{ fontWeight: 700, fontSize: '0.95rem', color: isUserPayer ? 'var(--danger)' : 'var(--text-main)', display: 'block' }}>
+                  <span
+                    style={{
+                      fontWeight: 700,
+                      fontSize: '0.95rem',
+                      color: isUserPayer ? 'var(--cosmic-negative)' : 'var(--star-white)',
+                      display: 'block',
+                    }}
+                  >
                     {isUserPayer ? 'You' : s.payerName}
                   </span>
-                  <span className="text-muted" style={{ fontSize: '0.75rem' }}>Payer (Owes)</span>
+                  <span className="text-muted" style={{ fontSize: '0.72rem', letterSpacing: '0.04em' }}>
+                    Debtor
+                  </span>
                 </div>
               </div>
 
-              {/* Dynamic Money Flow Track: Glowing ₹ traveling from Payer to Receiver */}
+              {/* Glowing Orbital Path: Energy Traveling from Payer to Receiver */}
               <div
-                className="money-flow-track"
-                title={`₹${s.amount} transfer from ${isUserPayer ? 'You' : s.payerName} to ${isUserReceiver ? 'You' : s.receiverName}`}
-                style={{ minWidth: '110px' }}
+                className="orbital-path-track"
+                title={`Cosmic energy debt of ₹${s.amount} directed from ${isUserPayer ? 'You' : s.payerName} to ${isUserReceiver ? 'You' : s.receiverName}`}
+                style={{ minWidth: '120px' }}
               >
-                <div className="money-flow-line" />
-                <div className="money-flow-token" title="In-flight settlement flow">
-                  ₹
-                </div>
+                <div className="orbital-path-line" />
+                <div className="orbital-energy-pulse" />
                 <span
                   style={{
                     position: 'absolute',
                     top: '-15px',
-                    fontSize: '0.68rem',
-                    fontWeight: 700,
-                    color: 'var(--text-muted)',
+                    fontSize: '0.65rem',
+                    fontWeight: 800,
+                    color: 'var(--starlight-cyan)',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.5px',
+                    letterSpacing: '0.08em',
                   }}
                 >
-                  pays
+                  Orbit Energy
                 </span>
               </div>
 
-              {/* Receiver (Receives Money -> Mint) */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', position: 'relative' }}>
+              {/* Receiver (Creditor: Mint Starlight Atmosphere) */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', position: 'relative' }}>
                 <div
                   style={{
-                    width: '38px',
-                    height: '38px',
+                    width: '42px',
+                    height: '42px',
                     borderRadius: '50%',
-                    backgroundColor: 'var(--success-dark)',
-                    border: '1.5px solid var(--success)',
-                    color: 'var(--success)',
+                    background: 'radial-gradient(circle at 35% 35%, #6EE7B7 0%, #059669 70%, #03040B 100%)',
+                    border: '1.5px solid rgba(52, 211, 153, 0.6)',
+                    color: '#03040B',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontWeight: 700,
-                    fontSize: '0.9rem',
-                    boxShadow: '0 0 10px rgba(53, 224, 161, 0.25)',
+                    fontWeight: 800,
+                    fontSize: '0.95rem',
+                    boxShadow: '0 0 14px rgba(52, 211, 153, 0.35)',
                   }}
                 >
                   {s.receiverName.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <span style={{ fontWeight: 700, fontSize: '0.95rem', color: isUserReceiver ? 'var(--success)' : 'var(--text-main)', display: 'block' }}>
+                  <span
+                    style={{
+                      fontWeight: 700,
+                      fontSize: '0.95rem',
+                      color: isUserReceiver ? 'var(--cosmic-positive)' : 'var(--star-white)',
+                      display: 'block',
+                    }}
+                  >
                     {isUserReceiver ? 'You' : s.receiverName}
                   </span>
-                  <span className="text-muted" style={{ fontSize: '0.75rem' }}>Receiver</span>
+                  <span className="text-muted" style={{ fontSize: '0.72rem', letterSpacing: '0.04em' }}>
+                    Creditor
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* Amount and Action */}
+            {/* Amount and Orbital Settlement Action */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
               <div style={{ textAlign: 'right' }}>
-                <div className="finance-number" style={{ fontSize: '1.35rem', color: 'var(--text-main)' }}>
+                <div
+                  className="finance-number"
+                  style={{
+                    fontSize: '1.35rem',
+                    color: 'var(--star-white)',
+                    textShadow: '0 0 14px rgba(56, 217, 255, 0.4)',
+                  }}
+                >
                   {formattedAmount}
                 </div>
-                <span className="text-muted" style={{ fontSize: '0.75rem' }}>Direct settlement</span>
+                <span className="text-muted" style={{ fontSize: '0.72rem', letterSpacing: '0.04em' }}>
+                  Direct Orbit Settlement
+                </span>
               </div>
 
-              {/* Authorization Gate: ONLY the Receiver can mark as paid */}
+              {/* Authorization Gate: ONLY the Receiver can settle the debt */}
               {isUserReceiver && onMarkPaid ? (
                 <button
                   className="btn btn-success btn-sm"
                   onClick={() => onMarkPaid(s)}
-                  title="Confirm receipt and mark payment as settled"
-                  style={{ height: '38px', padding: '0 1rem' }}
+                  title="Confirm energy reception and mark orbit as settled"
+                  style={{ height: '38px', padding: '0 1.1rem' }}
                 >
                   <Check size={16} />
-                  <span>Mark as Paid</span>
+                  <span>Settle Orbit</span>
                 </button>
               ) : isUserPayer ? (
                 <div
                   className="badge badge-warning"
                   style={{
-                    padding: '0.4rem 0.75rem',
-                    fontSize: '0.8rem',
+                    padding: '0.45rem 0.85rem',
+                    fontSize: '0.78rem',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.35rem',
+                    gap: '0.4rem',
                   }}
-                  title={`Only ${s.receiverName} is authorized to confirm and settle this payment`}
+                  title={`Only ${s.receiverName} is authorized to confirm and settle this orbit`}
                 >
                   <Clock size={13} />
                   <span>Awaiting {s.receiverName}'s confirmation</span>
@@ -194,8 +229,9 @@ export default function SettlementList({
               ) : (
                 <div
                   className="badge badge-primary"
-                  style={{ padding: '0.35rem 0.65rem', fontSize: '0.78rem' }}
+                  style={{ padding: '0.4rem 0.75rem', fontSize: '0.75rem' }}
                 >
+                  <Orbit size={12} />
                   <span>Pending</span>
                 </div>
               )}

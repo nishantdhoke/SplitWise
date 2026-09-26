@@ -1,87 +1,74 @@
 /* ===================================================================
-   FairShare — Dark Futuristic Design System
-   Visual Identity: Premium, Futuristic, Dark, Clean & Energetic
+   FairShare — COSMOS / DEEP SPACE VISUAL IDENTITY
+   "Managing your expenses inside the universe."
    =================================================================== */
 
 :root {
-  /* Primary Backgrounds */
-  --bg-main: #080A12;
-  --surface: #10131F;
-  --surface-elevated: #171B2B;
-  --surface-glass: rgba(16, 19, 31, 0.75);
+  /* 1. Deep Space Canvas & Foundations */
+  --space-void: #03040B;           /* Base deep space black */
+  --space-navy: #080D1D;           /* Midnight navy spacecraft hull */
+  --space-elevated: #0D1429;       /* Elevated console panel */
+  --space-panel: rgba(8, 13, 29, 0.72); /* Translucent cosmic panel */
 
-  /* Primary Accent: Electric Violet */
-  --primary: #7C5CFC;
-  --primary-hover: #9B7BFF;
-  --primary-glow: rgba(124, 92, 252, 0.25);
-  --primary-subtle: rgba(124, 92, 252, 0.12);
+  /* 2. Celestial Energy & Accents */
+  --cosmic-purple: #7C3AED;        /* Primary warp purple */
+  --nebula-violet: #9B5CFF;        /* Nebula glow */
+  --cosmic-blue: #2563EB;          /* Stellar blue */
+  --starlight-cyan: #38D9FF;       /* Cyan telemetry & energy */
+  --magical-pink: #D946EF;         /* Rare celestial spark (used sparingly) */
+  --star-white: #F8FAFF;           /* Bright stellar text */
 
-  /* Secondary Accent: Cyan */
-  --secondary: #35D6FF;
-  --secondary-glow: rgba(53, 214, 255, 0.25);
-  --secondary-subtle: rgba(53, 214, 255, 0.1);
+  /* 3. Financial Energy States */
+  --cosmic-positive: #34D399;      /* Positive Energy (Gets back / Owed to user) */
+  --cosmic-positive-dim: rgba(52, 211, 153, 0.15);
+  --cosmic-positive-glow: rgba(52, 211, 153, 0.35);
 
-  /* Positive State / Money Owed to You: Mint Green */
-  --success: #35E0A1;
-  --success-dark: #123A32;
-  --success-glow: rgba(53, 224, 161, 0.25);
-  --success-subtle: rgba(53, 224, 161, 0.12);
+  --cosmic-negative: #FB7185;      /* Negative Energy (Owes to orbit) */
+  --cosmic-negative-dim: rgba(251, 113, 133, 0.15);
+  --cosmic-negative-glow: rgba(251, 113, 133, 0.35);
 
-  /* Negative State / Money You Owe: Coral Red */
-  --danger: #FF647C;
-  --danger-dark: #421C25;
-  --danger-glow: rgba(255, 100, 124, 0.25);
-  --danger-subtle: rgba(255, 100, 124, 0.12);
+  --cosmic-neutral: #94A3B8;       /* Settled / Stable orbit */
 
-  /* Warning / Notice: Amber */
+  /* Aliases for semantic usage */
+  --primary: var(--cosmic-purple);
+  --primary-hover: var(--nebula-violet);
+  --primary-subtle: rgba(124, 58, 237, 0.14);
+  --secondary: var(--starlight-cyan);
+  --secondary-hover: #67E8F9;
+  --secondary-subtle: rgba(56, 217, 255, 0.12);
+  --success: var(--cosmic-positive);
+  --success-dark: rgba(5, 150, 105, 0.2);
+  --danger: var(--cosmic-negative);
+  --danger-dark: rgba(225, 29, 72, 0.2);
   --warning: #FBBF24;
-  --warning-dark: #37280C;
-  --warning-subtle: rgba(251, 191, 36, 0.12);
+  --warning-dark: rgba(245, 158, 11, 0.2);
 
-  /* Neutral Text Hierarchy */
-  --text-main: #F5F7FF;
-  --text-secondary: #A7ADC2;
-  --text-muted: #6F768C;
+  /* Typography Colors */
+  --text-main: var(--star-white);
+  --text-secondary: #94A3B8;       /* Starlight muted silver */
+  --text-muted: #64748B;           /* Deep celestial gray */
 
-  /* Borders */
-  --border: #252A3A;
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-focus: #7C5CFC;
+  /* Borders & Console Rings */
+  --border: rgba(124, 58, 237, 0.18);
+  --border-active: rgba(56, 217, 255, 0.45);
+  --border-subtle: rgba(248, 250, 255, 0.08);
 
-  /* Spacing Scale (8px system) */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 16px;
-  --space-4: 24px;
-  --space-5: 32px;
-  --space-6: 48px;
-  --space-7: 64px;
-
-  /* Border Radii */
+  /* Radii */
   --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-  --radius-xl: 24px;
-  --radius-2xl: 28px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
   --radius-full: 9999px;
-
-  /* Shadows & Depth */
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.55);
-  --shadow-glow-violet: 0 8px 30px rgba(124, 92, 252, 0.25);
-  --shadow-glow-mint: 0 8px 30px rgba(53, 224, 161, 0.25);
-  --shadow-glow-coral: 0 8px 30px rgba(255, 100, 124, 0.25);
 
   /* Typography */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-normal: 250ms cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-smooth: 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 380ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ===================================================================
-   Base Reset & Typography
+   Base Reset
    =================================================================== */
 
 * {
@@ -91,454 +78,232 @@
 }
 
 html, body {
-  background-color: var(--bg-main);
+  background-color: var(--space-void);
   color: var(--text-main);
   font-family: var(--font-family);
   font-size: 16px;
   line-height: 1.6;
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
-/* Custom Dark Futuristic Scrollbar */
+/* Scrollbar in space style */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-main);
+  background: var(--space-void);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1F2436;
-  border-radius: var(--radius-full);
+  background: rgba(124, 58, 237, 0.3);
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+  background: var(--starlight-cyan);
 }
 
-/* Headings Scale */
-h1, h2, h3, h4, h5, h6 {
-  color: var(--text-main);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
+/* ===================================================================
+   Layout Containers
+   =================================================================== */
 
-.display-title {
-  font-size: 48px;
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -1.5px;
-}
-
-h1 {
-  font-size: 36px;
-  line-height: 1.2;
-  letter-spacing: -1px;
-}
-
-h2 {
-  font-size: 28px;
-  line-height: 1.25;
-  letter-spacing: -0.5px;
-}
-
-h3 {
-  font-size: 20px;
-  line-height: 1.3;
-}
-
-p {
-  color: var(--text-secondary);
-}
-
-.text-muted {
-  color: var(--text-muted);
-}
-
-.text-mint {
-  color: var(--success);
-}
-
-.text-coral {
-  color: var(--danger);
-}
-
-.text-violet {
-  color: var(--primary);
-}
-
-.text-cyan {
-  color: var(--secondary);
-}
-
-.gradient-text {
-  background: linear-gradient(135deg, #F5F7FF 0%, #9B7BFF 50%, #35D6FF 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.gradient-text-violet {
-  background: linear-gradient(135deg, #7C5CFC 0%, #35D6FF 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* App Container Layout */
 .app-container {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-main);
-  background-image: 
-    radial-gradient(at 10% 10%, rgba(124, 92, 252, 0.07) 0px, transparent 50%),
-    radial-gradient(at 90% 90%, rgba(53, 214, 255, 0.05) 0px, transparent 50%);
+  min-height: 100vh;
+  position: relative;
+  z-index: 1; /* Above CosmicBackground canvas */
 }
 
 .main-content {
   flex: 1;
-  max-width: 1140px;
+  max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: var(--space-5) var(--space-3);
-  animation: fadeIn 350ms ease;
+  padding: 2.25rem 1.5rem 4rem;
+  position: relative;
+  z-index: 2;
 }
 
 /* ===================================================================
-   Navigation Bar (Dark Glass)
+   Cosmic Console Panels & Cards
    =================================================================== */
 
-.navbar {
-  background: rgba(8, 10, 18, 0.82);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-}
-
-.navbar-inner {
-  max-width: 1140px;
-  margin: 0 auto;
-  padding: 0.85rem var(--space-3);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.navbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  text-decoration: none;
-  font-size: 1.35rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--primary);
-  transition: opacity var(--transition-fast);
-}
-
-.navbar-brand:hover {
-  opacity: 0.9;
-}
-
-.navbar-brand span {
-  color: var(--text-main);
-}
-
-.navbar-brand-icon {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  color: #FFFFFF;
-  padding: 0.4rem;
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 15px rgba(124, 92, 252, 0.4);
-}
-
-.navbar-links {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  list-style: none;
-}
-
-.navbar-link {
-  text-decoration: none;
-  color: var(--text-secondary);
-  font-size: 0.92rem;
-  font-weight: 500;
-  padding: 0.45rem 0.9rem;
-  border-radius: var(--radius-md);
-  transition: all var(--transition-fast);
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.navbar-link:hover {
-  color: var(--text-main);
-  background-color: var(--surface-elevated);
-}
-
-.navbar-link.active {
-  color: var(--primary-hover);
-  background-color: var(--primary-subtle);
-  border: 1px solid rgba(124, 92, 252, 0.25);
-  box-shadow: 0 0 12px rgba(124, 92, 252, 0.15);
-}
-
-/* ===================================================================
-   Cards, Surfaces & Glassmorphism
-   =================================================================== */
-
-.card {
-  background: var(--surface);
+.card,
+.glass-card,
+.cosmic-panel {
+  background: var(--space-panel);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: var(--space-4);
-  box-shadow: var(--shadow-sm);
+  padding: 1.6rem;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 35px -5px rgba(3, 4, 11, 0.8),
+              0 0 20px -2px rgba(124, 58, 237, 0.1);
   transition: all var(--transition-normal);
   position: relative;
+  overflow: hidden;
 }
 
-.card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(124, 92, 252, 0.45);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+.card:hover,
+.cosmic-panel:hover {
+  border-color: rgba(56, 217, 255, 0.35);
+  box-shadow: 0 14px 45px -5px rgba(3, 4, 11, 0.9),
+              0 0 25px 0 rgba(56, 217, 255, 0.15);
+  transform: translateY(-2px);
 }
 
-.card-elevated {
-  background: var(--surface-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
-  box-shadow: var(--shadow-md);
-}
-
-/* Glass Card */
-.glass-card {
-  background: var(--surface-glass);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
-  box-shadow: var(--shadow-md);
-  transition: all var(--transition-normal);
-}
-
-.glass-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(124, 92, 252, 0.5);
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.5);
+/* Subtly glowing cosmic border line on top of panels */
+.card::before,
+.cosmic-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56, 217, 255, 0.4), transparent);
+  pointer-events: none;
 }
 
 /* ===================================================================
-   Buttons
+   Financial Numbers as Cosmic Energy
+   =================================================================== */
+
+.finance-number {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+.finance-number-lg {
+  font-size: 2.35rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+/* Cosmic aura on numbers */
+.cosmic-aura-positive {
+  color: var(--cosmic-positive);
+  text-shadow: 0 0 18px var(--cosmic-positive-glow);
+}
+
+.cosmic-aura-negative {
+  color: var(--cosmic-negative);
+  text-shadow: 0 0 18px var(--cosmic-negative-glow);
+}
+
+.cosmic-aura-neutral {
+  color: var(--star-white);
+  text-shadow: 0 0 14px rgba(248, 250, 255, 0.35);
+}
+
+.cosmic-aura-cyan {
+  color: var(--starlight-cyan);
+  text-shadow: 0 0 18px rgba(56, 217, 255, 0.5);
+}
+
+/* ===================================================================
+   Buttons — Spacecraft Propulsion & Control
    =================================================================== */
 
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
+  padding: 0.75rem 1.4rem;
   font-family: var(--font-family);
+  font-size: 0.92rem;
   font-weight: 600;
-  font-size: 15px;
-  height: 44px;
-  padding: 0 1.25rem;
   border-radius: var(--radius-md);
   border: 1px solid transparent;
   cursor: pointer;
-  text-decoration: none;
   transition: all var(--transition-fast);
+  text-decoration: none;
   white-space: nowrap;
 }
 
-/* Primary Button: Electric Violet */
+.btn:active {
+  transform: scale(0.98);
+}
+
 .btn-primary {
-  background-color: var(--primary);
-  color: #FFFFFF;
-  box-shadow: var(--shadow-glow-violet);
+  background: linear-gradient(135deg, #7C3AED 0%, #2563EB 100%);
+  color: var(--star-white);
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.35);
+  border: 1px solid rgba(155, 92, 255, 0.4);
 }
 
 .btn-primary:hover {
-  background-color: var(--primary-hover);
+  background: linear-gradient(135deg, #9B5CFF 0%, #38D9FF 100%);
+  box-shadow: 0 0 28px rgba(56, 217, 255, 0.5);
+  color: #03040B;
   transform: translateY(-2px);
-  box-shadow: 0 12px 35px rgba(124, 92, 252, 0.45);
 }
 
-.btn-primary:active {
-  transform: translateY(0);
-}
-
-.btn-primary:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* Secondary Button: Elevated Surface */
 .btn-secondary {
-  background-color: var(--surface-elevated);
-  border: 1px solid var(--border);
+  background: rgba(13, 20, 41, 0.85);
   color: var(--text-main);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
 }
 
 .btn-secondary:hover {
-  background-color: #1F2436;
-  border-color: var(--primary);
-  color: #FFFFFF;
-  transform: translateY(-2px);
+  background: rgba(22, 33, 65, 0.9);
+  border-color: var(--starlight-cyan);
+  color: var(--starlight-cyan);
+  transform: translateY(-1px);
 }
 
-.btn-secondary:active {
-  transform: translateY(0);
-}
-
-/* Danger Button: Dark Coral */
-.btn-danger {
-  background-color: var(--danger-dark);
-  border: 1px solid rgba(255, 100, 124, 0.3);
-  color: var(--danger);
-}
-
-.btn-danger:hover {
-  background-color: #552430;
-  border-color: var(--danger);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-glow-coral);
-}
-
-/* Success Button: Dark Mint */
 .btn-success {
-  background-color: var(--success);
-  color: #080A12;
-  box-shadow: var(--shadow-glow-mint);
+  background: linear-gradient(135deg, #059669 0%, #34D399 100%);
+  color: #03040B;
   font-weight: 700;
+  box-shadow: 0 0 20px var(--cosmic-positive-glow);
 }
 
 .btn-success:hover {
-  background-color: #52e8b0;
+  background: linear-gradient(135deg, #10B981 0%, #6EE7B7 100%);
+  box-shadow: 0 0 30px var(--cosmic-positive-glow);
   transform: translateY(-2px);
-  box-shadow: 0 12px 35px rgba(53, 224, 161, 0.4);
 }
 
-/* Icon-only Button */
-.btn-icon {
-  width: 40px;
-  height: 40px;
-  padding: 0;
+.btn-danger {
+  background: linear-gradient(135deg, #BE123C 0%, #FB7185 100%);
+  color: var(--star-white);
+  box-shadow: 0 0 20px var(--cosmic-negative-glow);
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #E11D48 0%, #FDA4AF 100%);
+  color: #03040B;
+  box-shadow: 0 0 30px var(--cosmic-negative-glow);
+  transform: translateY(-2px);
+}
+
+.btn-sm {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.82rem;
   border-radius: var(--radius-sm);
+}
+
+.btn-icon {
+  padding: 0.65rem;
+  border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Small Button */
-.btn-sm {
-  height: 34px;
-  padding: 0 0.85rem;
-  font-size: 13px;
-  border-radius: var(--radius-sm);
-}
-
 /* ===================================================================
-   Financial Numbers Hierarchy
-   =================================================================== */
-
-.finance-number {
-  font-family: var(--font-family);
-  font-weight: 700;
-  letter-spacing: -1px;
-}
-
-.finance-number-lg {
-  font-size: 40px;
-  line-height: 1.1;
-}
-
-.finance-number-md {
-  font-size: 28px;
-  line-height: 1.2;
-}
-
-.finance-number-sm {
-  font-size: 18px;
-}
-
-/* ===================================================================
-   Badges & Pills
-   =================================================================== */
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.25rem 0.65rem;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-.badge-primary {
-  background: var(--primary-subtle);
-  color: var(--primary-hover);
-  border: 1px solid rgba(124, 92, 252, 0.3);
-}
-
-.badge-success {
-  background: var(--success-subtle);
-  color: var(--success);
-  border: 1px solid rgba(53, 224, 161, 0.3);
-}
-
-.badge-danger {
-  background: var(--danger-subtle);
-  color: var(--danger);
-  border: 1px solid rgba(255, 100, 124, 0.3);
-}
-
-.badge-warning {
-  background: var(--warning-subtle);
-  color: var(--warning);
-  border: 1px solid rgba(251, 191, 36, 0.3);
-}
-
-.badge-cyan {
-  background: var(--secondary-subtle);
-  color: var(--secondary);
-  border: 1px solid rgba(53, 214, 255, 0.3);
-}
-
-/* Status Indicator Dot */
-.status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.status-dot.online {
-  background-color: var(--success);
-  box-shadow: 0 0 8px rgba(53, 224, 161, 0.8);
-}
-
-.status-dot.offline {
-  background-color: var(--danger);
-  box-shadow: 0 0 8px rgba(255, 100, 124, 0.8);
-}
-
-/* ===================================================================
-   Forms & Inputs
+   Form Controls — Cosmic Console
    =================================================================== */
 
 .form-group {
@@ -548,19 +313,20 @@ p {
 }
 
 .form-label {
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-secondary);
+  letter-spacing: 0.02em;
 }
 
 .form-input {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.8rem 1.1rem;
   font-size: 0.95rem;
   font-family: var(--font-family);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  background-color: var(--surface-elevated);
+  background-color: rgba(6, 9, 20, 0.85);
   color: var(--text-main);
   transition: all var(--transition-fast);
   outline: none;
@@ -571,467 +337,153 @@ p {
 }
 
 .form-input:focus {
-  border-color: var(--primary);
-  background-color: #1A1F32;
-  box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.25);
+  border-color: var(--starlight-cyan);
+  background-color: rgba(10, 16, 36, 0.95);
+  box-shadow: 0 0 0 3px rgba(56, 217, 255, 0.2),
+              0 0 15px rgba(56, 217, 255, 0.15);
 }
 
-/* Alerts */
+/* ===================================================================
+   Badges & Telemetry Pills
+   =================================================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.badge-primary {
+  background: rgba(124, 58, 237, 0.2);
+  border: 1px solid rgba(155, 92, 255, 0.35);
+  color: var(--nebula-violet);
+}
+
+.badge-success {
+  background: var(--cosmic-positive-dim);
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  color: var(--cosmic-positive);
+}
+
+.badge-danger {
+  background: var(--cosmic-negative-dim);
+  border: 1px solid rgba(251, 113, 133, 0.4);
+  color: var(--cosmic-negative);
+}
+
+.badge-warning {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #FCD34D;
+}
+
+.cosmic-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--starlight-cyan);
+  box-shadow: 0 0 10px var(--starlight-cyan);
+  animation: cosmicPulse 2s ease-in-out infinite alternate;
+}
+
+/* ===================================================================
+   Alerts & Notifications
+   =================================================================== */
+
 .alert {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.85rem 1.15rem;
+  padding: 0.9rem 1.2rem;
   border-radius: var(--radius-md);
   font-size: 0.9rem;
+  backdrop-filter: blur(10px);
 }
 
 .alert-danger {
-  background-color: var(--danger-dark);
-  border: 1px solid rgba(255, 100, 124, 0.3);
-  color: var(--danger);
+  background-color: rgba(225, 29, 72, 0.15);
+  border: 1px solid rgba(251, 113, 133, 0.4);
+  color: #FDA4AF;
 }
 
 .alert-success {
-  background-color: var(--success-dark);
-  border: 1px solid rgba(53, 224, 161, 0.3);
-  color: var(--success);
+  background-color: rgba(5, 150, 105, 0.15);
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  color: #A7F3D0;
 }
 
-/* Spinner */
-.spinner {
+/* ===================================================================
+   Cosmic Spinners
+   =================================================================== */
+
+.spinner,
+.cosmic-spinner {
   width: 1.5rem;
   height: 1.5rem;
-  border: 2px solid var(--border);
-  border-top-color: var(--primary);
+  border: 2px solid rgba(124, 58, 237, 0.2);
+  border-top-color: var(--starlight-cyan);
+  border-right-color: var(--nebula-violet);
   border-radius: 50%;
-  animation: spin 0.7s linear infinite;
+  animation: cosmicSpin 0.7s linear infinite;
   display: inline-block;
 }
 
-@keyframes spin {
+@keyframes cosmicSpin {
   to { transform: rotate(360deg); }
 }
 
-/* Keyframe Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+/* ===================================================================
+   Cosmic Modals
+   =================================================================== */
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes eyeBreathe {
-  0%, 100% {
-    transform: scale(1);
-    filter: drop-shadow(0 0 16px rgba(124, 92, 252, 0.35));
-  }
-  50% {
-    transform: scale(1.02);
-    filter: drop-shadow(0 0 24px rgba(124, 92, 252, 0.55));
-  }
-}
-
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 12px rgba(124, 92, 252, 0.3); }
-  50% { box-shadow: 0 0 24px rgba(124, 92, 252, 0.6); }
-}
-
-.signature-eye-aura {
-  animation: eyeBreathe 4.5s ease-in-out infinite;
-}
-
-/* Grid & Utilities */
-.grid-2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.25rem;
-}
-
-.grid-3 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.25rem;
-}
-
-.flex-between {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.mt-1 { margin-top: 0.5rem; }
-.mt-2 { margin-top: 1rem; }
-.mt-3 { margin-top: 1.5rem; }
-.mt-4 { margin-top: 2rem; }
-
-/* Modal Backdrop */
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(8, 10, 18, 0.85);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background-color: rgba(3, 4, 11, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
-  padding: 1rem;
-  animation: fadeIn 200ms ease;
+  padding: 1.25rem;
+  animation: cosmicWarpFade 220ms ease-out;
 }
 
 .modal-content {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: rgba(8, 13, 29, 0.92);
+  border: 1px solid rgba(124, 58, 237, 0.35);
   border-radius: var(--radius-xl);
-  padding: var(--space-4);
+  padding: 2rem;
   width: 100%;
   max-width: 520px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.65);
-  animation: slideUp 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85),
+              0 0 35px rgba(124, 58, 237, 0.2);
+  animation: cosmicModalEnter 280ms cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
 }
 
-/* Footer */
-.footer {
-  text-align: center;
-  padding: 2rem 1.5rem;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  border-top: 1px solid var(--border);
-  background-color: var(--surface);
+@keyframes cosmicWarpFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cosmicModalEnter {
+  from { opacity: 0; transform: scale(0.94) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 /* ===================================================================
-   Landing Page Styles (Dark Futuristic)
+   COSMIC ORBITAL BALANCE PATH (Who Owes Whom)
    =================================================================== */
 
-.landing-container {
-  display: flex;
-  flex-direction: column;
-  gap: 4.5rem;
-  padding: 1.5rem 0 4rem 0;
-}
-
-.hero-wrapper {
-  text-align: center;
-  max-width: 880px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.hero-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.45rem 1.1rem;
-  border-radius: var(--radius-full);
-  background: var(--primary-subtle);
-  border: 1px solid rgba(124, 92, 252, 0.35);
-  color: var(--primary-hover);
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 0 15px rgba(124, 92, 252, 0.2);
-}
-
-.hero-title {
-  font-size: 3.25rem;
-  font-weight: 800;
-  line-height: 1.12;
-  letter-spacing: -0.035em;
-  color: var(--text-main);
-  margin-bottom: 1.5rem;
-}
-
-.hero-subtitle {
-  font-size: 1.2rem;
-  line-height: 1.65;
-  color: var(--text-secondary);
-  max-width: 720px;
-  margin: 0 auto 2.25rem auto;
-}
-
-.hero-cta-group {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.25rem;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
-}
-
-.btn-hero-primary {
-  background: linear-gradient(135deg, #7C5CFC 0%, #6340EB 100%);
-  color: #FFFFFF;
-  padding: 0.9rem 2rem;
-  font-size: 1.05rem;
-  font-weight: 700;
-  border-radius: var(--radius-md);
-  box-shadow: 0 8px 30px rgba(124, 92, 252, 0.35);
-  transition: all var(--transition-fast);
-  border: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  text-decoration: none;
-}
-
-.btn-hero-primary:hover {
-  background: linear-gradient(135deg, #9B7BFF 0%, #7C5CFC 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 14px 40px rgba(124, 92, 252, 0.5);
-}
-
-.btn-hero-secondary {
-  background: var(--surface-elevated);
-  color: var(--text-main);
-  border: 1px solid var(--border);
-  padding: 0.9rem 1.85rem;
-  font-size: 1.05rem;
-  font-weight: 600;
-  border-radius: var(--radius-md);
-  transition: all var(--transition-fast);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  text-decoration: none;
-}
-
-.btn-hero-secondary:hover {
-  background: #1F2436;
-  border-color: var(--primary);
-  transform: translateY(-2px);
-}
-
-.demo-quick-bar {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-  padding: 0.45rem 1.15rem 0.45rem 0.85rem;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  box-shadow: var(--shadow-sm);
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.demo-chip-btn {
-  background: var(--surface-elevated);
-  border: 1px solid var(--border);
-  padding: 0.3rem 0.75rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-main);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.demo-chip-btn:hover {
-  background: var(--primary-subtle);
-  color: var(--primary-hover);
-  border-color: var(--primary);
-  transform: translateY(-1px);
-}
-
-/* Feature Cards Grid */
-.features-header {
-  text-align: center;
-  max-width: 680px;
-  margin: 0 auto 2.5rem auto;
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5rem;
-}
-
-.feature-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 1.75rem;
-  transition: all var(--transition-normal);
-  position: relative;
-}
-
-.feature-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--primary);
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45);
-}
-
-.feature-icon-wrapper {
-  width: 50px;
-  height: 50px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.25rem;
-}
-
-.feature-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--text-main);
-  margin-bottom: 0.5rem;
-}
-
-.feature-desc {
-  font-size: 0.94rem;
-  line-height: 1.6;
-  color: var(--text-secondary);
-}
-
-/* How It Works Steps */
-.steps-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
-.step-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 1.75rem;
-  position: relative;
-  transition: all var(--transition-normal);
-}
-
-.step-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--secondary);
-}
-
-.step-number {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  color: #FFFFFF;
-  font-weight: 700;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-  box-shadow: 0 0 12px rgba(124, 92, 252, 0.4);
-}
-
-/* System Infrastructure Box */
-.infra-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 1.75rem;
-}
-
-.infra-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1rem;
-  margin-top: 1.25rem;
-}
-
-.infra-item {
-  background: var(--surface-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 1.15rem;
-  transition: border-color var(--transition-fast);
-}
-
-.infra-item:hover {
-  border-color: var(--primary);
-}
-
-/* Bottom CTA Banner */
-.cta-banner {
-  background: linear-gradient(135deg, #10131F 0%, #171B2B 50%, #201A45 100%);
-  border: 1px solid rgba(124, 92, 252, 0.35);
-  border-radius: var(--radius-2xl);
-  padding: 3.5rem 2rem;
-  text-align: center;
-  color: #FFFFFF;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-  position: relative;
-  overflow: hidden;
-}
-
-.cta-banner h2 {
-  font-size: 2.25rem;
-  font-weight: 800;
-  margin-bottom: 0.85rem;
-}
-
-.cta-banner p {
-  color: var(--text-secondary);
-  font-size: 1.1rem;
-  max-width: 640px;
-  margin: 0 auto 2rem auto;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.25rem;
-  }
-  .hero-subtitle {
-    font-size: 1rem;
-  }
-  .landing-container {
-    gap: 3rem;
-  }
-  .cta-banner {
-    padding: 2.25rem 1.25rem;
-  }
-  .display-title {
-    font-size: 36px;
-  }
-}
-
-/* ===================================================================
-   Stunning Money Animation System
-   =================================================================== */
-
-/* Animated Counter Glow */
-.animated-counter {
-  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), filter 250ms ease;
-  display: inline-flex;
-}
-
-.animated-counter.counter-active {
-  transform: scale(1.03);
-  filter: drop-shadow(0 0 12px currentColor);
-}
-
-/* Rupee Particle Burst */
-@keyframes moneyBurstFly {
-  0% {
-    transform: translate(-50%, -50%) scale(0.4);
-    opacity: 1;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate(calc(-50% + var(--target-x)), calc(-50% + var(--target-y))) scale(1.15);
-    opacity: 0;
-  }
-}
-
-/* Money Flow Track in Settlement Cards */
-.money-flow-track {
+.orbital-path-track {
   position: relative;
   width: 140px;
   height: 28px;
@@ -1041,108 +493,271 @@ p {
   margin: 0 0.5rem;
 }
 
-.money-flow-line {
+.orbital-path-line {
   position: absolute;
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, rgba(255, 100, 124, 0.4) 0%, rgba(124, 92, 252, 0.6) 50%, rgba(53, 224, 161, 0.5) 100%);
+  background: linear-gradient(90deg, rgba(251, 113, 133, 0.3) 0%, rgba(124, 58, 237, 0.6) 50%, rgba(52, 211, 153, 0.5) 100%);
   border-radius: 9999px;
+  box-shadow: 0 0 8px rgba(124, 58, 237, 0.4);
 }
 
-.money-flow-token {
+/* Energy particle traveling along orbital path */
+.orbital-energy-pulse {
   position: absolute;
   top: 50%;
-  width: 22px;
-  height: 22px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #35E0A1 0%, #35D6FF 100%);
-  color: #080A12;
-  font-weight: 800;
-  font-size: 11px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 12px rgba(53, 224, 161, 0.7);
-  animation: moneyTravelFlow 2.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  background: radial-gradient(circle, #38D9FF 20%, #7C3AED 80%);
+  box-shadow: 0 0 12px #38D9FF, 0 0 22px rgba(124, 58, 237, 0.8);
+  animation: orbitalEnergyTravel 2.6s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
   z-index: 2;
 }
 
-@keyframes moneyTravelFlow {
+@keyframes orbitalEnergyTravel {
   0% {
-    left: 4px;
-    transform: translateY(-50%) scale(0.85);
+    left: 2px;
+    transform: translateY(-50%) scale(0.7);
     opacity: 0;
   }
   15% {
     opacity: 1;
-    transform: translateY(-50%) scale(1);
+    transform: translateY(-50%) scale(1.1);
   }
   50% {
-    transform: translateY(calc(-50% - 3px)) scale(1.08);
-    box-shadow: 0 0 16px rgba(53, 224, 161, 0.9);
+    transform: translateY(calc(-50% - 3px)) scale(1.2);
+    box-shadow: 0 0 18px #38D9FF, 0 0 28px rgba(56, 217, 255, 0.9);
   }
   85% {
     opacity: 1;
-    transform: translateY(-50%) scale(1);
+    transform: translateY(-50%) scale(1.1);
   }
   100% {
-    left: calc(100% - 26px);
-    transform: translateY(-50%) scale(0.85);
+    left: calc(100% - 16px);
+    transform: translateY(-50%) scale(0.7);
     opacity: 0;
   }
 }
 
-/* Receiver Impact Wave */
-@keyframes receiverImpact {
+/* Receiver Orbital Resonance Pulse */
+@keyframes receiverPulse {
   0% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(53, 224, 161, 0.7);
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.8);
   }
   50% {
     transform: scale(1.1);
-    box-shadow: 0 0 16px rgba(53, 224, 161, 0.5);
+    box-shadow: 0 0 22px rgba(52, 211, 153, 0.6);
   }
   100% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(53, 224, 161, 0);
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0);
   }
 }
 
-.receiver-avatar-impact {
-  animation: receiverImpact 1.2s ease-out;
+.receiver-orbital-pulse {
+  animation: receiverPulse 1.1s ease-out;
 }
 
-/* Settled Status Pop */
-@keyframes settleSuccessStamp {
+/* ===================================================================
+   GROUPS AS PLANETS — Celestial Worlds
+   =================================================================== */
+
+.planet-world-card {
+  position: relative;
+  background: var(--space-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 1.75rem;
+  transition: all var(--transition-normal);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  backdrop-filter: blur(14px);
+}
+
+.planet-world-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: rgba(56, 217, 255, 0.4);
+  box-shadow: 0 16px 45px -5px rgba(3, 4, 11, 0.9),
+              0 0 30px rgba(124, 58, 237, 0.25);
+}
+
+/* Planetary Orb Visual Container */
+.planet-orb-wrapper {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Rotating orbital ring around planet */
+.planet-orbital-ring {
+  position: absolute;
+  width: 76px;
+  height: 28px;
+  border: 1.5px solid rgba(56, 217, 255, 0.4);
+  border-radius: 50%;
+  transform: rotate(-25deg);
+  box-shadow: 0 0 12px rgba(56, 217, 255, 0.2);
+  pointer-events: none;
+  animation: planetaryRingSpin 16s linear infinite;
+}
+
+@keyframes planetaryRingSpin {
+  0% { transform: rotate(-25deg); }
+  50% { transform: rotate(-15deg); }
+  100% { transform: rotate(-25deg); }
+}
+
+/* Planet Spheres with Procedural Gradients */
+.planet-sphere {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--star-white);
+  box-shadow: inset -6px -6px 12px rgba(0, 0, 0, 0.7),
+              0 0 20px currentColor;
+}
+
+/* Planetary Themes */
+.planet-ice {
+  background: radial-gradient(circle at 35% 35%, #67E8F9 0%, #2563EB 60%, #080D1D 100%);
+  color: #38D9FF;
+}
+
+.planet-violet {
+  background: radial-gradient(circle at 35% 35%, #C084FC 0%, #7C3AED 60%, #080D1D 100%);
+  color: #9B5CFF;
+}
+
+.planet-solar {
+  background: radial-gradient(circle at 35% 35%, #FDE047 0%, #D97706 60%, #080D1D 100%);
+  color: #FBBF24;
+}
+
+.planet-emerald {
+  background: radial-gradient(circle at 35% 35%, #6EE7B7 0%, #059669 60%, #080D1D 100%);
+  color: #34D399;
+}
+
+.planet-coral {
+  background: radial-gradient(circle at 35% 35%, #FDA4AF 0%, #E11D48 60%, #080D1D 100%);
+  color: #FB7185;
+}
+
+/* ===================================================================
+   Cosmic Keyframe Animations
+   =================================================================== */
+
+@keyframes cosmicPulse {
   0% {
-    transform: scale(0.75);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.12);
+    opacity: 0.6;
+    transform: scale(0.98);
   }
   100% {
-    transform: scale(1);
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes cosmicParticleFly {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
     opacity: 1;
   }
-}
-
-.settled-badge-pop {
-  animation: settleSuccessStamp 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* Floating particle subtle drift */
-@keyframes floatSubtle {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px);
+  100% {
+    transform: translate(calc(-50% + var(--target-x)), calc(-50% + var(--target-y))) scale(1);
+    opacity: 0;
   }
 }
 
-.floating-subtle {
-  animation: floatSubtle 3s ease-in-out infinite;
+/* ===================================================================
+   Grid & Utilities
+   =================================================================== */
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.35rem;
 }
 
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.35rem;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.text-muted {
+  color: var(--text-secondary);
+}
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+
+/* ===================================================================
+   Footer (Cosmic Telemetry)
+   =================================================================== */
+
+.footer {
+  text-align: center;
+  padding: 2.25rem 1.5rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  background: rgba(3, 4, 11, 0.85);
+  backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 2;
+  letter-spacing: 0.05em;
+}
+
+/* ===================================================================
+   Reduced Motion
+   =================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===================================================================
+   Mobile Responsiveness
+   =================================================================== */
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 1.5rem 1rem 3rem;
+  }
+  .finance-number-lg {
+    font-size: 1.85rem;
+  }
+  .orbital-path-track {
+    width: 90px;
+  }
+}

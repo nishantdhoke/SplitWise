@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUpRight, ArrowDownLeft, CheckCircle2 } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, CheckCircle2, Orbit } from 'lucide-react';
 import AnimatedCounter from './AnimatedCounter';
 
 export default function BalanceCard({ balance, isCurrentUser }) {
@@ -11,19 +11,18 @@ export default function BalanceCard({ balance, isCurrentUser }) {
 
   return (
     <div
-      className="card"
+      className="cosmic-panel"
       style={{
-        padding: '1.25rem 1.4rem',
-        background: 'var(--surface)',
+        padding: '1.35rem 1.5rem',
         border: isPositive
-          ? '1px solid rgba(53, 224, 161, 0.35)'
+          ? '1px solid rgba(52, 211, 153, 0.4)'
           : isNegative
-          ? '1px solid rgba(255, 100, 124, 0.35)'
+          ? '1px solid rgba(251, 113, 133, 0.4)'
           : '1px solid var(--border)',
         boxShadow: isPositive
-          ? '0 4px 15px rgba(53, 224, 161, 0.08)'
+          ? '0 6px 20px rgba(52, 211, 153, 0.12)'
           : isNegative
-          ? '0 4px 15px rgba(255, 100, 124, 0.08)'
+          ? '0 6px 20px rgba(251, 113, 133, 0.12)'
           : 'none',
       }}
     >
@@ -34,50 +33,53 @@ export default function BalanceCard({ balance, isCurrentUser }) {
               width: '42px',
               height: '42px',
               borderRadius: '50%',
-              backgroundColor: isPositive
-                ? 'var(--success-dark)'
+              background: isPositive
+                ? 'radial-gradient(circle at 35% 35%, #6EE7B7 0%, #059669 70%, #03040B 100%)'
                 : isNegative
-                ? 'var(--danger-dark)'
-                : 'var(--surface-elevated)',
+                ? 'radial-gradient(circle at 35% 35%, #FDA4AF 0%, #E11D48 70%, #03040B 100%)'
+                : 'radial-gradient(circle at 35% 35%, #94A3B8 0%, #334155 70%, #03040B 100%)',
               border: isPositive
-                ? '1.5px solid var(--success)'
+                ? '1.5px solid rgba(52, 211, 153, 0.6)'
                 : isNegative
-                ? '1.5px solid var(--danger)'
-                : '1px solid var(--border)',
-              color: isPositive
-                ? 'var(--success)'
-                : isNegative
-                ? 'var(--danger)'
-                : 'var(--text-muted)',
+                ? '1.5px solid rgba(251, 113, 133, 0.6)'
+                : '1.5px solid var(--border)',
+              color: isPositive ? '#03040B' : '#F8FAFF',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: 800,
-              fontSize: '1rem',
+              fontSize: '0.95rem',
+              boxShadow: isPositive
+                ? '0 0 14px rgba(52, 211, 153, 0.35)'
+                : isNegative
+                ? '0 0 14px rgba(251, 113, 133, 0.35)'
+                : 'none',
             }}
           >
             {balance.name.charAt(0).toUpperCase()}
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-              <span style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-main)' }}>{balance.name}</span>
+              <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--star-white)' }}>
+                {balance.name}
+              </span>
               {isCurrentUser && (
                 <span className="badge badge-primary" style={{ fontSize: '0.65rem', padding: '0.1rem 0.45rem' }}>
                   You
                 </span>
               )}
             </div>
-            <p className="text-muted" style={{ fontSize: '0.78rem' }}>{balance.email}</p>
+            <p className="text-muted" style={{ fontSize: '0.76rem' }}>{balance.email}</p>
           </div>
         </div>
 
         <div style={{ textAlign: 'right' }}>
           {isPositive && (
             <div>
-              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--success)', textTransform: 'uppercase' }}>
-                Gets back
+              <span style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--cosmic-positive)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Gets Back
               </span>
-              <div className="finance-number" style={{ fontSize: '1.25rem', color: 'var(--success)' }}>
+              <div className="finance-number" style={{ fontSize: '1.25rem', marginTop: '2px' }}>
                 <AnimatedCounter value={absVal} color="mint" prefix="+₹" />
               </div>
             </div>
@@ -85,10 +87,10 @@ export default function BalanceCard({ balance, isCurrentUser }) {
 
           {isNegative && (
             <div>
-              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--danger)', textTransform: 'uppercase' }}>
-                Owes
+              <span style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--cosmic-negative)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Owes Orbit
               </span>
-              <div className="finance-number" style={{ fontSize: '1.25rem', color: 'var(--danger)' }}>
+              <div className="finance-number" style={{ fontSize: '1.25rem', marginTop: '2px' }}>
                 <AnimatedCounter value={absVal} color="coral" prefix="-₹" />
               </div>
             </div>
@@ -96,8 +98,10 @@ export default function BalanceCard({ balance, isCurrentUser }) {
 
           {isSettled && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--text-muted)' }}>
-              <CheckCircle2 size={16} />
-              <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Settled</span>
+              <Orbit size={16} color="var(--starlight-cyan)" />
+              <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--starlight-cyan)' }}>
+                Equilibrium
+              </span>
             </div>
           )}
         </div>
@@ -109,11 +113,11 @@ export default function BalanceCard({ balance, isCurrentUser }) {
           marginTop: '1.15rem',
           paddingTop: '0.75rem',
           borderTop: '1px solid var(--border)',
-          fontSize: '0.8rem',
+          fontSize: '0.78rem',
         }}
       >
-        <span>Paid: <strong>₹{Number(balance.totalPaid).toFixed(2)}</strong></span>
-        <span>Share: <strong>₹{Number(balance.totalOwed).toFixed(2)}</strong></span>
+        <span>Paid: <strong style={{ color: 'var(--star-white)' }}>₹{Number(balance.totalPaid).toFixed(2)}</strong></span>
+        <span>Share: <strong style={{ color: 'var(--star-white)' }}>₹{Number(balance.totalOwed).toFixed(2)}</strong></span>
       </div>
     </div>
   );

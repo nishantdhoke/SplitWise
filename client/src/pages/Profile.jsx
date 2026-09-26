@@ -1,8 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { User, Mail, Calendar, KeyRound, LogOut, CheckCircle, Shield } from 'lucide-react';
-import SignatureEye from '../components/SignatureEye';
+import { Mail, Calendar, KeyRound, LogOut, CheckCircle, Orbit, Compass } from 'lucide-react';
 
 export default function Profile() {
   const { user, logout } = useAuth();
@@ -19,38 +18,57 @@ export default function Profile() {
         month: 'long',
         day: 'numeric',
       })
-    : 'Recently';
+    : 'Recently Initialized';
 
   return (
-    <div style={{ maxWidth: '640px', margin: '2.5rem auto' }}>
-      <div className="glass-card" style={{ padding: '2.5rem 2rem' }}>
+    <div style={{ maxWidth: '640px', margin: '3rem auto 2rem' }}>
+      <div
+        className="cosmic-panel"
+        style={{
+          padding: '2.5rem 2.25rem',
+          background: 'rgba(8, 13, 29, 0.88)',
+          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.85), 0 0 35px rgba(124, 58, 237, 0.2)',
+        }}
+      >
         <div className="flex-between" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '1.5rem', marginBottom: '1.75rem', flexWrap: 'wrap', gap: '1rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
             <div
               style={{
-                width: '60px',
-                height: '60px',
+                width: '64px',
+                height: '64px',
                 borderRadius: '50%',
-                background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)',
-                color: '#FFFFFF',
+                background: 'radial-gradient(circle at 35% 35%, #38D9FF 0%, #7C3AED 70%, #03040B 100%)',
+                color: '#F8FAFF',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '1.5rem',
+                fontSize: '1.6rem',
                 fontWeight: 800,
-                boxShadow: '0 0 20px rgba(124, 92, 252, 0.4)',
+                boxShadow: '0 0 25px rgba(56, 217, 255, 0.45)',
               }}
             >
-              {user?.name?.charAt(0).toUpperCase() || 'U'}
+              {user?.name?.charAt(0).toUpperCase() || 'E'}
             </div>
             <div>
-              <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-main)' }}>{user?.name}</h2>
-              <p className="text-muted" style={{ fontSize: '0.85rem' }}>Member Account #{user?.id}</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--star-white)' }}>{user?.name}</h2>
+              </div>
+              <p className="text-muted" style={{ fontSize: '0.82rem', letterSpacing: '0.04em' }}>
+                INTERSTELLAR EXPLORER ID #{user?.id}
+              </p>
             </div>
           </div>
-          <span className="badge badge-success" style={{ padding: '0.4rem 0.8rem' }}>
-            <CheckCircle size={14} />
-            <span>Active Session</span>
+          <span
+            className="badge"
+            style={{
+              background: 'rgba(52, 211, 153, 0.15)',
+              border: '1px solid rgba(52, 211, 153, 0.4)',
+              color: 'var(--cosmic-positive)',
+              padding: '0.4rem 0.85rem',
+            }}
+          >
+            <Orbit size={13} />
+            <span>Orbit Link Active</span>
           </span>
         </div>
 
@@ -61,17 +79,19 @@ export default function Profile() {
               alignItems: 'center',
               gap: '1rem',
               padding: '1rem 1.25rem',
-              background: 'var(--surface-elevated)',
+              background: 'rgba(6, 9, 20, 0.85)',
               border: '1px solid var(--border)',
               borderRadius: 'var(--radius-md)',
             }}
           >
-            <div style={{ color: 'var(--primary)' }}>
+            <div style={{ color: 'var(--starlight-cyan)' }}>
               <Mail size={20} />
             </div>
             <div>
-              <span className="text-muted" style={{ fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em' }}>Email Address</span>
-              <p style={{ fontWeight: 600, color: 'var(--text-main)', marginTop: '2px' }}>{user?.email}</p>
+              <span className="text-muted" style={{ fontSize: '0.72rem', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.08em' }}>
+                Interstellar Channel
+              </span>
+              <p style={{ fontWeight: 600, color: 'var(--star-white)', marginTop: '2px' }}>{user?.email}</p>
             </div>
           </div>
 
@@ -81,17 +101,19 @@ export default function Profile() {
               alignItems: 'center',
               gap: '1rem',
               padding: '1rem 1.25rem',
-              background: 'var(--surface-elevated)',
+              background: 'rgba(6, 9, 20, 0.85)',
               border: '1px solid var(--border)',
               borderRadius: 'var(--radius-md)',
             }}
           >
-            <div style={{ color: 'var(--secondary)' }}>
+            <div style={{ color: 'var(--nebula-violet)' }}>
               <Calendar size={20} />
             </div>
             <div>
-              <span className="text-muted" style={{ fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em' }}>Member Since</span>
-              <p style={{ fontWeight: 600, color: 'var(--text-main)', marginTop: '2px' }}>{formattedDate}</p>
+              <span className="text-muted" style={{ fontSize: '0.72rem', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.08em' }}>
+                First Orbit Registered
+              </span>
+              <p style={{ fontWeight: 600, color: 'var(--star-white)', marginTop: '2px' }}>{formattedDate}</p>
             </div>
           </div>
 
@@ -101,28 +123,33 @@ export default function Profile() {
               alignItems: 'center',
               gap: '1rem',
               padding: '1rem 1.25rem',
-              background: 'var(--surface-elevated)',
+              background: 'rgba(6, 9, 20, 0.85)',
               border: '1px solid var(--border)',
               borderRadius: 'var(--radius-md)',
             }}
           >
-            <div style={{ color: 'var(--success)' }}>
+            <div style={{ color: 'var(--cosmic-positive)' }}>
               <KeyRound size={20} />
             </div>
             <div>
-              <span className="text-muted" style={{ fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em' }}>Security Status</span>
-              <p style={{ fontWeight: 600, color: 'var(--text-main)', marginTop: '2px' }}>Encrypted with bcrypt (10 rounds) & JWT</p>
+              <span className="text-muted" style={{ fontSize: '0.72rem', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.08em' }}>
+                Security Encryption
+              </span>
+              <p style={{ fontWeight: 600, color: 'var(--star-white)', marginTop: '2px' }}>
+                Protected with bcrypt (10 rounds) & Interstellar JWT
+              </p>
             </div>
           </div>
         </div>
 
-        <div className="flex-between" style={{ paddingTop: '1.5rem', marginTop: '1.5rem', borderTop: '1px solid var(--border)' }}>
+        <div className="flex-between" style={{ paddingTop: '1.75rem', marginTop: '1.75rem', borderTop: '1px solid var(--border)' }}>
           <button className="btn btn-secondary" onClick={() => navigate('/dashboard')}>
-            Back to Dashboard
+            <Compass size={15} />
+            <span>Return to Orbit Command</span>
           </button>
           <button className="btn btn-danger" onClick={handleLogout}>
-            <LogOut size={16} />
-            <span>Sign Out</span>
+            <LogOut size={15} />
+            <span>Disconnect</span>
           </button>
         </div>
       </div>

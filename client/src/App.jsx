@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import CosmicBackground from './components/CosmicBackground';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import StatusCheck from './pages/StatusCheck';
@@ -18,7 +19,7 @@ function HomeRoute() {
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}>
-        <div className="spinner" style={{ width: '2rem', height: '2rem' }}></div>
+        <div className="cosmic-spinner" style={{ width: '2.5rem', height: '2.5rem' }}></div>
       </div>
     );
   }
@@ -30,6 +31,9 @@ export default function App() {
     <AuthProvider>
       <Router>
         <div className="app-container">
+          {/* Universal Cinematic Deep Space Environment */}
+          <CosmicBackground />
+
           <Navbar />
           <main className="main-content">
             <Routes>
@@ -86,7 +90,10 @@ export default function App() {
             </Routes>
           </main>
           <footer className="footer">
-            FairShare — Expense Splitting Application &bull; Built with React, Express, MySQL
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem' }}>
+              <span className="cosmic-status-dot" />
+              <span>FAIRSHARE // COSMIC FINANCIAL NETWORK &bull; NODE ACTIVE</span>
+            </div>
           </footer>
         </div>
       </Router>

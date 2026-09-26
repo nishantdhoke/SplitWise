@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getGroups } from '../services/api';
 import GroupCard from '../components/GroupCard';
-import { Plus, Users, RefreshCw, AlertCircle } from 'lucide-react';
+import { Plus, Orbit, RefreshCw, AlertCircle, Compass } from 'lucide-react';
 
 export default function Groups() {
   const [groups, setGroups] = useState([]);
@@ -16,7 +16,7 @@ export default function Groups() {
       const data = await getGroups();
       setGroups(data.groups || []);
     } catch (err) {
-      setError(err.message || 'Failed to load your groups.');
+      setError(err.message || 'Failed to chart your planetary worlds.');
     } finally {
       setLoading(false);
     }
@@ -31,12 +31,23 @@ export default function Groups() {
       {/* Page Header */}
       <div className="flex-between" style={{ flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.25rem' }}>
-            <h1 style={{ fontSize: '2rem', fontWeight: 800 }}>Your Groups</h1>
-            <span className="badge badge-primary">{groups.length}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
+            <h1 style={{ fontSize: '2.1rem', fontWeight: 800, color: 'var(--star-white)', letterSpacing: '-0.03em' }}>
+              Planetary Worlds
+            </h1>
+            <span
+              className="badge"
+              style={{
+                background: 'rgba(56, 217, 255, 0.15)',
+                border: '1px solid rgba(56, 217, 255, 0.35)',
+                color: 'var(--starlight-cyan)',
+              }}
+            >
+              {groups.length} In Orbit
+            </span>
           </div>
           <p className="text-muted" style={{ fontSize: '0.95rem' }}>
-            Workspaces for roommates, trips, and shared expenses
+            Active cosmic sectors for shared expenses, road trips, and shared habitats
           </p>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem' }}>
@@ -44,13 +55,13 @@ export default function Groups() {
             className="btn btn-secondary btn-icon"
             onClick={fetchUserGroups}
             disabled={loading}
-            title="Refresh Groups"
+            title="Refresh Telemetry"
           >
-            <RefreshCw size={16} className={loading ? 'spinner' : ''} />
+            <RefreshCw size={16} className={loading ? 'cosmic-spinner' : ''} />
           </button>
           <Link to="/groups/new" className="btn btn-primary">
             <Plus size={16} />
-            <span>Create Group</span>
+            <span>Chart Planet</span>
           </Link>
         </div>
       </div>
@@ -66,12 +77,12 @@ export default function Groups() {
       {/* Loading state */}
       {loading ? (
         <div style={{ display: 'flex', justifyContent: 'center', padding: '6rem 0' }}>
-          <div className="spinner" style={{ width: '2.5rem', height: '2.5rem' }}></div>
+          <div className="cosmic-spinner" style={{ width: '2.5rem', height: '2.5rem' }}></div>
         </div>
       ) : groups.length === 0 ? (
         /* Empty State */
         <div
-          className="glass-card"
+          className="cosmic-panel"
           style={{
             textAlign: 'center',
             padding: '4rem 2rem',
@@ -84,24 +95,24 @@ export default function Groups() {
               width: '64px',
               height: '64px',
               borderRadius: '50%',
-              backgroundColor: 'var(--primary-subtle)',
-              color: 'var(--primary-hover)',
+              background: 'radial-gradient(circle, rgba(56, 217, 255, 0.2) 0%, rgba(3, 4, 11, 0.8) 100%)',
+              color: 'var(--starlight-cyan)',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: '1.25rem',
-              boxShadow: '0 0 20px rgba(124, 92, 252, 0.3)',
+              boxShadow: '0 0 25px rgba(56, 217, 255, 0.35)',
             }}
           >
-            <Users size={32} />
+            <Compass size={32} />
           </div>
-          <h3 style={{ fontSize: '1.4rem', fontWeight: 800 }}>No Groups Yet</h3>
+          <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--star-white)' }}>No Planets Charted Yet</h3>
           <p className="text-muted mt-2" style={{ fontSize: '0.92rem', lineHeight: 1.6 }}>
-            You haven't joined or created any groups. Create a group for a trip, flat expenses, or dinner outings!
+            You haven't charted or joined any planetary worlds yet. Create one for a trip, flat expenses, or dinner outings!
           </p>
           <Link to="/groups/new" className="btn btn-primary mt-3" style={{ padding: '0 1.75rem' }}>
             <Plus size={16} />
-            <span>Create Your First Group</span>
+            <span>Chart Your First Planet</span>
           </Link>
         </div>
       ) : (

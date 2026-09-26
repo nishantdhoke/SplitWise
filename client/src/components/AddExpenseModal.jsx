@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { createExpense } from '../services/api';
-import { X, Receipt, AlertCircle, CheckCircle2, IndianRupee, Percent, Scale, Check, Calendar } from 'lucide-react';
-import MoneyParticleBurst from './MoneyParticleBurst';
+import { X, Receipt, AlertCircle, CheckCircle2, IndianRupee, Percent, Scale, Check, Calendar, Orbit, Sparkles } from 'lucide-react';
+import CosmicParticleBurst from './CosmicParticleBurst';
 
 export default function AddExpenseModal({ groupId, members = [], isOpen, onClose, onExpenseAdded }) {
   const { user } = useAuth();
@@ -181,37 +181,39 @@ export default function AddExpenseModal({ groupId, members = [], isOpen, onClose
 
         {isSuccess ? (
           <div style={{ textAlign: 'center', padding: '2.5rem 1.5rem', animation: 'fadeIn 300ms ease', position: 'relative' }}>
-            <MoneyParticleBurst active={isSuccess} count={20} color="violet" />
+            <CosmicParticleBurst active={isSuccess} count={24} color="cyan" />
             <div
               style={{
                 width: '68px',
                 height: '68px',
                 borderRadius: '50%',
-                background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)',
-                color: '#FFFFFF',
+                background: 'radial-gradient(circle at 35% 35%, #38D9FF 0%, #7C3AED 70%, #03040B 100%)',
+                color: '#F8FAFF',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 1.25rem',
-                boxShadow: '0 0 35px rgba(124, 92, 252, 0.6)',
+                boxShadow: '0 0 35px rgba(56, 217, 255, 0.65)',
               }}
             >
-              <CheckCircle2 size={38} />
+              <Orbit size={34} />
             </div>
             <div
               className="finance-number"
               style={{
                 fontSize: '2.1rem',
-                color: 'var(--primary-hover)',
+                color: 'var(--starlight-cyan)',
                 marginBottom: '0.4rem',
-                textShadow: '0 0 20px rgba(124, 92, 252, 0.5)',
+                textShadow: '0 0 20px rgba(56, 217, 255, 0.6)',
               }}
             >
               +₹{numericAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
             </div>
-            <h3 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#F5F7FF' }}>Expense Recorded!</h3>
-            <p className="text-muted mt-1" style={{ fontSize: '0.92rem' }}>
-              Group debts and net balances recalculated instantly.
+            <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--star-white)' }}>
+              Absorbed into Orbit!
+            </h3>
+            <p className="text-muted mt-1" style={{ fontSize: '0.9rem' }}>
+              Cosmic expense recorded. Planetary balances synchronized instantly.
             </p>
           </div>
         ) : (

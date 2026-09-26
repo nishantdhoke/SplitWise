@@ -30,7 +30,7 @@ export default function ExpenseDetailsModal({ expenseId, isOpen, onClose }) {
 
   return (
     <div className="modal-backdrop">
-      <div className="modal-content glass-card" style={{ maxWidth: '520px', maxHeight: '90vh', overflowY: 'auto' }}>
+      <div className="modal-content" style={{ maxWidth: '520px', maxHeight: '90vh', overflowY: 'auto' }}>
         <div className="flex-between" style={{ borderBottom: '1px solid var(--border)', paddingBottom: '1rem', marginBottom: '1.25rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div
@@ -38,12 +38,12 @@ export default function ExpenseDetailsModal({ expenseId, isOpen, onClose }) {
                 width: '38px',
                 height: '38px',
                 borderRadius: '10px',
-                backgroundColor: 'var(--primary-subtle)',
-                color: 'var(--primary-hover)',
+                backgroundColor: 'rgba(56, 217, 255, 0.12)',
+                color: 'var(--starlight-cyan)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: '0 0 12px rgba(124, 92, 252, 0.3)',
+                boxShadow: '0 0 14px rgba(56, 217, 255, 0.3)',
               }}
             >
               <Receipt size={20} />

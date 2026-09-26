@@ -235,45 +235,55 @@ export default function GroupDetails() {
         <ArrowLeft size={16} /> Back to Groups
       </Link>
 
-      {/* Group Header Card (Glassmorphism) */}
-      <div className="glass-card" style={{ padding: '2rem 2.25rem' }}>
-        <div className="flex-between" style={{ flexWrap: 'wrap', gap: '1.25rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-            <div
-              style={{
-                width: '60px',
-                height: '60px',
-                borderRadius: '16px',
-                background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)',
-                color: '#FFFFFF',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 800,
-                fontSize: '1.75rem',
-                boxShadow: '0 0 20px rgba(124, 92, 252, 0.4)',
-              }}
-            >
-              {group.name.charAt(0).toUpperCase()}
+      {/* Planetary System Header (Cosmic Environment) */}
+      <div
+        className="cosmic-panel"
+        style={{
+          padding: '2.25rem',
+          background: 'radial-gradient(ellipse at top left, rgba(124, 58, 237, 0.22) 0%, rgba(8, 13, 29, 0.92) 70%)',
+        }}
+      >
+        <div className="flex-between" style={{ flexWrap: 'wrap', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.35rem' }}>
+            {/* Planetary World Sphere with Orbital Ring */}
+            <div className="planet-orb-wrapper" style={{ width: '64px', height: '64px' }}>
+              <div
+                className="planet-orbital-ring"
+                style={{
+                  width: '84px',
+                  height: '32px',
+                  borderColor: 'rgba(56, 217, 255, 0.5)',
+                  boxShadow: '0 0 16px rgba(56, 217, 255, 0.3)',
+                }}
+              />
+              <div
+                className="planet-sphere planet-ice"
+                style={{ width: '48px', height: '48px', fontSize: '1.35rem' }}
+              >
+                {group.name.charAt(0).toUpperCase()}
+              </div>
             </div>
+
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <h1 style={{ fontSize: '1.85rem', fontWeight: 800 }}>{group.name}</h1>
+                <h1 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--star-white)', letterSpacing: '-0.03em' }}>
+                  {group.name}
+                </h1>
                 {isCreator && (
-                  <span className="badge badge-warning" style={{ fontSize: '0.72rem' }}>
-                    Creator
+                  <span className="badge badge-warning" style={{ fontSize: '0.7rem' }}>
+                    Captain
                   </span>
                 )}
-                <span className="badge badge-primary" style={{ fontSize: '0.72rem' }}>
-                  {group.members?.length || 0} Members
+                <span className="badge badge-primary" style={{ fontSize: '0.7rem' }}>
+                  {group.members?.length || 0} In Orbit
                 </span>
               </div>
-              <div className="text-muted" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', fontSize: '0.85rem', marginTop: '0.35rem', flexWrap: 'wrap' }}>
+              <div className="text-muted" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', fontSize: '0.82rem', marginTop: '0.35rem', flexWrap: 'wrap' }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                  <Shield size={14} color="var(--primary)" /> Created by <strong>{group.creator_name}</strong>
+                  <Shield size={13} color="var(--starlight-cyan)" /> Chartered by <strong>{group.creator_name}</strong>
                 </span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                  <Calendar size={14} /> {formattedDate}
+                  <Calendar size={13} /> {formattedDate}
                 </span>
               </div>
             </div>
@@ -282,17 +292,17 @@ export default function GroupDetails() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
             <button className="btn btn-primary" onClick={() => setIsExpenseModalOpen(true)}>
               <Plus size={16} />
-              <span>Add Expense</span>
+              <span>Record Expense</span>
             </button>
             <button className="btn btn-secondary" onClick={() => setIsMemberModalOpen(true)}>
               <UserPlus size={16} />
-              <span>Invite Friend</span>
+              <span>Invite Crew</span>
             </button>
             {isCreator && (
               <button
                 className="btn btn-danger btn-icon"
                 onClick={handleDeleteGroup}
-                title="Delete this group"
+                title="Decommission this planetary world"
               >
                 <Trash2 size={16} />
               </button>
@@ -300,11 +310,11 @@ export default function GroupDetails() {
           </div>
         </div>
 
-        {/* Tab Switcher */}
+        {/* Spacecraft Telemetry Tabs */}
         <div
           style={{
             display: 'flex',
-            gap: '0.5rem',
+            gap: '0.65rem',
             marginTop: '1.75rem',
             borderTop: '1px solid var(--border)',
             paddingTop: '1.25rem',
@@ -316,7 +326,7 @@ export default function GroupDetails() {
             className={`btn btn-sm ${activeTab === 'expenses' ? 'btn-primary' : 'btn-secondary'}`}
             style={{ fontWeight: 700 }}
           >
-            <Receipt size={15} />
+            <Receipt size={14} />
             <span>Expenses ({expenses.length})</span>
           </button>
           <button
@@ -324,24 +334,24 @@ export default function GroupDetails() {
             className={`btn btn-sm ${activeTab === 'balances' ? 'btn-primary' : 'btn-secondary'}`}
             style={{ fontWeight: 700 }}
           >
-            <Scale size={15} />
-            <span>Balances & Settlements</span>
+            <Scale size={14} />
+            <span>Orbits & Settlements</span>
           </button>
           <button
             onClick={() => setActiveTab('members')}
             className={`btn btn-sm ${activeTab === 'members' ? 'btn-primary' : 'btn-secondary'}`}
             style={{ fontWeight: 700 }}
           >
-            <Users size={15} />
-            <span>Members ({group.members?.length || 0})</span>
+            <Users size={14} />
+            <span>Crew ({group.members?.length || 0})</span>
           </button>
           <button
             onClick={() => setActiveTab('activity')}
             className={`btn btn-sm ${activeTab === 'activity' ? 'btn-primary' : 'btn-secondary'}`}
             style={{ fontWeight: 700 }}
           >
-            <History size={15} />
-            <span>Activity Feed</span>
+            <History size={14} />
+            <span>Telemetry Feed</span>
           </button>
         </div>
       </div>
@@ -421,20 +431,20 @@ export default function GroupDetails() {
               {/* Personal Standing in Group Banner */}
               {currentUserSummary && (
                 <div
-                  className="card"
+                  className="cosmic-panel"
                   style={{
                     marginBottom: '1.75rem',
                     background:
                       currentUserSummary.netBalance > 0
-                        ? 'linear-gradient(180deg, #10131F 0%, #111A24 100%)'
+                        ? 'linear-gradient(180deg, rgba(8, 13, 29, 0.9) 0%, rgba(5, 46, 33, 0.45) 100%)'
                         : currentUserSummary.netBalance < 0
-                        ? 'linear-gradient(180deg, #10131F 0%, #1E121B 100%)'
-                        : 'var(--surface)',
+                        ? 'linear-gradient(180deg, rgba(8, 13, 29, 0.9) 0%, rgba(55, 12, 24, 0.45) 100%)'
+                        : 'var(--space-panel)',
                     border:
                       currentUserSummary.netBalance > 0
-                        ? '1px solid rgba(53, 224, 161, 0.3)'
+                        ? '1px solid rgba(52, 211, 153, 0.35)'
                         : currentUserSummary.netBalance < 0
-                        ? '1px solid rgba(255, 100, 124, 0.3)'
+                        ? '1px solid rgba(251, 113, 133, 0.35)'
                         : '1px solid var(--border)',
                   }}
                 >
@@ -442,29 +452,24 @@ export default function GroupDetails() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
                       <div
                         style={{
-                          width: '50px',
-                          height: '50px',
+                          width: '52px',
+                          height: '52px',
                           borderRadius: '50%',
-                          backgroundColor:
+                          background:
                             currentUserSummary.netBalance > 0
-                              ? 'var(--success-dark)'
+                              ? 'radial-gradient(circle at 35% 35%, #6EE7B7 0%, #059669 70%, #03040B 100%)'
                               : currentUserSummary.netBalance < 0
-                              ? 'var(--danger-dark)'
-                              : 'var(--surface-elevated)',
-                          color:
-                            currentUserSummary.netBalance > 0
-                              ? 'var(--success)'
-                              : currentUserSummary.netBalance < 0
-                              ? 'var(--danger)'
-                              : 'var(--text-muted)',
+                              ? 'radial-gradient(circle at 35% 35%, #FDA4AF 0%, #E11D48 70%, #03040B 100%)'
+                              : 'radial-gradient(circle at 35% 35%, #94A3B8 0%, #334155 70%, #03040B 100%)',
+                          color: currentUserSummary.netBalance > 0 ? '#03040B' : '#F8FAFF',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           boxShadow:
                             currentUserSummary.netBalance > 0
-                              ? '0 0 15px rgba(53, 224, 161, 0.3)'
+                              ? '0 0 18px rgba(52, 211, 153, 0.4)'
                               : currentUserSummary.netBalance < 0
-                              ? '0 0 15px rgba(255, 100, 124, 0.3)'
+                              ? '0 0 18px rgba(251, 113, 133, 0.4)'
                               : 'none',
                         }}
                       >
@@ -478,28 +483,28 @@ export default function GroupDetails() {
                       </div>
 
                       <div>
-                        <span className="text-muted" style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                          Your Standing in this Group
+                        <span className="text-muted" style={{ fontSize: '0.76rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                          Your Gravitational Standing in this Planet
                         </span>
-                        <div className="finance-number" style={{ fontSize: '1.65rem', marginTop: '3px' }}>
+                        <div className="finance-number" style={{ fontSize: '1.75rem', marginTop: '3px' }}>
                           {currentUserSummary.netBalance > 0 ? (
-                            <span style={{ color: 'var(--success)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                            <span style={{ color: 'var(--cosmic-positive)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
                               You are owed <AnimatedCounter value={currentUserSummary.netBalance} color="mint" prefix="₹" />
                             </span>
                           ) : currentUserSummary.netBalance < 0 ? (
-                            <span style={{ color: 'var(--danger)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                            <span style={{ color: 'var(--cosmic-negative)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
                               You owe <AnimatedCounter value={Math.abs(currentUserSummary.netBalance)} color="coral" prefix="₹" />
                             </span>
                           ) : (
-                            <span>All settled up</span>
+                            <span style={{ color: 'var(--starlight-cyan)' }}>Orbit in Equilibrium</span>
                           )}
                         </div>
                       </div>
                     </div>
 
                     <div style={{ textAlign: 'right', fontSize: '0.85rem' }} className="text-muted">
-                      <div>Total Paid by You: <strong style={{ color: 'var(--text-main)' }}><AnimatedCounter value={currentUserSummary.totalPaid} color="neutral" prefix="₹" /></strong></div>
-                      <div>Your Total Share: <strong style={{ color: 'var(--text-main)' }}><AnimatedCounter value={currentUserSummary.totalOwed} color="neutral" prefix="₹" /></strong></div>
+                      <div>Total Supplied by You: <strong style={{ color: 'var(--star-white)' }}><AnimatedCounter value={currentUserSummary.totalPaid} color="neutral" prefix="₹" /></strong></div>
+                      <div>Your Planetary Share: <strong style={{ color: 'var(--star-white)' }}><AnimatedCounter value={currentUserSummary.totalOwed} color="neutral" prefix="₹" /></strong></div>
                     </div>
                   </div>
                 </div>

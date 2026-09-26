@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { UserPlus, AlertCircle } from 'lucide-react';
-import SignatureEye from '../components/SignatureEye';
+import { UserPlus, AlertCircle, Orbit, Sparkles } from 'lucide-react';
+import CosmicParticleBurst from '../components/CosmicParticleBurst';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -11,6 +11,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -20,41 +21,90 @@ export default function Register() {
     setError('');
 
     if (!name.trim() || !email.trim() || !password) {
-      setError('Please fill in all required fields.');
+      setError('Please provide all planetary identification details.');
       return;
     }
 
     if (password.length < 6) {
-      setError('Password must be at least 6 characters long.');
+      setError('Passkey must contain at least 6 characters.');
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match.');
+      setError('Passkeys do not synchronize.');
       return;
     }
 
     try {
       setIsSubmitting(true);
       await register(name.trim(), email.trim(), password);
-      navigate('/dashboard', { replace: true });
+      setIsSuccess(true);
+      setTimeout(() => {
+        navigate('/dashboard', { replace: true });
+      }, 900);
     } catch (err) {
-      setError(err.message || 'Registration failed. Please try again.');
-    } finally {
+      setError(err.message || 'Initialization failed. Verify inputs.');
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div style={{ maxWidth: '460px', margin: '3rem auto' }}>
-      <div className="glass-card" style={{ padding: '2.5rem 2rem' }}>
+    <div style={{ maxWidth: '460px', margin: '3.5rem auto 2rem', position: 'relative' }}>
+      <CosmicParticleBurst active={isSuccess} count={28} color="cyan" />
+
+      {/* Floating Deep Space Initialization Console */}
+      <div
+        className="cosmic-panel"
+        style={{
+          padding: '2.5rem 2.25rem',
+          background: 'rgba(8, 13, 29, 0.88)',
+          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.85), 0 0 35px rgba(124, 58, 237, 0.25)',
+          position: 'relative',
+        }}
+      >
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.25rem' }}>
-            <SignatureEye size={72} glowIntensity="high" />
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.65rem',
+              color: 'var(--starlight-cyan)',
+              fontSize: '0.75rem',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              marginBottom: '1rem',
+            }}
+          >
+            <span>✦</span>
+            <span>·</span>
+            <span>INITIALIZE PROFILE</span>
+            <span>·</span>
+            <span>✦</span>
           </div>
-          <h2 style={{ fontSize: '1.75rem', fontWeight: 800 }}>Create Your Account</h2>
-          <p className="text-muted" style={{ fontSize: '0.9rem', marginTop: '0.35rem' }}>
-            Join FairShare to split bills fairly with friends
+
+          <div
+            style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle at 35% 35%, #38D9FF 0%, #7C3AED 70%, #03040B 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 1.25rem',
+              boxShadow: '0 0 25px rgba(56, 217, 255, 0.5)',
+              color: '#F8FAFF',
+            }}
+          >
+            <Orbit size={28} />
+          </div>
+
+          <h2 style={{ fontSize: '1.85rem', fontWeight: 800, color: 'var(--star-white)', letterSpacing: '-0.03em' }}>
+            Enter the Universe
+          </h2>
+          <p className="text-muted" style={{ fontSize: '0.88rem', marginTop: '0.35rem' }}>
+            Initialize your profile on FairShare cosmic network
           </p>
         </div>
 
@@ -67,12 +117,12 @@ export default function Register() {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
           <div className="form-group">
-            <label className="form-label" htmlFor="name">Full Name</label>
+            <label className="form-label" htmlFor="name">Cosmic Call-Sign (Full Name)</label>
             <input
               id="name"
               type="text"
               className="form-input"
-              placeholder="e.g. Rahul Verma"
+              placeholder="e.g. Nishant Dhoke"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -81,12 +131,12 @@ export default function Register() {
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="email">Email Address</label>
+            <label className="form-label" htmlFor="email">Interstellar Channel (Email)</label>
             <input
               id="email"
               type="email"
               className="form-input"
-              placeholder="rahul@example.com"
+              placeholder="nishant@universe.io"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -94,7 +144,7 @@ export default function Register() {
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="password">Password (min 6 characters)</label>
+            <label className="form-label" htmlFor="password">Passkey (min 6 characters)</label>
             <input
               id="password"
               type="password"
@@ -107,7 +157,7 @@ export default function Register() {
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="confirmPassword">Confirm Password</label>
+            <label className="form-label" htmlFor="confirmPassword">Confirm Passkey</label>
             <input
               id="confirmPassword"
               type="password"
@@ -122,27 +172,27 @@ export default function Register() {
           <button
             type="submit"
             className="btn btn-primary"
-            style={{ width: '100%', height: '48px', marginTop: '0.75rem', fontSize: '15px' }}
-            disabled={isSubmitting}
+            style={{ width: '100%', height: '48px', marginTop: '0.75rem', fontSize: '15px', fontWeight: 700 }}
+            disabled={isSubmitting || isSuccess}
           >
             {isSubmitting ? (
               <>
-                <span className="spinner" style={{ width: '1rem', height: '1rem', borderWidth: '2px' }}></span>
-                <span>Creating Account...</span>
+                <span className="cosmic-spinner" style={{ width: '1rem', height: '1rem', borderWidth: '2px' }}></span>
+                <span>Calibrating Orbit...</span>
               </>
             ) : (
               <>
                 <UserPlus size={16} />
-                <span>Create Free Account</span>
+                <span>INITIALIZE PROFILE</span>
               </>
             )}
           </button>
         </form>
 
-        <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.9rem' }} className="text-muted">
-          Already have an account?{' '}
-          <Link to="/login" style={{ color: 'var(--primary-hover)', fontWeight: 700, textDecoration: 'none' }}>
-            Sign in
+        <div style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.88rem' }} className="text-muted">
+          Already charted?{' '}
+          <Link to="/login" style={{ color: 'var(--starlight-cyan)', fontWeight: 700, textDecoration: 'none' }}>
+            Access Orbit
           </Link>
         </div>
       </div>

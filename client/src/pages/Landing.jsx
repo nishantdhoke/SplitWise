@@ -7,20 +7,16 @@ import {
   ArrowRight,
   LogIn,
   UserPlus,
-  Zap,
+  Orbit,
   Users,
-  PieChart,
-  ShieldCheck,
-  CheckCircle2,
+  Scale,
   Receipt,
   Server,
   Database,
-  Monitor,
-  RefreshCw,
-  Wallet,
+  Compass,
   Check,
+  Shield,
 } from 'lucide-react';
-import SignatureEye from '../components/SignatureEye';
 
 export default function Landing() {
   const { login } = useAuth();
@@ -60,433 +56,408 @@ export default function Landing() {
   };
 
   return (
-    <div className="landing-container">
-      {/* Hero Section */}
-      <section className="hero-wrapper">
-        {/* Interactive Signature Eye Hero Visual */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.75rem' }}>
-          <SignatureEye size={128} glowIntensity="high" />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem', padding: '2rem 0 4rem' }}>
+      {/* 1. COSMIC HERO EXPERIENCE */}
+      <section style={{ textAlign: 'center', maxWidth: '880px', margin: '0 auto', position: 'relative' }}>
+        {/* Celestial Orbit Centerpiece */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
+          <div
+            style={{
+              position: 'relative',
+              width: '96px',
+              height: '96px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {/* Spinning Outer Celestial Rings */}
+            <div
+              style={{
+                position: 'absolute',
+                width: '130px',
+                height: '46px',
+                border: '1.5px solid rgba(56, 217, 255, 0.45)',
+                borderRadius: '50%',
+                transform: 'rotate(-25deg)',
+                boxShadow: '0 0 20px rgba(56, 217, 255, 0.3)',
+                animation: 'planetaryRingSpin 14s linear infinite',
+              }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                width: '120px',
+                height: '42px',
+                border: '1px solid rgba(155, 92, 255, 0.35)',
+                borderRadius: '50%',
+                transform: 'rotate(35deg)',
+                animation: 'planetaryRingSpin 20s linear infinite reverse',
+              }}
+            />
+            {/* Core Planet Orb */}
+            <div
+              style={{
+                width: '68px',
+                height: '68px',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle at 35% 35%, #38D9FF 0%, #7C3AED 70%, #03040B 100%)',
+                boxShadow: '0 0 35px rgba(56, 217, 255, 0.55), inset -8px -8px 16px rgba(0, 0, 0, 0.8)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#F8FAFF',
+              }}
+            >
+              <Orbit size={36} />
+            </div>
+          </div>
         </div>
 
-        <div className="hero-pill">
-          <Sparkles size={16} />
-          <span>Smart Expense Splitting & Debt Minimization</span>
+        {/* Telemetry Pill */}
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            padding: '0.45rem 1.15rem',
+            borderRadius: 'var(--radius-full)',
+            background: 'rgba(56, 217, 255, 0.1)',
+            border: '1px solid rgba(56, 217, 255, 0.3)',
+            color: 'var(--starlight-cyan)',
+            fontSize: '0.82rem',
+            fontWeight: 700,
+            marginBottom: '1.5rem',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+          }}
+        >
+          <Sparkles size={14} />
+          <span>Interstellar Expense Management</span>
         </div>
 
-        <h1 className="hero-title">
-          Split Bills with Friends.<br />
-          <span className="gradient-text">Zero Friction. Zero Math Stress.</span>
+        <h1
+          style={{
+            fontSize: '3.4rem',
+            fontWeight: 900,
+            lineHeight: 1.12,
+            letterSpacing: '-0.035em',
+            color: 'var(--star-white)',
+            marginBottom: '1.5rem',
+            textShadow: '0 0 40px rgba(124, 58, 237, 0.45)',
+          }}
+        >
+          Managing Your Expenses <br />
+          <span style={{ color: 'var(--starlight-cyan)', textShadow: '0 0 30px rgba(56, 217, 255, 0.5)' }}>
+            Inside The Universe.
+          </span>
         </h1>
 
-        <p className="hero-subtitle">
-          FairShare makes sharing group costs effortless. Track shared expenses on trips,
-          flat rentals, and dinners, divide by equal, exact, or percentage splits, and settle debts
-          with the absolute fewest payments.
+        <p
+          className="text-muted"
+          style={{
+            fontSize: '1.2rem',
+            lineHeight: 1.65,
+            maxWidth: '720px',
+            margin: '0 auto 2.25rem',
+          }}
+        >
+          FairShare transforms group finances into a cosmic planetary ecosystem. Group expenses are absorbed into
+          financial orbits and automatically minimized into the fewest interstellar debt transfers.
         </p>
 
-        <div className="hero-cta-group">
-          <Link to="/register" className="btn-hero-primary">
+        {/* CTA Group */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1.15rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
+          <Link
+            to="/register"
+            className="btn btn-primary"
+            style={{
+              padding: '0.9rem 2.2rem',
+              fontSize: '1.05rem',
+              fontWeight: 800,
+              boxShadow: '0 0 30px rgba(124, 58, 237, 0.5)',
+            }}
+          >
             <UserPlus size={18} />
-            <span>Get Started Free</span>
+            <span>INITIALIZE ORBIT</span>
             <ArrowRight size={18} />
           </Link>
 
-          <Link to="/login" className="btn-hero-secondary">
+          <Link
+            to="/login"
+            className="btn btn-secondary"
+            style={{
+              padding: '0.9rem 2rem',
+              fontSize: '1.05rem',
+              fontWeight: 700,
+            }}
+          >
             <LogIn size={18} />
-            <span>Sign In</span>
+            <span>ENTER CONSOLE</span>
           </Link>
         </div>
 
-        {/* Quick Demo Credentials Bar */}
-        <div className="demo-quick-bar">
-          <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>⚡ Instant Demo Access:</span>
+        {/* Instant Explorer Quick-Login Bar */}
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            background: 'rgba(8, 13, 29, 0.85)',
+            border: '1px solid var(--border)',
+            borderRadius: 'var(--radius-full)',
+            padding: '0.45rem 1.25rem',
+            fontSize: '0.82rem',
+            color: 'var(--text-secondary)',
+            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}
+        >
+          <span>⚡ Instant Crew Access:</span>
           <button
             type="button"
-            className="demo-chip-btn"
-            disabled={demoLoggingIn}
+            className="btn btn-secondary btn-sm"
             onClick={() => handleDemoLogin('ronak@example.com')}
+            disabled={demoLoggingIn}
           >
-            {demoLoggingIn ? 'Logging in...' : 'Login as Ronak'}
+            Ronak
           </button>
           <button
             type="button"
-            className="demo-chip-btn"
-            disabled={demoLoggingIn}
+            className="btn btn-secondary btn-sm"
             onClick={() => handleDemoLogin('rahul@example.com')}
+            disabled={demoLoggingIn}
           >
-            Login as Rahul
+            Rahul
           </button>
           <button
             type="button"
-            className="demo-chip-btn"
-            disabled={demoLoggingIn}
+            className="btn btn-secondary btn-sm"
             onClick={() => handleDemoLogin('amit@example.com')}
+            disabled={demoLoggingIn}
           >
-            Login as Amit
+            Amit
           </button>
         </div>
 
         {demoError && (
-          <p style={{ color: 'var(--danger)', fontSize: '0.85rem', marginTop: '0.75rem' }}>
-            {demoError}
-          </p>
+          <div className="alert alert-danger" style={{ maxWidth: '440px', margin: '1rem auto 0' }}>
+            <span>{demoError}</span>
+          </div>
         )}
       </section>
 
-      {/* Visual Product Showcase / Interactive Mockup (Dark Glass) */}
-      <section className="glass-card" style={{ padding: 0, overflow: 'hidden' }}>
-        {/* Mock Browser Header */}
-        <div
-          style={{
-            background: 'var(--surface-elevated)',
-            borderBottom: '1px solid var(--border)',
-            padding: '0.75rem 1.25rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div style={{ display: 'flex', gap: '6px' }}>
-            <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--danger)' }}></span>
-            <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--warning)' }}></span>
-            <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--success)' }}></span>
-          </div>
-          <div
-            style={{
-              background: 'var(--bg-main)',
-              border: '1px solid var(--border)',
-              borderRadius: '6px',
-              padding: '0.2rem 1.5rem',
-              fontSize: '0.78rem',
-              color: 'var(--text-muted)',
-              fontFamily: 'monospace',
-            }}
-          >
-            fairshare.app/groups/goa-beach-trip
-          </div>
-          <div style={{ width: '40px' }}></div>
-        </div>
-
-        <div style={{ padding: '2rem' }}>
-          <div className="flex-between" style={{ marginBottom: '1.5rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                <h3 style={{ fontSize: '1.4rem', fontWeight: 800 }}>🏖️ Goa Beach Trip 2026</h3>
-                <span className="badge badge-success">Active Trip</span>
-              </div>
-              <p className="text-muted" style={{ fontSize: '0.85rem', marginTop: '0.25rem' }}>
-                4 Members &bull; 6 shared expenses &bull; Total spent: ₹14,400.00
-              </p>
-            </div>
-            <span className="badge badge-primary" style={{ padding: '0.45rem 0.85rem', fontSize: '0.8rem' }}>
-              ⚡ Minimal Repayments Engine
-            </span>
-          </div>
-
-          <div className="grid-2">
-            {/* Recent Expense Card */}
-            <div
-              className="card"
-              style={{
-                background: 'var(--surface-elevated)',
-                border: '1px solid var(--border)',
-              }}
-            >
-              <div className="flex-between">
-                <span className="text-muted" style={{ fontSize: '0.78rem', textTransform: 'uppercase', fontWeight: 700 }}>
-                  Latest Expense
-                </span>
-                <span className="badge badge-success" style={{ fontSize: '0.7rem' }}>Equal Split</span>
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginTop: '1rem' }}>
-                <div
-                  style={{
-                    background: 'var(--primary-subtle)',
-                    color: 'var(--primary-hover)',
-                    padding: '0.65rem',
-                    borderRadius: '12px',
-                  }}
-                >
-                  <Receipt size={24} />
-                </div>
-                <div>
-                  <h4 style={{ fontWeight: 700, fontSize: '1.1rem' }}>Seafood Dinner at Brittos</h4>
-                  <p className="text-muted" style={{ fontSize: '0.82rem' }}>
-                    Paid by <strong style={{ color: 'var(--text-main)' }}>Ronak</strong> &bull; Split 4 ways
-                  </p>
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1.25rem', paddingTop: '0.85rem', borderTop: '1px solid var(--border)', fontSize: '0.9rem' }}>
-                <span className="text-muted">Total Bill:</span>
-                <strong className="finance-number" style={{ fontSize: '1.2rem', color: 'var(--text-main)' }}>₹3,600.00</strong>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.35rem', fontSize: '0.88rem' }}>
-                <span className="text-muted">Each person owes:</span>
-                <span style={{ color: 'var(--primary-hover)', fontWeight: 700 }}>₹900.00</span>
-              </div>
-            </div>
-
-            {/* Smart Debt Simplification Result */}
-            <div
-              className="card"
-              style={{
-                background: 'linear-gradient(180deg, #10131F 0%, #111A24 100%)',
-                border: '1px solid rgba(53, 224, 161, 0.3)',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.65rem' }}>
-                <Zap size={18} color="var(--success)" />
-                <strong style={{ color: 'var(--success)', fontSize: '0.95rem' }}>
-                  Optimal Settlement Transfers
-                </strong>
-              </div>
-              <p style={{ fontSize: '0.83rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-                FairShare eliminated 6 tangled circular debts down to just 3 direct payments:
-              </p>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', background: 'var(--surface-elevated)', padding: '0.6rem 0.85rem', borderRadius: '8px', fontSize: '0.88rem', border: '1px solid var(--border)' }}>
-                  <span><strong>Rahul</strong> pays <strong>Ronak</strong></span>
-                  <span style={{ fontWeight: 700, color: 'var(--success)' }}>₹900.00</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', background: 'var(--surface-elevated)', padding: '0.6rem 0.85rem', borderRadius: '8px', fontSize: '0.88rem', border: '1px solid var(--border)' }}>
-                  <span><strong>Amit</strong> pays <strong>Ronak</strong></span>
-                  <span style={{ fontWeight: 700, color: 'var(--success)' }}>₹900.00</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', background: 'var(--surface-elevated)', padding: '0.6rem 0.85rem', borderRadius: '8px', fontSize: '0.88rem', border: '1px solid var(--border)' }}>
-                  <span><strong>Priya</strong> pays <strong>Ronak</strong></span>
-                  <span style={{ fontWeight: 700, color: 'var(--success)' }}>₹900.00</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Feature Pillars Grid */}
+      {/* 2. THE THREE COSMIC PILLARS */}
       <section>
-        <div className="features-header">
-          <div className="hero-pill" style={{ marginBottom: '0.75rem' }}>
-            <span>Why FairShare</span>
-          </div>
-          <h2 style={{ fontSize: '2.25rem', fontWeight: 800 }}>
-            Built for Real-World Group Spending
+        <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 2.5rem' }}>
+          <h2 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--star-white)' }}>
+            Cosmic Financial Architecture
           </h2>
-          <p className="text-muted" style={{ marginTop: '0.5rem' }}>
-            Everything you need to manage roommate costs, road trips, and social dinners without any disputes.
+          <p className="text-muted" style={{ fontSize: '0.95rem', marginTop: '0.4rem' }}>
+            Engineered for celestial accuracy, algorithmic debt minimization, and zero math friction.
           </p>
         </div>
 
-        <div className="features-grid">
-          {/* Feature 1 */}
-          <div className="feature-card">
-            <div className="feature-icon-wrapper" style={{ background: 'var(--primary-subtle)', color: 'var(--primary-hover)' }}>
-              <Receipt size={24} />
+        <div className="grid-3">
+          {/* Pillar 1 */}
+          <div className="cosmic-panel" style={{ padding: '2rem 1.75rem' }}>
+            <div
+              style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '14px',
+                background: 'rgba(56, 217, 255, 0.12)',
+                color: 'var(--starlight-cyan)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '1.25rem',
+                border: '1px solid rgba(56, 217, 255, 0.3)',
+              }}
+            >
+              <Orbit size={24} />
             </div>
-            <h3 className="feature-title">3 Precision Split Modes</h3>
-            <p className="feature-desc">
-              Split bills equally among all members, by exact custom cash amounts, or by percentage.
-              Automated paise-rounding safeguards prevent ₹0.01 discrepancies.
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--star-white)', marginBottom: '0.65rem' }}>
+              Orbital Debt Minimization
+            </h3>
+            <p className="text-muted" style={{ fontSize: '0.92rem', lineHeight: 1.6 }}>
+              A greedy two-pointer celestial algorithm collapses hundreds of multi-friend debts into the absolute minimum
+              number of orbital repayments.
             </p>
           </div>
 
-          {/* Feature 2 */}
-          <div className="feature-card">
-            <div className="feature-icon-wrapper" style={{ background: 'var(--success-subtle)', color: 'var(--success)' }}>
-              <Zap size={24} />
+          {/* Pillar 2 */}
+          <div className="cosmic-panel" style={{ padding: '2rem 1.75rem' }}>
+            <div
+              style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '14px',
+                background: 'rgba(124, 58, 237, 0.15)',
+                color: 'var(--nebula-violet)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '1.25rem',
+                border: '1px solid rgba(124, 58, 237, 0.35)',
+              }}
+            >
+              <Scale size={24} />
             </div>
-            <h3 className="feature-title">Minimal Repayments Engine</h3>
-            <p className="feature-desc">
-              Tired of person A paying person B who pays person C? Our greedy graph reduction algorithm
-              simplifies complex circular debts into the minimum direct payments.
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--star-white)', marginBottom: '0.65rem' }}>
+              Zero-G Exact & Percent Splits
+            </h3>
+            <p className="text-muted" style={{ fontSize: '0.92rem', lineHeight: 1.6 }}>
+              Equal, custom exact amounts, or percentage splits executed in integer paise precision, completely eliminating
+              rounding discrepancies.
             </p>
           </div>
 
-          {/* Feature 3 */}
-          <div className="feature-card">
-            <div className="feature-icon-wrapper" style={{ background: 'var(--warning-subtle)', color: 'var(--warning)' }}>
-              <Wallet size={24} />
+          {/* Pillar 3 */}
+          <div className="cosmic-panel" style={{ padding: '2rem 1.75rem' }}>
+            <div
+              style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '14px',
+                background: 'rgba(52, 211, 153, 0.12)',
+                color: 'var(--cosmic-positive)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '1.25rem',
+                border: '1px solid rgba(52, 211, 153, 0.35)',
+              }}
+            >
+              <Compass size={24} />
             </div>
-            <h3 className="feature-title">1-Click Settlement Ledger</h3>
-            <p className="feature-desc">
-              Settle debts via UPI, Google Pay, PhonePe, or cash. Receiver authorization ensures only
-              the person who received money can confirm the payment.
-            </p>
-          </div>
-
-          {/* Feature 4 */}
-          <div className="feature-card">
-            <div className="feature-icon-wrapper" style={{ background: 'rgba(255, 100, 124, 0.12)', color: 'var(--danger)' }}>
-              <PieChart size={24} />
-            </div>
-            <h3 className="feature-title">Unified Dashboard</h3>
-            <p className="feature-desc">
-              Instantly see your overall net financial status across all active groups: total money
-              you owe versus total money you are owed, updated dynamically.
-            </p>
-          </div>
-
-          {/* Feature 5 */}
-          <div className="feature-card">
-            <div className="feature-icon-wrapper" style={{ background: 'var(--primary-subtle)', color: 'var(--primary)' }}>
-              <Users size={24} />
-            </div>
-            <h3 className="feature-title">Group Workspaces</h3>
-            <p className="feature-desc">
-              Keep your apartment rent separate from your weekend trips and lunch outings. Organize
-              members, view chronological activity feeds, and manage access.
-            </p>
-          </div>
-
-          {/* Feature 6 */}
-          <div className="feature-card">
-            <div className="feature-icon-wrapper" style={{ background: 'var(--secondary-subtle)', color: 'var(--secondary)' }}>
-              <ShieldCheck size={24} />
-            </div>
-            <h3 className="feature-title">Rock-Solid Security</h3>
-            <p className="feature-desc">
-              Protected by salted bcrypt password hashing, JSON Web Tokens (JWT), and ACID-compliant
-              MySQL database transactions with connection pooling.
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--star-white)', marginBottom: '0.65rem' }}>
+              Protected Receiver Settlement
+            </h3>
+            <p className="text-muted" style={{ fontSize: '0.92rem', lineHeight: 1.6 }}>
+              Cryptographically verified authorization ensures only the recipient can confirm offline settlement,
+              guaranteeing unbreachable financial security.
             </p>
           </div>
         </div>
       </section>
 
-      {/* How It Works (3 Steps) */}
-      <section>
-        <div className="features-header">
-          <div className="hero-pill" style={{ marginBottom: '0.75rem' }}>
-            <span>Simple Workflow</span>
-          </div>
-          <h2 style={{ fontSize: '2.25rem', fontWeight: 800 }}>
-            How FairShare Works in 3 Easy Steps
-          </h2>
-        </div>
-
-        <div className="steps-container">
-          <div className="step-card">
-            <div className="step-number">1</div>
-            <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '0.5rem' }}>
-              Create or Join a Group
-            </h3>
-            <p className="text-muted" style={{ fontSize: '0.92rem', lineHeight: 1.6 }}>
-              Set up a group for your apartment, road trip, or family event, and add your friends by name and email.
-            </p>
-          </div>
-
-          <div className="step-card">
-            <div className="step-number">2</div>
-            <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '0.5rem' }}>
-              Log Shared Expenses
-            </h3>
-            <p className="text-muted" style={{ fontSize: '0.92rem', lineHeight: 1.6 }}>
-              Enter the amount, select who paid, and pick your split rule: equal division, exact amounts, or percentage shares.
-            </p>
-          </div>
-
-          <div className="step-card">
-            <div className="step-number">3</div>
-            <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '0.5rem' }}>
-              Settle with Minimum Friction
-            </h3>
-            <p className="text-muted" style={{ fontSize: '0.92rem', lineHeight: 1.6 }}>
-              Check the smart settlement ledger, pay via your favorite UPI app, and mark debts resolved in one click.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Live System Operational Status (Cyber-Terminal Style) */}
-      <section className="infra-card">
-        <div className="flex-between" style={{ flexWrap: 'wrap', gap: '0.75rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-            <span className="status-dot online"></span>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>
-              Live Infrastructure & Health Status
-            </h3>
-            <span className="badge badge-success" style={{ fontSize: '0.72rem' }}>
-              Operational
-            </span>
-          </div>
-          <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-            onClick={fetchHealth}
-            disabled={healthLoading}
+      {/* 3. PLANETARY WORLDS CONCEPT PREVIEW */}
+      <section className="cosmic-panel" style={{ padding: '3rem 2.5rem' }}>
+        <div style={{ textAlign: 'center', maxWidth: '680px', margin: '0 auto 2.5rem' }}>
+          <span
+            className="badge"
+            style={{
+              background: 'rgba(124, 58, 237, 0.2)',
+              border: '1px solid rgba(155, 92, 255, 0.4)',
+              color: 'var(--nebula-violet)',
+              marginBottom: '0.75rem',
+            }}
           >
-            <RefreshCw size={13} className={healthLoading ? 'spinner' : ''} />
-            <span>Refresh Ping</span>
-          </button>
+            Cosmic Concept
+          </span>
+          <h2 style={{ fontSize: '2.1rem', fontWeight: 800, color: 'var(--star-white)' }}>
+            Every Group is a Celestial World
+          </h2>
+          <p className="text-muted" style={{ fontSize: '0.96rem', marginTop: '0.5rem' }}>
+            Trips, apartments, and team projects manifest as independent planets with their own orbital crew and energy balance.
+          </p>
         </div>
 
-        <div className="infra-grid">
-          <div className="infra-item">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-              <Monitor size={16} color="var(--primary)" />
-              <strong style={{ fontSize: '0.9rem' }}>Frontend Client</strong>
+        <div className="grid-3">
+          {/* World 1 */}
+          <div
+            style={{
+              background: 'rgba(6, 9, 20, 0.9)',
+              border: '1px solid rgba(56, 217, 255, 0.3)',
+              borderRadius: 'var(--radius-lg)',
+              padding: '1.5rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem',
+            }}
+          >
+            <div className="planet-orb-wrapper">
+              <div className="planet-orbital-ring" style={{ borderColor: 'rgba(56, 217, 255, 0.5)' }} />
+              <div className="planet-sphere planet-ice">G</div>
             </div>
-            <p className="text-muted" style={{ fontSize: '0.8rem' }}>React 19 &bull; Vite &bull; Port 5173</p>
-            <div style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.35rem', color: 'var(--success)', fontSize: '0.82rem', fontWeight: 600 }}>
-              <Check size={14} /> Online & Responsive
-            </div>
-          </div>
-
-          <div className="infra-item">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-              <Server size={16} color="var(--secondary)" />
-              <strong style={{ fontSize: '0.9rem' }}>Backend Server</strong>
-            </div>
-            <p className="text-muted" style={{ fontSize: '0.8rem' }}>Node.js &bull; Express API &bull; Port 5000</p>
-            <div style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.35rem', color: healthData ? 'var(--success)' : 'var(--warning)', fontSize: '0.82rem', fontWeight: 600 }}>
-              {healthData ? (
-                <>
-                  <Check size={14} /> Operational ({healthData.uptimeSeconds}s uptime)
-                </>
-              ) : (
-                'Connecting...'
-              )}
+            <div>
+              <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--star-white)' }}>Goa Trip Planet</h4>
+              <span className="text-muted" style={{ fontSize: '0.76rem' }}>6 Crew Members in Orbit</span>
             </div>
           </div>
 
-          <div className="infra-item">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-              <Database size={16} color="var(--primary-hover)" />
-              <strong style={{ fontSize: '0.9rem' }}>Database</strong>
+          {/* World 2 */}
+          <div
+            style={{
+              background: 'rgba(6, 9, 20, 0.9)',
+              border: '1px solid rgba(155, 92, 255, 0.3)',
+              borderRadius: 'var(--radius-lg)',
+              padding: '1.5rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem',
+            }}
+          >
+            <div className="planet-orb-wrapper">
+              <div className="planet-orbital-ring" style={{ borderColor: 'rgba(155, 92, 255, 0.5)' }} />
+              <div className="planet-sphere planet-violet">F</div>
             </div>
-            <p className="text-muted" style={{ fontSize: '0.8rem' }}>MySQL 8.0 &bull; fairshare_db &bull; Port 3306</p>
-            <div style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.35rem', color: healthData?.database?.connected ? 'var(--success)' : 'var(--warning)', fontSize: '0.82rem', fontWeight: 600 }}>
-              {healthData?.database?.connected ? (
-                <>
-                  <CheckCircle2 size={14} /> Connected Pool (10 slots)
-                </>
-              ) : (
-                'Checking connection...'
-              )}
+            <div>
+              <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--star-white)' }}>Flatmates Habitat</h4>
+              <span className="text-muted" style={{ fontSize: '0.76rem' }}>4 Crew Members in Orbit</span>
+            </div>
+          </div>
+
+          {/* World 3 */}
+          <div
+            style={{
+              background: 'rgba(6, 9, 20, 0.9)',
+              border: '1px solid rgba(52, 211, 153, 0.3)',
+              borderRadius: 'var(--radius-lg)',
+              padding: '1.5rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '1rem',
+            }}
+          >
+            <div className="planet-orb-wrapper">
+              <div className="planet-orbital-ring" style={{ borderColor: 'rgba(52, 211, 153, 0.5)' }} />
+              <div className="planet-sphere planet-emerald">R</div>
+            </div>
+            <div>
+              <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--star-white)' }}>Road Trip Odyssey</h4>
+              <span className="text-muted" style={{ fontSize: '0.76rem' }}>5 Crew Members in Orbit</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Bottom Call to Action Banner */}
-      <section className="cta-banner">
-        <h2>Ready to Split Bills without the Headache?</h2>
-        <p>
-          Join FairShare today and start managing your group expenses with complete transparency,
-          fair math, and zero awkwardness.
-        </p>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-          <Link to="/register" className="btn btn-primary" style={{ padding: '0 2rem', height: '48px', fontSize: '15px' }}>
-            <UserPlus size={18} />
-            <span>Create Free Account</span>
-          </Link>
-          <Link to="/login" className="btn btn-secondary" style={{ padding: '0 2rem', height: '48px', fontSize: '15px' }}>
-            <LogIn size={18} />
-            <span>Sign In to Existing Account</span>
-          </Link>
+      {/* 4. TELEMETRY STATUS BAR */}
+      <div
+        className="cosmic-panel"
+        style={{
+          padding: '1.25rem 2rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '1rem',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+          <div className="cosmic-status-dot" />
+          <span style={{ fontSize: '0.85rem', color: 'var(--star-white)', fontWeight: 600 }}>
+            Interstellar Telemetry: {healthLoading ? 'Polling...' : healthData?.status === 'ok' ? 'All Channels Operational' : 'Node Connecting'}
+          </span>
         </div>
-      </section>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+          <span>DATABASE: MySQL 8.0 [PORT 3306]</span>
+          <span>ORBIT PROTOCOL: JWT / BCRYPT</span>
+        </div>
+      </div>
     </div>
   );
 }

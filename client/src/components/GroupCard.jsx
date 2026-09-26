@@ -1,7 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Calendar, ArrowRight, Shield } from 'lucide-react';
+import { Users, Calendar, ArrowRight, Shield, Sparkles, Orbit } from 'lucide-react';
 
+/**
+ * GroupCard Component (GROUPS AS PLANETS)
+ * 
+ * Renders each expense group as a distinct cosmic world with:
+ * - A miniature glowing planet sphere
+ * - Tilted planetary orbital ring
+ * - Celestial coordinates & star sparkles
+ * - Orbiting member count & balance
+ */
 export default function GroupCard({ group }) {
   const formattedDate = new Date(group.created_at).toLocaleDateString(undefined, {
     month: 'short',
@@ -9,67 +18,121 @@ export default function GroupCard({ group }) {
     year: 'numeric',
   });
 
+  // Assign a distinct planetary archetype based on group id or name
+  const planetThemes = [
+    { type: 'planet-ice', name: 'Ice Giant', accent: '#38D9FF', ring: 'rgba(56, 217, 255, 0.45)' },
+    { type: 'planet-violet', name: 'Nebula Orb', accent: '#9B5CFF', ring: 'rgba(155, 92, 255, 0.45)' },
+    { type: 'planet-solar', name: 'Solar Core', accent: '#FBBF24', ring: 'rgba(251, 191, 36, 0.45)' },
+    { type: 'planet-emerald', name: 'Emerald Oasis', accent: '#34D399', ring: 'rgba(52, 211, 153, 0.45)' },
+    { type: 'planet-coral', name: 'Coral Horizon', accent: '#FB7185', ring: 'rgba(251, 113, 133, 0.45)' },
+  ];
+
+  const themeIndex = (group.id || group.name.charCodeAt(0)) % planetThemes.length;
+  const currentTheme = planetThemes[themeIndex];
+
   return (
-    <div
-      className="card"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        height: '100%',
-        background: 'var(--surface)',
-      }}
-    >
+    <div className="planet-world-card" style={{ height: '100%', justifyContent: 'space-between' }}>
       <div>
+        {/* Planetary System Header */}
         <div className="flex-between">
-          <div
-            style={{
-              width: '44px',
-              height: '44px',
-              borderRadius: '12px',
-              background: 'linear-gradient(135deg, var(--surface-elevated) 0%, #20263B 100%)',
-              border: '1px solid var(--border)',
-              color: 'var(--primary-hover)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 800,
-              fontSize: '1.2rem',
-              boxShadow: '0 0 10px rgba(124, 92, 252, 0.2)',
-            }}
-          >
-            {group.name.charAt(0).toUpperCase()}
+          <div className="planet-orb-wrapper">
+            {/* Orbital Ring */}
+            <div
+              className="planet-orbital-ring"
+              style={{
+                borderColor: currentTheme.ring,
+                boxShadow: `0 0 14px ${currentTheme.ring}`,
+              }}
+            />
+            {/* Planet Sphere */}
+            <div className={`planet-sphere ${currentTheme.type}`}>
+              {group.name.charAt(0).toUpperCase()}
+            </div>
+            {/* Orbiting Satellite Star */}
+            <span
+              style={{
+                position: 'absolute',
+                top: '4px',
+                right: '-2px',
+                width: '4px',
+                height: '4px',
+                borderRadius: '50%',
+                background: currentTheme.accent,
+                boxShadow: `0 0 8px ${currentTheme.accent}`,
+              }}
+            />
           </div>
-          <span className="badge badge-primary">
-            <Users size={12} />
-            {group.member_count} {group.member_count === 1 ? 'member' : 'members'}
-          </span>
+
+          <div style={{ textAlign: 'right' }}>
+            <span
+              className="badge"
+              style={{
+                background: 'rgba(124, 58, 237, 0.15)',
+                border: `1px solid ${currentTheme.ring}`,
+                color: currentTheme.accent,
+                fontSize: '0.72rem',
+              }}
+            >
+              <Users size={11} />
+              {group.member_count} In Orbit
+            </span>
+            <div style={{ fontSize: '0.66rem', color: 'var(--text-muted)', marginTop: '3px', letterSpacing: '0.05em' }}>
+              SECTOR 0{themeIndex + 1}
+            </div>
+          </div>
         </div>
 
-        <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginTop: '1rem', color: 'var(--text-main)' }}>
+        {/* Planet / Group Name */}
+        <h3
+          style={{
+            fontSize: '1.3rem',
+            fontWeight: 800,
+            marginTop: '1.15rem',
+            color: 'var(--star-white)',
+            letterSpacing: '-0.02em',
+          }}
+        >
           {group.name}
         </h3>
 
-        <div className="text-muted mt-2" style={{ fontSize: '0.82rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <Shield size={13} color="var(--primary)" />
-            <span>Created by <strong>{group.creator_name}</strong></span>
+        {/* Telemetry metadata */}
+        <div
+          style={{
+            fontSize: '0.8rem',
+            color: 'var(--text-muted)',
+            marginTop: '0.65rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.35rem',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+            <Shield size={13} color="var(--starlight-cyan)" />
+            <span>Captain: <strong style={{ color: 'var(--text-secondary)' }}>{group.creator_name}</strong></span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
             <Calendar size={13} />
-            <span>{formattedDate}</span>
+            <span>Chartered {formattedDate}</span>
           </div>
         </div>
       </div>
 
-      <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
+      {/* Enter Orbit Action */}
+      <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
         <Link
           to={`/groups/${group.id}`}
           className="btn btn-secondary"
-          style={{ width: '100%', justifyContent: 'space-between' }}
+          style={{
+            width: '100%',
+            justifyContent: 'space-between',
+            borderColor: 'rgba(124, 58, 237, 0.3)',
+          }}
         >
-          <span>Open Group</span>
-          <ArrowRight size={15} color="var(--primary)" />
+          <span style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+            <Orbit size={14} color={currentTheme.accent} />
+            <span>Enter Orbit</span>
+          </span>
+          <ArrowRight size={14} color={currentTheme.accent} />
         </Link>
       </div>
     </div>

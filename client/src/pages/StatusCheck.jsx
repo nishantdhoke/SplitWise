@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { checkHealth } from '../services/api';
-import { CheckCircle2, XCircle, RefreshCw, Database, Server, Monitor, ShieldCheck, ArrowRight } from 'lucide-react';
+import { CheckCircle2, XCircle, RefreshCw, Database, Server, Monitor, ShieldCheck, Orbit } from 'lucide-react';
 
 export default function StatusCheck() {
   const [healthData, setHealthData] = useState(null);
@@ -28,86 +28,97 @@ export default function StatusCheck() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       {/* Hero Welcome */}
       <div>
-        <h1 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-main)' }}>
-          System Operational Diagnostics
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.35rem' }}>
+          <span
+            className="badge"
+            style={{
+              background: 'rgba(56, 217, 255, 0.15)',
+              border: '1px solid rgba(56, 217, 255, 0.35)',
+              color: 'var(--starlight-cyan)',
+            }}
+          >
+            <Orbit size={13} />
+            <span>NODE TELEMETRY</span>
+          </span>
+        </div>
+        <h1 style={{ fontSize: '2.1rem', fontWeight: 800, color: 'var(--star-white)', letterSpacing: '-0.03em' }}>
+          Cosmic System Diagnostics
         </h1>
-        <p className="text-muted mt-1" style={{ fontSize: '1rem' }}>
-          Real-time health verification for React frontend, Express API, and MySQL connection pool.
+        <p className="text-muted mt-1" style={{ fontSize: '0.95rem' }}>
+          Real-time telemetry verification for React frontend, Express interstellar API, and MySQL connection pool.
         </p>
       </div>
 
       {/* Connection Verification Grid */}
       <div className="grid-2">
         {/* Frontend Status */}
-        <div className="glass-card">
+        <div className="cosmic-panel">
           <div className="flex-between">
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-              <div style={{ background: 'var(--primary-subtle)', padding: '0.65rem', borderRadius: '12px', color: 'var(--primary-hover)' }}>
+              <div style={{ background: 'rgba(56, 217, 255, 0.12)', padding: '0.65rem', borderRadius: '12px', color: 'var(--starlight-cyan)' }}>
                 <Monitor size={22} />
               </div>
               <div>
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>Frontend (Client)</h3>
-                <p className="text-muted" style={{ fontSize: '0.82rem' }}>React 19 + Vite Dev Server</p>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--star-white)' }}>Frontend Spacecraft</h3>
+                <p className="text-muted" style={{ fontSize: '0.82rem' }}>React 19 + Vite Interstellar Server</p>
               </div>
             </div>
             <span className="badge badge-success">
-              <span className="status-dot online"></span>
-              Online
+              <span className="cosmic-status-dot" style={{ width: '6px', height: '6px' }} />
+              Active
             </span>
           </div>
           <div className="mt-3 text-muted" style={{ fontSize: '0.88rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-            <p><strong>Port:</strong> 5173</p>
+            <p><strong>Orbital Port:</strong> 5173</p>
             <p><strong>Proxy:</strong> <code>/api</code> requests routed to backend port 5000</p>
           </div>
         </div>
 
         {/* Backend & DB Status */}
-        <div className="glass-card">
+        <div className="cosmic-panel">
           <div className="flex-between">
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-              <div style={{ background: 'var(--secondary-subtle)', padding: '0.65rem', borderRadius: '12px', color: 'var(--secondary)' }}>
+              <div style={{ background: 'rgba(124, 58, 237, 0.15)', padding: '0.65rem', borderRadius: '12px', color: 'var(--nebula-violet)' }}>
                 <Server size={22} />
               </div>
               <div>
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>Backend (Server)</h3>
-                <p className="text-muted" style={{ fontSize: '0.82rem' }}>Node.js + Express.js API</p>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--star-white)' }}>Core Engine (API)</h3>
+                <p className="text-muted" style={{ fontSize: '0.82rem' }}>Node.js + Express.js Ledger Engine</p>
               </div>
             </div>
             {loading ? (
-              <span className="spinner"></span>
+              <span className="cosmic-spinner"></span>
             ) : error ? (
               <span className="badge badge-danger">
-                <span className="status-dot offline"></span>
                 Offline
               </span>
             ) : (
               <span className="badge badge-success">
-                <span className="status-dot online"></span>
                 Operational
               </span>
             )}
           </div>
           <div className="mt-3 text-muted" style={{ fontSize: '0.88rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-            <p><strong>Port:</strong> 5000</p>
-            <p><strong>Uptime:</strong> {healthData ? `${healthData.uptimeSeconds}s` : 'N/A'}</p>
+            <p><strong>Engine Port:</strong> 5000</p>
+            <p><strong>Engine Uptime:</strong> {healthData ? `${healthData.uptimeSeconds}s` : 'N/A'}</p>
           </div>
         </div>
       </div>
 
       {/* MySQL Database Card */}
-      <div className="glass-card">
+      <div className="cosmic-panel">
         <div className="flex-between">
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-            <div style={{ background: 'var(--warning-subtle)', padding: '0.65rem', borderRadius: '12px', color: 'var(--warning)' }}>
+            <div style={{ background: 'rgba(251, 191, 36, 0.12)', padding: '0.65rem', borderRadius: '12px', color: '#FBBF24' }}>
               <Database size={22} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 700 }}>Database (MySQL 8.0)</h3>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--star-white)' }}>Cosmic Database (MySQL 8.0)</h3>
               <p className="text-muted" style={{ fontSize: '0.82rem' }}>Connection Pool via <code>mysql2/promise</code></p>
             </div>
           </div>
           {loading ? (
-            <span className="spinner"></span>
+            <span className="cosmic-spinner"></span>
           ) : healthData?.database?.connected ? (
             <span className="badge badge-success">
               <CheckCircle2 size={14} />
@@ -122,7 +133,7 @@ export default function StatusCheck() {
         </div>
 
         {healthData?.database?.connected && (
-          <div className="mt-3" style={{ background: 'var(--surface-elevated)', padding: '0.85rem 1.15rem', borderRadius: '8px', fontSize: '0.85rem' }}>
+          <div className="mt-3" style={{ background: 'rgba(6, 9, 20, 0.85)', padding: '0.85rem 1.15rem', borderRadius: '8px', fontSize: '0.85rem' }}>
             <p>Host: <code>{healthData.database.host}:{healthData.database.port}</code></p>
             <p style={{ marginTop: '4px' }}>Database: <code>{healthData.database.database}</code></p>
           </div>
@@ -130,17 +141,17 @@ export default function StatusCheck() {
 
         <div className="mt-3" style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <button className="btn btn-secondary btn-sm" onClick={fetchHealth} disabled={loading}>
-            <RefreshCw size={14} className={loading ? 'spinner' : ''} />
+            <RefreshCw size={14} className={loading ? 'cosmic-spinner' : ''} />
             <span>Refresh Diagnostics</span>
           </button>
         </div>
       </div>
 
       {/* Architecture & Security Summary */}
-      <div className="glass-card" style={{ borderLeft: '4px solid var(--primary)' }}>
-        <h3 style={{ fontSize: '1.2rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <ShieldCheck size={20} color="var(--primary)" />
-          Enterprise Security & Connection Architecture
+      <div className="cosmic-panel" style={{ borderLeft: '4px solid var(--starlight-cyan)' }}>
+        <h3 style={{ fontSize: '1.2rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--star-white)' }}>
+          <ShieldCheck size={20} color="var(--starlight-cyan)" />
+          Cosmic Security & Cryptographic Protocols
         </h3>
         <ul style={{ paddingLeft: '1.25rem', marginTop: '0.85rem', lineHeight: 1.8, fontSize: '0.92rem', color: 'var(--text-secondary)' }}>
           <li>
@@ -150,7 +161,7 @@ export default function StatusCheck() {
             <strong>Connection Pooling:</strong> <code>mysql2/promise</code> maintains 10 persistent reusable connections, drastically reducing latency compared to single connection per query.
           </li>
           <li>
-            <strong>Security & Cryptography:</strong> Salted bcrypt password hashing with 10 rounds and signed JWT authentication tokens protecting all endpoints.
+            <strong>Cryptographic Authorization:</strong> Salted bcrypt passkey hashing with 10 rounds and signed JWT authentication tokens protecting all endpoints.
           </li>
         </ul>
       </div>

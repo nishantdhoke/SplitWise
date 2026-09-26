@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { UserPlus, X, AlertCircle, Copy, Check, Search, Users, Sparkles, CheckCircle2 } from 'lucide-react';
+import { UserPlus, X, AlertCircle, Copy, Check, Search, Users, Sparkles, CheckCircle2, Orbit } from 'lucide-react';
 import { searchRegisteredUsers } from '../services/api';
+import CosmicParticleBurst from './CosmicParticleBurst';
 
 export default function AddMemberModal({
   isOpen,
@@ -146,28 +147,29 @@ export default function AddMemberModal({
         </div>
 
         {isSuccess ? (
-          <div style={{ textAlign: 'center', padding: '2.5rem 1rem', animation: 'fadeIn 300ms ease' }}>
+          <div style={{ textAlign: 'center', padding: '2.5rem 1rem', animation: 'fadeIn 300ms ease', position: 'relative' }}>
+            <CosmicParticleBurst active={isSuccess} count={20} color="violet" />
             <div
               style={{
                 width: '60px',
                 height: '60px',
                 borderRadius: '50%',
-                background: 'var(--success)',
-                color: '#080A12',
+                background: 'radial-gradient(circle at 35% 35%, #C084FC 0%, #7C3AED 100%)',
+                color: '#F8FAFF',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 1.25rem',
-                boxShadow: '0 0 30px rgba(53, 224, 161, 0.5)',
+                boxShadow: '0 0 30px rgba(155, 92, 255, 0.6)',
               }}
             >
-              <CheckCircle2 size={34} />
+              <Orbit size={32} />
             </div>
-            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--success)' }}>
-              Member Added!
+            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--star-white)' }}>
+              Crew Member Initialized!
             </h3>
             <p className="text-muted mt-1" style={{ fontSize: '0.9rem' }}>
-              <strong>{addedName}</strong> is now part of {groupName}.
+              <strong>{addedName}</strong> has entered orbit in {groupName}.
             </p>
           </div>
         ) : (

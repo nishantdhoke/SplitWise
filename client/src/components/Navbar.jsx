@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Split, User, LogIn, LogOut, UserPlus, Server, Users, LayoutDashboard, Sparkles } from 'lucide-react';
-import SignatureEye from './SignatureEye';
+import { Orbit, LogIn, LogOut, UserPlus, Server, Users, Compass, Sparkles } from 'lucide-react';
 
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -15,55 +14,150 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-inner">
-        {/* Brand Logo with Glow & Mini Signature Eye */}
-        <Link to={isAuthenticated ? '/dashboard' : '/'} className="navbar-brand">
-          <div className="navbar-brand-icon">
-            <Split size={20} />
+    <nav
+      style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 50,
+        backgroundColor: 'rgba(3, 4, 11, 0.85)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        borderBottom: '1px solid rgba(124, 58, 237, 0.2)',
+        padding: '0.85rem 1.5rem',
+      }}
+    >
+      <div
+        style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        {/* Brand: Celestial Orbit & Deep Space Telemetry */}
+        <Link
+          to={isAuthenticated ? '/dashboard' : '/'}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            textDecoration: 'none',
+            color: 'var(--star-white)',
+          }}
+        >
+          <div
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '10px',
+              background: 'radial-gradient(circle at 30% 30%, #38D9FF 0%, #7C3AED 70%, #03040B 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#F8FAFF',
+              boxShadow: '0 0 16px rgba(56, 217, 255, 0.45)',
+            }}
+          >
+            <Orbit size={20} />
           </div>
-          <span>Fair<span style={{ color: 'var(--primary)' }}>Share</span></span>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <span style={{ fontSize: '1.15rem', fontWeight: 800, letterSpacing: '-0.02em' }}>
+                FAIR<span style={{ color: 'var(--starlight-cyan)' }}>SHARE</span>
+              </span>
+            </div>
+            <span
+              style={{
+                fontSize: '0.62rem',
+                color: 'var(--text-muted)',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                display: 'block',
+                marginTop: '-2px',
+              }}
+            >
+              Cosmic Financial Orbit
+            </span>
+          </div>
         </Link>
 
-        {/* Navigation Items */}
-        <ul className="navbar-links">
+        {/* Navigation Console */}
+        <ul style={{ display: 'flex', alignItems: 'center', gap: '1rem', listStyle: 'none' }}>
           {isAuthenticated ? (
             <>
               <li>
                 <Link
                   to="/dashboard"
-                  className={`navbar-link ${location.pathname === '/dashboard' ? 'active' : ''}`}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.45rem',
+                    textDecoration: 'none',
+                    fontSize: '0.88rem',
+                    fontWeight: 600,
+                    color: location.pathname === '/dashboard' ? 'var(--starlight-cyan)' : 'var(--text-secondary)',
+                    padding: '0.45rem 0.85rem',
+                    borderRadius: 'var(--radius-sm)',
+                    background: location.pathname === '/dashboard' ? 'rgba(56, 217, 255, 0.1)' : 'transparent',
+                    border: location.pathname === '/dashboard' ? '1px solid rgba(56, 217, 255, 0.25)' : '1px solid transparent',
+                    transition: 'all var(--transition-fast)',
+                  }}
                 >
-                  <LayoutDashboard size={16} />
-                  <span>Dashboard</span>
+                  <Compass size={16} />
+                  <span>Orbit Command</span>
                 </Link>
               </li>
               <li>
                 <Link
                   to="/groups"
-                  className={`navbar-link ${location.pathname.startsWith('/groups') ? 'active' : ''}`}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.45rem',
+                    textDecoration: 'none',
+                    fontSize: '0.88rem',
+                    fontWeight: 600,
+                    color: location.pathname.startsWith('/groups') ? 'var(--starlight-cyan)' : 'var(--text-secondary)',
+                    padding: '0.45rem 0.85rem',
+                    borderRadius: 'var(--radius-sm)',
+                    background: location.pathname.startsWith('/groups') ? 'rgba(56, 217, 255, 0.1)' : 'transparent',
+                    border: location.pathname.startsWith('/groups') ? '1px solid rgba(56, 217, 255, 0.25)' : '1px solid transparent',
+                    transition: 'all var(--transition-fast)',
+                  }}
                 >
                   <Users size={16} />
-                  <span>Groups</span>
+                  <span>Planets</span>
                 </Link>
               </li>
               <li>
                 <Link
                   to="/profile"
-                  className={`navbar-link ${location.pathname === '/profile' ? 'active' : ''}`}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    textDecoration: 'none',
+                    fontSize: '0.88rem',
+                    fontWeight: 600,
+                    color: location.pathname === '/profile' ? 'var(--starlight-cyan)' : 'var(--text-secondary)',
+                    padding: '0.4rem 0.75rem',
+                    borderRadius: 'var(--radius-sm)',
+                  }}
                 >
                   <div
                     style={{
                       width: '24px',
                       height: '24px',
                       borderRadius: '50%',
-                      background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)',
+                      background: 'radial-gradient(circle, #7C3AED 0%, #2563EB 100%)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: '#FFFFFF',
+                      color: '#F8FAFF',
                       fontSize: '11px',
-                      fontWeight: 700,
+                      fontWeight: 800,
+                      boxShadow: '0 0 10px rgba(124, 58, 237, 0.4)',
                     }}
                   >
                     {user?.name?.charAt(0).toUpperCase()}
@@ -75,11 +169,11 @@ export default function Navbar() {
                 <button
                   onClick={handleLogout}
                   className="btn btn-secondary btn-sm"
-                  title="Log out"
+                  title="Disconnect console"
                   style={{ gap: '0.4rem', color: 'var(--text-muted)' }}
                 >
-                  <LogOut size={14} />
-                  <span>Logout</span>
+                  <LogOut size={13} />
+                  <span>Exit</span>
                 </button>
               </li>
             </>
@@ -88,36 +182,57 @@ export default function Navbar() {
               <li>
                 <Link
                   to="/"
-                  className={`navbar-link ${location.pathname === '/' ? 'active' : ''}`}
+                  style={{
+                    textDecoration: 'none',
+                    fontSize: '0.88rem',
+                    fontWeight: 600,
+                    color: location.pathname === '/' ? 'var(--starlight-cyan)' : 'var(--text-secondary)',
+                    padding: '0.45rem 0.75rem',
+                  }}
                 >
-                  Home
+                  Cosmos
                 </Link>
               </li>
               <li>
                 <Link
                   to="/status"
-                  className={`navbar-link ${location.pathname === '/status' ? 'active' : ''}`}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    textDecoration: 'none',
+                    fontSize: '0.88rem',
+                    fontWeight: 600,
+                    color: 'var(--text-secondary)',
+                    padding: '0.45rem 0.75rem',
+                  }}
                 >
-                  <Server size={14} style={{ color: 'var(--secondary)' }} />
-                  <span>Status</span>
+                  <Server size={14} color="var(--starlight-cyan)" />
+                  <span>Telemetry</span>
                 </Link>
               </li>
               <li>
                 <Link
                   to="/login"
-                  className={`navbar-link ${location.pathname === '/login' ? 'active' : ''}`}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    textDecoration: 'none',
+                    fontSize: '0.88rem',
+                    fontWeight: 600,
+                    color: 'var(--text-secondary)',
+                    padding: '0.45rem 0.75rem',
+                  }}
                 >
                   <LogIn size={15} />
-                  <span>Login</span>
+                  <span>Enter</span>
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/register"
-                  className="btn btn-primary btn-sm"
-                >
+                <Link to="/register" className="btn btn-primary btn-sm">
                   <UserPlus size={14} />
-                  <span>Register</span>
+                  <span>Initialize</span>
                 </Link>
               </li>
             </>
