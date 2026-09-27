@@ -3,15 +3,25 @@ import { apiRequest } from '../services/api';
 
 const AuthContext = createContext(null);
 
+const getStoredToken = () => localStorage.getItem('fairsplit_token') || localStorage.getItem('fairshare_token');
+const saveToken = (token) => {
+  localStorage.setItem('fairsplit_token', token);
+  localStorage.setItem('fairshare_token', token);
+};
+const clearToken = () => {
+  localStorage.removeItem('fairsplit_token');
+  localStorage.removeItem('fairshare_token');
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('fairshare_token'));
+  const [token, setToken] = useState(getStoredToken());
   const [loading, setLoading] = useState(true);
 
   // Load authenticated user profile on app startup if a token exists
   useEffect(() => {
     const initializeAuth = async () => {
-      const storedToken = localStorage.getItem('fairshare_token');
+      const storedToken = getStoredToken();
       if (!storedToken) {
         setLoading(false);
         return;
@@ -47,7 +57,7 @@ export const AuthProvider = ({ children }) => {
     });
 
     if (data.success && data.token) {
-      localStorage.setItem('fairshare_token', data.token);
+      saveToken(data.token);
       setToken(data.token);
       setUser(data.user);
     }
@@ -64,7 +74,7 @@ export const AuthProvider = ({ children }) => {
     });
 
     if (data.success && data.token) {
-      localStorage.setItem('fairshare_token', data.token);
+      saveToken(data.token);
       setToken(data.token);
       setUser(data.user);
     }
@@ -75,7 +85,7 @@ export const AuthProvider = ({ children }) => {
    * Log out the current user
    */
   const logout = () => {
-    localStorage.removeItem('fairshare_token');
+    clearToken();
     setToken(null);
     setUser(null);
   };

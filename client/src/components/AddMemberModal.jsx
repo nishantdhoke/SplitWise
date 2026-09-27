@@ -192,7 +192,7 @@ export default function AddMemberModal({
                 <Sparkles size={16} color="var(--primary-hover)" />
                 <div>
                   <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-main)', display: 'block' }}>
-                    Friend not on FairShare yet?
+                    Friend not on Fair Split yet?
                   </span>
                   <span className="text-muted" style={{ fontSize: '0.75rem' }}>
                     Share registration link so they can create an account

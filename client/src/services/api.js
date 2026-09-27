@@ -16,7 +16,7 @@ const BASE_URL = '/api';
  * @param {object} options - Fetch options (method, body, headers, etc.)
  */
 export async function apiRequest(endpoint, options = {}) {
-  const token = localStorage.getItem('fairshare_token');
+  const token = localStorage.getItem('fairsplit_token') || localStorage.getItem('fairshare_token');
 
   const headers = {
     'Content-Type': 'application/json',

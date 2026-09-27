@@ -138,7 +138,7 @@ export default function Landing() {
             margin: '0 auto 2.25rem',
           }}
         >
-          FairShare makes splitting expenses with friends effortless and beautiful. Add group expenses, split bills
+          Fair Split makes splitting expenses with friends effortless and beautiful. Add group expenses, split bills
           equally, by custom amounts or percentages, and let our algorithm calculate the fewest settlement payments.
         </p>
 

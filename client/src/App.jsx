@@ -132,7 +132,7 @@ export default function App() {
           </main>
           <footer className="footer">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem' }}>
-              <span>FAIRSHARE &bull; SMART EXPENSE SPLITTING</span>
+              <span>FAIR SPLIT &bull; SMART EXPENSE SPLITTING</span>
             </div>
           </footer>
         </div>

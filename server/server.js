@@ -39,7 +39,7 @@ app.get('/favicon.ico', (req, res) => res.status(204).end());
 // Root route for simple verification
 app.get('/', (req, res) => {
   res.json({
-    message: 'Welcome to the FairShare Expense Splitter API',
+    message: 'Welcome to the Fair Split Expense Splitter API',
     documentation: '/api/health',
   });
 });
@@ -55,7 +55,7 @@ const startServer = async () => {
   try {
     app.listen(PORT, async () => {
       console.log(`===============================================`);
-      console.log(`🚀 FairShare Backend running on http://localhost:${PORT}`);
+      console.log(`🚀 Fair Split Backend running on http://localhost:${PORT}`);
       console.log(`📡 Health Check URL: http://localhost:${PORT}/api/health`);
       console.log(`===============================================`);
 

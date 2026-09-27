@@ -64,7 +64,7 @@ export default function Navbar() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <span style={{ fontSize: '1.15rem', fontWeight: 800, letterSpacing: '-0.02em' }}>
-                FAIR<span style={{ color: 'var(--starlight-cyan)' }}>SHARE</span>
+                FAIR <span style={{ color: 'var(--starlight-cyan)' }}>SPLIT</span>
               </span>
             </div>
             <span

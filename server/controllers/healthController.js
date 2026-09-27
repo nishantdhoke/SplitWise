@@ -14,7 +14,7 @@ const getHealthStatus = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      service: 'FairShare API',
+      service: 'Fair Split API',
       status: 'operational',
       timestamp: new Date().toISOString(),
       uptimeSeconds: Math.floor(process.uptime()),
