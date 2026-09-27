@@ -84,7 +84,20 @@ CREATE TABLE IF NOT EXISTS `settlements` (
   FOREIGN KEY (`group_id`) REFERENCES `groups`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`payer_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`receiver_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_c;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 7. Messages Table
+-- In-group chat message history
+CREATE TABLE IF NOT EXISTS `messages` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `group_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  `message` TEXT NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX `idx_group_created` (`group_id`, `created_at`),
+  FOREIGN KEY (`group_id`) REFERENCES `groups`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 SHOW TABLES FROM fairshare_db;
 
