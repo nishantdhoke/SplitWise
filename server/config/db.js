@@ -1,74 +1,105 @@
 const mysql = require('mysql2/promise');
 const dotenv = require('dotenv');
+const { createTables } = require('../scripts/initDb');
 
 dotenv.config();
+if (!process.env.DB_PASSWORD && !process.env.MYSQL_URL) {
+  dotenv.config({ path: require('path').join(__dirname, '../.env') });
+}
 
 /**
  * MySQL Connection Pool Configuration
  * 
- * Why use a connection pool?
- * Instead of creating a new TCP connection to MySQL for every incoming HTTP request
- * (which is slow and resource-heavy), a connection pool maintains a set of reusable
- * open connections. When a query is made, it borrows a connection from the pool and
- * returns it immediately upon completion.
+ * Supports standard environment variables (DB_HOST, DB_USER, etc.)
+ * as well as cloud deployment providers like Railway (MYSQL_URL, DATABASE_URL, MYSQLHOST).
  */
-const poolConfig = {
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT, 10) || 3306,
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'fairshare_db',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-};
+const connectionUrl = process.env.MYSQL_URL || process.env.DATABASE_URL;
 
-let pool = mysql.createPool(poolConfig);
+let pool;
+
+if (connectionUrl) {
+  pool = mysql.createPool({
+    uri: connectionUrl,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+  });
+} else {
+  const poolConfig = {
+    host: process.env.DB_HOST || process.env.MYSQLHOST || 'localhost',
+    port: parseInt(process.env.DB_PORT || process.env.MYSQLPORT, 10) || 3306,
+    user: process.env.DB_USER || process.env.MYSQLUSER || 'root',
+    password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD || '',
+    database: process.env.DB_NAME || process.env.MYSQLDATABASE || 'fairshare_db',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+  };
+  pool = mysql.createPool(poolConfig);
+}
 
 /**
- * Tests database connectivity.
- * If the database 'fairshare_db' does not exist yet, this helper attempts to create it
- * automatically so that the developer doesn't run into ER_BAD_DB_ERROR during setup.
+ * Tests database connectivity and verifies tables on startup.
  */
 const testConnection = async () => {
   try {
     const connection = await pool.getConnection();
-    console.log(`✅ [Database] Successfully connected to MySQL database '${poolConfig.database}' on port ${poolConfig.port}`);
+    console.log(`✅ [Database] Successfully connected to MySQL database.`);
+    
+    // Auto-verify or create tables if missing
+    try {
+      await createTables(connection);
+    } catch (tblErr) {
+      console.warn(`⚠️ [Database] Notice while verifying schema tables:`, tblErr.message);
+    }
+
     connection.release();
     return {
       connected: true,
-      database: poolConfig.database,
-      host: poolConfig.host,
-      port: poolConfig.port,
+      database: process.env.DB_NAME || process.env.MYSQLDATABASE || 'fairshare_db',
+      host: process.env.DB_HOST || process.env.MYSQLHOST || 'connected',
+      port: process.env.DB_PORT || process.env.MYSQLPORT || 3306,
     };
   } catch (error) {
-    // If the database does not exist yet, attempt to auto-create it
-    if (error.code === 'ER_BAD_DB_ERROR') {
-      console.warn(`⚠️ [Database] Database '${poolConfig.database}' not found. Attempting to create it...`);
+    // If the database does not exist yet and we have individual parameters, attempt to create it
+    if (error.code === 'ER_BAD_DB_ERROR' && !connectionUrl) {
+      const targetDb = process.env.DB_NAME || process.env.MYSQLDATABASE || 'fairshare_db';
+      console.warn(`⚠️ [Database] Database '${targetDb}' not found. Attempting to create it...`);
       try {
-        // Connect to MySQL server without selecting a database
         const rootConnection = await mysql.createConnection({
-          host: poolConfig.host,
-          port: poolConfig.port,
-          user: poolConfig.user,
-          password: poolConfig.password,
+          host: process.env.DB_HOST || process.env.MYSQLHOST || 'localhost',
+          port: parseInt(process.env.DB_PORT || process.env.MYSQLPORT, 10) || 3306,
+          user: process.env.DB_USER || process.env.MYSQLUSER || 'root',
+          password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD || '',
         });
 
-        await rootConnection.query(`CREATE DATABASE IF NOT EXISTS \`${poolConfig.database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
+        await rootConnection.query(`CREATE DATABASE IF NOT EXISTS \`${targetDb}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`);
         await rootConnection.end();
-        console.log(`✅ [Database] Created database '${poolConfig.database}' successfully!`);
+        console.log(`✅ [Database] Created database '${targetDb}' successfully!`);
 
-        // Recreate pool now that database exists
-        pool = mysql.createPool(poolConfig);
+        // Reconnect pool
+        pool = mysql.createPool({
+          host: process.env.DB_HOST || process.env.MYSQLHOST || 'localhost',
+          port: parseInt(process.env.DB_PORT || process.env.MYSQLPORT, 10) || 3306,
+          user: process.env.DB_USER || process.env.MYSQLUSER || 'root',
+          password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD || '',
+          database: targetDb,
+          waitForConnections: true,
+          connectionLimit: 10,
+          queueLimit: 0,
+        });
+
+        const conn = await pool.getConnection();
+        await createTables(conn);
+        conn.release();
+
         return {
           connected: true,
-          database: poolConfig.database,
-          host: poolConfig.host,
-          port: poolConfig.port,
-          note: 'Database was created automatically',
+          database: targetDb,
+          note: 'Database and tables were created automatically',
         };
       } catch (createErr) {
-        console.error(`❌ [Database] Failed to auto-create database '${poolConfig.database}':`, createErr.message);
+        console.error(`❌ [Database] Failed to auto-create database '${targetDb}':`, createErr.message);
         return {
           connected: false,
           error: createErr.message,
@@ -78,12 +109,6 @@ const testConnection = async () => {
     }
 
     console.error(`❌ [Database] Connection failed (${error.code || 'UNKNOWN'}):`, error.message);
-    if (error.code === 'ER_ACCESS_DENIED_ERROR') {
-      console.error('👉 Hint: Check your MySQL username and password in server/.env');
-    } else if (error.code === 'ECONNREFUSED') {
-      console.error('👉 Hint: Make sure the MySQL service is running on your machine.');
-    }
-
     return {
       connected: false,
       error: error.message,
@@ -93,6 +118,8 @@ const testConnection = async () => {
 };
 
 module.exports = {
-  pool,
+  get pool() {
+    return pool;
+  },
   testConnection,
 };
